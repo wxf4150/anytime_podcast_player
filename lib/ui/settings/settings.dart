@@ -185,7 +185,7 @@ class _SettingsState extends State<Settings> {
   }
 
   void _showStorageDialog({@required bool enableExternalStorage}) {
-    showPlatformDialog<void>(
+    showDialog<void>(
       context: context,
       useRootNavigator: false,
       builder: (_) => BasicDialogAlert(

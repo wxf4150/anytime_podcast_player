@@ -233,7 +233,7 @@ class DownloadControl extends StatelessWidget {
   Future<void> _showCancelDialog(BuildContext context) {
     final _episodeBloc = Provider.of<EpisodeBloc>(context, listen: false);
 
-    return showPlatformDialog<void>(
+    return showDialog<void>(
       context: context,
       useRootNavigator: false,
       builder: (_) => BasicDialogAlert(
