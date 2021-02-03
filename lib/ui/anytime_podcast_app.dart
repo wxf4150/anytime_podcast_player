@@ -303,6 +303,8 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
               type: BottomNavigationBarType.fixed,
               backgroundColor: Theme.of(context).bottomAppBarColor,
               selectedIconTheme: Theme.of(context).iconTheme,
+              selectedItemColor: Theme.of(context).iconTheme.color,
+              unselectedItemColor: Theme.of(context).disabledColor,
               currentIndex: snapshot.data,
               onTap: pager.changePage,
               items: <BottomNavigationBarItem>[
@@ -352,7 +354,7 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
               GestureDetector(
                   child: Text(
                     'anytime@amugofjava.me.uk',
-                    style: TextStyle(decoration: TextDecoration.underline, color: Colors.orange),
+                    style: TextStyle(decoration: TextDecoration.underline, color: Theme.of.(context).buttonColor),
                   ),
                   onTap: () {
                     _launchEmail();
