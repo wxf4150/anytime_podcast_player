@@ -103,7 +103,7 @@ class _PlayerTransportControlsState extends State<PlayerTransportControls> with 
                   icon: Icon(
                     Icons.replay_30,
                     size: 48.0,
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).buttonColor,
                   ),
                 ),
                 _PlayButton(
@@ -119,7 +119,7 @@ class _PlayerTransportControlsState extends State<PlayerTransportControls> with 
                   icon: Icon(
                     Icons.forward_30,
                     size: 48.0,
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).buttonColor,
                   ),
                 ),
                 SpeedSelectorWidget(
