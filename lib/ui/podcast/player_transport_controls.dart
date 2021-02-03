@@ -171,9 +171,9 @@ class _PlayButton extends StatelessWidget {
           child: FlatButton(
             onPressed: null,
             padding: const EdgeInsets.all(8.0),
-            child: const SpinKitRing(
+            child: SpinKitRing(
               lineWidth: 2.0,
-              color: Colors.blue,
+              color: Theme.of(context).accentColor,
               size: 60,
             ),
           ));
@@ -190,12 +190,12 @@ class _PlayButton extends StatelessWidget {
           }
         },
         shape: CircleBorder(side: BorderSide(color: Theme.of(context).highlightColor, width: 0.0)),
-        color: Theme.of(context).brightness == Brightness.light ? Colors.orange : Colors.grey[800],
+        color: Theme.of(context).primaryColor,
         padding: const EdgeInsets.all(8.0),
         child: AnimatedIcon(
           size: 60.0,
           icon: AnimatedIcons.play_pause,
-          color: Colors.white,
+          color: Theme.of(context).scaffoldBackgroundColor,
           progress: playPauseController,
         ),
       ),
