@@ -195,7 +195,7 @@ class _PlayButton extends StatelessWidget {
         child: AnimatedIcon(
           size: 60.0,
           icon: AnimatedIcons.play_pause,
-          color: Theme.of(context).scaffoldBackgroundColor,
+          color: Theme.of(context).primaryColor == Colors.white ? Theme.of(context).scaffoldBackgroundColor : Colors.white,
           progress: playPauseController,
         ),
       ),
