@@ -27,11 +27,13 @@ class MobilePodcastService extends PodcastService {
   final descriptionRegExp2 = RegExp(r'(<p><br><\/p>|<p><\/br><\/p>)');
   final log = Logger('MobilePodcastService');
   final _cache = _PodcastCache(maxItems: 10, expiration: Duration(minutes: 30));
+  final Future<Map<String, dynamic>> Function(String url) loadMetadata;
 
   MobilePodcastService({
     @required PodcastApi api,
     @required Repository repository,
     @required SettingsService settingsService,
+    this.loadMetadata,
   }) : super(api: api, repository: repository, settingsService: settingsService);
 
   @override
@@ -74,6 +76,7 @@ class MobilePodcastService extends PodcastService {
       psearch.Podcast loadedPodcast;
       var imageUrl = podcast.imageUrl;
       var thumbImageUrl = podcast.thumbImageUrl;
+      Map<String, dynamic> metadata;
 
       if (!refresh) {
         log.fine('Not a refresh so try to fetch from cache');
@@ -110,6 +113,10 @@ class MobilePodcastService extends PodcastService {
         }
       }
 
+      if (loadMetadata != null) {
+        metadata = await loadMetadata(loadedPodcast.url);
+      }
+
       var pc = Podcast(
         guid: loadedPodcast.url,
         url: loadedPodcast.url,
@@ -121,6 +128,7 @@ class MobilePodcastService extends PodcastService {
         copyright: copyright,
         funding: funding,
         episodes: <Episode>[],
+        metadata: metadata,
       );
 
       /// We could be following this podcast already. Let's check.
@@ -175,6 +183,7 @@ class MobilePodcastService extends PodcastService {
               publicationDate: episode.publicationDate,
               chaptersUrl: episode.chapters?.url,
               chapters: <Chapter>[],
+              metadata: metadata,
             ));
           } else {
             existingEpisode.title = title;
@@ -277,7 +286,6 @@ class MobilePodcastService extends PodcastService {
 
     if (await hasStoragePermission()) {
       final f = File.fromUri(Uri.file(await resolvePath(episode)));
-
       log.fine('Deleting file ${f.path}');
 
       if (await f.exists()) {

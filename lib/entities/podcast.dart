@@ -50,6 +50,7 @@ class Podcast {
 
   /// One or more episodes for this podcast.
   List<Episode> episodes;
+  Map<String, dynamic> metadata;
 
   bool newEpisodes;
 
@@ -68,6 +69,7 @@ class Podcast {
     this.episodes,
     this.newEpisodes = false,
     DateTime lastUpdated,
+    this.metadata,
   }) {
     _lastUpdated = lastUpdated;
     episodes ??= [];
@@ -106,6 +108,7 @@ class Podcast {
       'subscribedDate': subscribedDate?.millisecondsSinceEpoch.toString() ?? '',
       'funding': (funding ?? <Funding>[]).map((funding) => funding.toMap())?.toList(growable: false),
       'lastUpdated': _lastUpdated?.millisecondsSinceEpoch ?? DateTime.now().millisecondsSinceEpoch,
+      'metadata': metadata,
     };
   }
 
@@ -146,6 +149,7 @@ class Podcast {
       funding: funding,
       subscribedDate: sd,
       lastUpdated: lastUpdated,
+      metadata: podcast['metadata'] as Map<String, dynamic>,
     );
   }
 
@@ -159,8 +163,7 @@ class Podcast {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Podcast && runtimeType == other.runtimeType && guid == other.guid && url == other.url;
+      identical(this, other) || other is Podcast && runtimeType == other.runtimeType && guid == other.guid && url == other.url;
 
   @override
   int get hashCode => guid.hashCode ^ url.hashCode;
