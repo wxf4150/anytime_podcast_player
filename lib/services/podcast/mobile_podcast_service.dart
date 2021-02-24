@@ -286,6 +286,7 @@ class MobilePodcastService extends PodcastService {
 
     if (await hasStoragePermission()) {
       final f = File.fromUri(Uri.file(await resolvePath(episode)));
+
       log.fine('Deleting file ${f.path}');
 
       if (await f.exists()) {
