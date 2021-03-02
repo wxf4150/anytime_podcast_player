@@ -36,6 +36,7 @@ dependencies:
   shared_preferences: ^2.0.6
   url_launcher: ^6.0.7
   xml: ^5.1.2
+  flutter_svg: ^0.20.0-nullsafety.3
 
   flutter:
     sdk: flutter
@@ -63,6 +64,7 @@ flutter:
     - assets/images/anytime-logo.png
     - assets/images/anytime-logo-s.png
     - assets/images/anytime-placeholder-logo.png
+    - assets/icons/
 
     # Certificate authorities
     - assets/ca/lets-encrypt-r3.pem
