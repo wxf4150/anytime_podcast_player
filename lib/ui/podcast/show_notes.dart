@@ -39,6 +39,7 @@ class ShowNotes extends StatelessWidget {
                 floating: false,
                 pinned: true,
                 snap: false,
+                iconTheme: Theme.of(context).iconTheme.copyWith(color: Theme.of(context).appBarTheme.foregroundColor),
               ),
               SliverToBoxAdapter(
                 child: Column(
