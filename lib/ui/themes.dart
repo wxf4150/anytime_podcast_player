@@ -54,7 +54,6 @@ ThemeData _buildLightTheme() {
     appBarTheme: base.appBarTheme.copyWith(
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
-      color: Colors.white,
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(primary: Colors.grey[800]),
