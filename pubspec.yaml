@@ -36,7 +36,7 @@ dependencies:
   shared_preferences: ^2.0.6
   url_launcher: ^6.0.7
   xml: ^5.1.2
-  flutter_svg: ^0.20.0-nullsafety.3
+  flutter_svg: ^0.22.0
 
   flutter:
     sdk: flutter
