@@ -42,13 +42,13 @@ class MobileAudioPlayer {
   String _uri;
   int _startPosition = 0;
   bool _loadTrack = false;
-  bool _clearedCompletedState = false;
   bool _local;
   int _episodeId = 0;
   double _playbackSpeed = 1.0;
   bool _trimSilence = false;
   bool _volumeBoost = false;
   MediaItem _mediaItem;
+  Timer _durationTimer;
 
   MediaControl playControl = MediaControl(
     androidIcon: 'drawable/ic_action_play_circle_outline',
@@ -237,12 +237,19 @@ class MobileAudioPlayer {
         log.fine('State error ${e.toString()}');
       }
     }
-
-    await _clearPersistentState();
+    await _persistState(LastState.playing, _audioPlayer.position).whenComplete(
+      () => _durationTimer = Timer.periodic(
+        Duration(seconds: 10),
+        (timer) async {
+          await _persistState(LastState.playing, _audioPlayer.position);
+        },
+      ),
+    );
     await _setState(position: _audioPlayer.position);
   }
 
   Future<void> pause() async {
+    _durationTimer?.cancel();
     await _audioPlayer.pause();
     await _persistState(LastState.paused, _audioPlayer.position);
   }
@@ -256,6 +263,7 @@ class MobileAudioPlayer {
   Future<void> complete() async {
     log.fine('complete()');
 
+    _durationTimer?.cancel();
     await _persistState(LastState.completed, _audioPlayer.position);
 
     if (completionHandler != null) {
@@ -341,6 +349,7 @@ class MobileAudioPlayer {
   }
 
   Future<void> _setStoppedState({bool completed = false}) async {
+    _durationTimer?.cancel();
     var p = _audioPlayer.position;
 
     log.fine('setStoppedState() - position is ${p.inMilliseconds} - completed is $completed');
@@ -363,6 +372,7 @@ class MobileAudioPlayer {
   Future<void> seekTo(Duration position) async {
     await _setBufferingState();
     await _audioPlayer.seek(position);
+    await _persistState(LastState.playing, position);
   }
 
   Future<void> _setState({
@@ -414,20 +424,6 @@ class MobileAudioPlayer {
       position: position.inMilliseconds,
       state: state,
     ));
-
-    _clearedCompletedState = false;
-  }
-
-  Future<void> _clearPersistentState() async {
-    if (!_clearedCompletedState) {
-      await PersistentState.persistState(Persistable(
-        episodeId: 0,
-        position: 0,
-        state: LastState.none,
-      ));
-
-      _clearedCompletedState = true;
-    }
   }
 
   int _latestPosition() {
