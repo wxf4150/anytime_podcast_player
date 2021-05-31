@@ -43,6 +43,9 @@ class MobilePodcastApi extends PodcastApi {
   }
 
   @override
+  Future<SearchResult> mostRecent() => _mostRecent();
+
+  @override
   Future<Podcast> loadFeed(String url) async {
     return _loadFeed(url);
   }
@@ -75,6 +78,10 @@ class MobilePodcastApi extends PodcastApi {
   Future<Podcast> _loadFeed(String url) {
     _setupSecurityContext();
     return Podcast.loadFeed(url: url, userAgent: Environment.userAgent());
+  }
+
+  static Future<SearchResult> _mostRecent() {
+    return Search(userAgent: Environment.userAgent()).mostRecent().timeout(Duration(seconds: 30));
   }
 
   void _setupSecurityContext() {

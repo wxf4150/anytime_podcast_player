@@ -5,6 +5,7 @@
 import 'package:anytime/api/podcast/mobile_podcast_api.dart';
 import 'package:anytime/api/podcast/podcast_api.dart';
 import 'package:anytime/bloc/discovery/discovery_bloc.dart';
+import 'package:anytime/bloc/new_podcasts/new_podcasts_bloc.dart';
 import 'package:anytime/bloc/podcast/audio_bloc.dart';
 import 'package:anytime/bloc/podcast/episode_bloc.dart';
 import 'package:anytime/bloc/podcast/opml_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:anytime/bloc/search/search_bloc.dart';
 import 'package:anytime/bloc/settings/settings_bloc.dart';
 import 'package:anytime/bloc/ui/pager_bloc.dart';
 import 'package:anytime/core/environment.dart';
+import 'package:anytime/entities/app_settings.dart';
 import 'package:anytime/entities/podcast.dart';
 import 'package:anytime/l10n/L.dart';
 import 'package:anytime/repository/repository.dart';
@@ -30,6 +32,7 @@ import 'package:anytime/services/settings/mobile_settings_service.dart';
 import 'package:anytime/ui/library/discovery.dart';
 import 'package:anytime/ui/library/downloads.dart';
 import 'package:anytime/ui/library/library.dart';
+import 'package:anytime/ui/library/new_podcasts.dart';
 import 'package:anytime/ui/podcast/mini_player.dart';
 import 'package:anytime/ui/podcast/podcast_details.dart';
 import 'package:anytime/ui/search/search.dart';
@@ -173,6 +176,15 @@ class _AnytimePodcastAppState extends State<AnytimePodcastApp> with WidgetsBindi
           )),
           dispose: (_, value) => value.dispose(),
         ),
+        Provider<NewPodcastsBloc>(
+          create: (_) => NewPodcastsBloc(
+              podcastService: MobilePodcastService(
+            api: widget.podcastApi,
+            repository: widget.repository,
+            settingsService: widget.mobileSettingsService,
+          )),
+          dispose: (_, value) => value.dispose(),
+        ),
         Provider<EpisodeBloc>(
           create: (_) => EpisodeBloc(
               podcastService: MobilePodcastService(
@@ -253,7 +265,7 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
   @override
   Widget build(BuildContext context) {
     final pager = Provider.of<PagerBloc>(context);
-    final searchBloc = Provider.of<EpisodeBloc>(context);
+    var settings = Provider.of<SettingsBloc>(context).currentSettings;
     final backgroundColour = Theme.of(context).scaffoldBackgroundColor;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -320,7 +332,7 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
                   StreamBuilder<int>(
                       stream: pager.currentPage,
                       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                        return _fragment(snapshot.data, searchBloc);
+                        return _fragment(snapshot.data, settings.searchProvider);
                       }),
                 ],
               ),
@@ -345,23 +357,7 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
                   unselectedItemColor: HSLColor.fromColor(Theme.of(context).bottomAppBarColor).withLightness(0.85).toColor(),
                   currentIndex: snapshot.data,
                   onTap: pager.changePage,
-                  items: <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                      icon: SvgPicture.asset('assets/icons/library.svg', color: unselectedItemColor, height: 24, width: 24),
-                      activeIcon: SvgPicture.asset('assets/icons/library.svg', color: selectedItemColor, height: 32, width: 32),
-                      label: L.of(context).library,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SvgPicture.asset('assets/icons/discovery.svg', color: unselectedItemColor, height: 24, width: 24),
-                      activeIcon: SvgPicture.asset('assets/icons/discovery.svg', color: selectedItemColor, height: 32, width: 32),
-                      label: L.of(context).discover,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SvgPicture.asset('assets/icons/download.svg', color: unselectedItemColor, height: 24, width: 24),
-                      activeIcon: SvgPicture.asset('assets/icons/download.svg', color: selectedItemColor, height: 32, width: 32),
-                      label: L.of(context).downloads,
-                    ),
-                  ],
+                  items: _buildNavBarItems(unselectedItemColor, selectedItemColor, context, settings),
                 );
               }),
         ),
@@ -369,14 +365,47 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
     );
   }
 
-  Widget _fragment(int index, EpisodeBloc searchBloc) {
+  Widget _fragment(int index, String searchProvider) {
     if (index == 0) {
       return Library(noSubscriptionsMessage: widget.noSubscriptionsMessage);
     } else if (index == 1) {
       return Discovery(inlineSearch: widget.inlineSearch);
+    } else if (index == 2 && searchProvider == 'podcastindex') {
+      return NewPodcasts(inlineSearch: widget.inlineSearch);
     } else {
       return Downloads();
     }
+  }
+
+  List<BottomNavigationBarItem> _buildNavBarItems(
+      Color unselectedItemColor, Color selectedItemColor, BuildContext context, AppSettings settings) {
+    var navBarItems = <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
+        icon: SvgPicture.asset('assets/icons/library.svg', color: unselectedItemColor, height: 24, width: 24),
+        activeIcon: SvgPicture.asset('assets/icons/library.svg', color: selectedItemColor, height: 32, width: 32),
+        label: L.of(context).library,
+      ),
+      BottomNavigationBarItem(
+        icon: SvgPicture.asset('assets/icons/discovery.svg', color: unselectedItemColor, height: 24, width: 24),
+        activeIcon: SvgPicture.asset('assets/icons/discovery.svg', color: selectedItemColor, height: 32, width: 32),
+        label: L.of(context).discover,
+      ),
+      BottomNavigationBarItem(
+        icon: SvgPicture.asset('assets/icons/download.svg', color: unselectedItemColor, height: 24, width: 24),
+        activeIcon: SvgPicture.asset('assets/icons/download.svg', color: selectedItemColor, height: 32, width: 32),
+        label: L.of(context).downloads,
+      ),
+    ];
+    if (settings.searchProvider == 'podcastindex') {
+      navBarItems.insert(
+          2,
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset('assets/icons/new_podcasts.svg', color: unselectedItemColor, height: 24, width: 24),
+            activeIcon: SvgPicture.asset('assets/icons/new_podcasts.svg', color: selectedItemColor, height: 32, width: 32),
+            label: L.of(context).new_podcasts,
+          ));
+    }
+    return navBarItems;
   }
 
   void _menuSelect(String choice) async {
