@@ -135,16 +135,18 @@ class EpisodeTile extends StatelessWidget {
                               content: Text(L.of(context).delete_episode_confirmation),
                               actions: <Widget>[
                                 BasicDialogAction(
-                                  title: ActionText(
+                                  title: Text(
                                     L.of(context).cancel_button_label,
+                                    style: TextStyle(color: Theme.of(context).primaryColor),
                                   ),
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
                                 ),
                                 BasicDialogAction(
-                                  title: ActionText(
+                                  title: Text(
                                     L.of(context).delete_button_label,
+                                    style: TextStyle(color: Theme.of(context).primaryColor),
                                   ),
                                   iosIsDefaultAction: true,
                                   iosIsDestructiveAction: true,

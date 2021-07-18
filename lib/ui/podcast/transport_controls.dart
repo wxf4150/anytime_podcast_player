@@ -243,16 +243,18 @@ class DownloadControl extends StatelessWidget {
         content: Text(L.of(context).stop_download_confirmation),
         actions: <Widget>[
           BasicDialogAction(
-            title: ActionText(
+            title: Text(
               L.of(context).cancel_button_label,
+              style: TextStyle(color: Theme.of(context).buttonColor),
             ),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           BasicDialogAction(
-            title: ActionText(
+            title: Text(
               L.of(context).stop_download_button_label,
+              style: TextStyle(color: Theme.of(context).buttonColor),
             ),
             iosIsDefaultAction: true,
             onPressed: () {
