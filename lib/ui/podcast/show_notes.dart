@@ -23,17 +23,16 @@ class ShowNotes extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: CustomScrollView(
-            controller: _sliverScrollController,
-            slivers: <Widget>[
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
+          systemNavigationBarColor: Theme.of(context).dialogBackgroundColor,
+          statusBarColor: Colors.transparent,
+        ),
+        child: Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            body: CustomScrollView(controller: _sliverScrollController, slivers: <Widget>[
               SliverAppBar(
-                backwardsCompatibility: false,
-                systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
-                  statusBarColor: Colors.transparent,
-                ),
                 brightness: Theme.of(context).brightness,
                 title: Text(episode.podcast),
                 floating: false,
@@ -48,8 +47,7 @@ class ShowNotes extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                      child:
-                          Text(episode.title ?? '', style: textTheme.headline6),
+                      child: Text(episode.title ?? '', style: textTheme.headline6),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
@@ -58,6 +56,6 @@ class ShowNotes extends StatelessWidget {
                   ],
                 ),
               ),
-            ]));
+            ])));
   }
 }

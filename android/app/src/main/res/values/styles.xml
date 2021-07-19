@@ -14,6 +14,7 @@
              causes issues with Android 6 & 7 as the Flutter control over
              this colour only works on 8 upwards. Commented out for now -->
         <!--<item name="android:navigationBarColor">@color/splash</item>-->
+        <item name="android:navigationBarColor">@color/splash</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:statusBarColor">@color/splash</item>
