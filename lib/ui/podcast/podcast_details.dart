@@ -150,6 +150,7 @@ class _PodcastDetailsState extends State<PodcastDetails> {
             Theme.of(context).brightness == Brightness.light
                 ? Brightness.dark
                 : Brightness.light,
+        systemNavigationBarColor: Theme.of(context).bottomAppBarColor,
         statusBarColor: Colors.transparent,
       );
     });
