@@ -893,7 +893,7 @@ class LocalisationsDelegate extends LocalizationsDelegate<L> {
   const LocalisationsDelegate();
 
   @override
-  bool isSupported(Locale locale) => ['en', 'de'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => ['en', 'de', 'pt'].contains(locale.languageCode);
 
   @override
   Future<L> load(Locale locale) => L.load(locale, null);
@@ -908,7 +908,7 @@ class EmbeddedLocalisationsDelegate extends LocalizationsDelegate<L> {
   EmbeddedLocalisationsDelegate({@required this.messages});
 
   @override
-  bool isSupported(Locale locale) => ['en', 'de'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => ['en', 'de', 'pt'].contains(locale.languageCode);
 
   @override
   Future<L> load(Locale locale) => L.load(locale, messages);
