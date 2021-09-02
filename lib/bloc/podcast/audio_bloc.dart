@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:anytime/bloc/bloc.dart';
 import 'package:anytime/entities/episode.dart';
 import 'package:anytime/services/audio/audio_player_service.dart';
+import 'package:anytime/state/sleep_policy.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -51,6 +52,9 @@ class AudioBloc extends Bloc {
   /// Listen for toggling of volume boost silence requests.
   final PublishSubject<bool> _volumeBoost = PublishSubject<bool>();
 
+  /// Move from one sleep policy to another.
+  final Subject<SleepPolicy> _sleepPolicy = BehaviorSubject<SleepPolicy>();
+
   AudioBloc({
     @required this.audioPlayerService,
   }) {
@@ -71,6 +75,9 @@ class AudioBloc extends Bloc {
 
     /// Listen to volume boost silence requests
     _handleVolumeBoostTransitions();
+
+    /// Listen for sleep policy changes
+    _handleSleepPolicyChanges();
   }
 
   /// Listens to events from the UI (or any client) to transition from one
@@ -86,6 +93,7 @@ class AudioBloc extends Bloc {
           await audioPlayerService.play();
           break;
         case TransitionState.pause:
+          changeSleepPolicy(sleepPolicyOff());
           await audioPlayerService.pause();
           break;
         case TransitionState.fastforward:
@@ -95,6 +103,7 @@ class AudioBloc extends Bloc {
           await audioPlayerService.rewind();
           break;
         case TransitionState.stop:
+          changeSleepPolicy(sleepPolicyOff());
           await audioPlayerService.stop();
           break;
       }
@@ -131,6 +140,20 @@ class AudioBloc extends Bloc {
   void _handleVolumeBoostTransitions() {
     _volumeBoost.listen((bool boost) async {
       await audioPlayerService.volumeBoost(boost);
+    });
+  }
+
+  void _handleSleepPolicyChanges() {
+    _sleepPolicy.listen((SleepPolicy policy) async {
+      log.fine('Policy changed o $policy');
+      if (policy is SleepPolicyTimer) {
+        await Future<void>.delayed(policy.duration).then((_) async {
+          final current = await _sleepPolicy.first;
+          if (policy == current) {
+            transitionState(TransitionState.pause);
+          }
+        });
+      }
     });
   }
 
@@ -182,6 +205,12 @@ class AudioBloc extends Bloc {
   /// Toggle volume boost silence
   void Function(bool) get volumeBoost => _volumeBoost.sink.add;
 
+  /// Get the sleep policy stream
+  Stream<SleepPolicy> get sleepPolicy => _sleepPolicy.stream;
+
+  /// Change the sleep policy
+  void Function(SleepPolicy) get changeSleepPolicy => _sleepPolicy.sink.add;
+
   @override
   void dispose() {
     _play.close();
@@ -190,7 +219,7 @@ class AudioBloc extends Bloc {
     _playbackSpeedSubject.close();
     _trimSilence.close();
     _volumeBoost.close();
-
+    _sleepPolicy.close();
     super.dispose();
   }
 }
