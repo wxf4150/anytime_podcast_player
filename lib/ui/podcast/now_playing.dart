@@ -56,7 +56,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
     });
 
     audioBloc.sleepPolicy
-        .where((policy) => !(policy is SleepPolicyNotSet))
+        .where((policy) => !policy.feedbackGiven)
         .listen((policy) => _policyChanged(policy));
   }
 
@@ -146,6 +146,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
           ),
         ),
       );
+      policy.feedbackGiven = true;
     }
   }
 }
