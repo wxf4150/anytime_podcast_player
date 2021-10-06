@@ -100,7 +100,12 @@ class Episode {
 
   /// Current chapter we are listening to if this episode has chapters.  Transient.
   Chapter currentChapter;
+
+  /// Podcast metadata.
   Map<String, dynamic> metadata;
+
+  /// Episode metadata.
+  Map<String, dynamic> episodeMetadata;
 
   /// Set to true if chapter data is currently being loaded.
   bool chaptersLoading = false;
@@ -135,6 +140,7 @@ class Episode {
     this.chapters = const <Chapter>[],
     this.lastUpdated,
     this.metadata,
+    this.episodeMetadata,
   });
 
   Map<String, dynamic> toMap() {
@@ -164,6 +170,7 @@ class Episode {
       'chapters': (chapters ?? <Chapter>[]).map((chapter) => chapter.toMap())?.toList(growable: false),
       'lastUpdated': lastUpdated?.millisecondsSinceEpoch.toString() ?? '',
       'metadata': metadata,
+      'episodeMetadata': episodeMetadata,
     };
   }
 
@@ -211,6 +218,7 @@ class Episode {
           ? DateTime.now()
           : DateTime.fromMillisecondsSinceEpoch(int.parse(episode['lastUpdated'] as String)),
       metadata: episode['metadata'] as Map<String, dynamic>,
+      episodeMetadata: episode['episodeMetadata'] as Map<String, dynamic>,
     );
   }
 
