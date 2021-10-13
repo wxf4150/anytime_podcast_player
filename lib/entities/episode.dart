@@ -4,6 +4,7 @@
 
 import 'package:anytime/entities/chapter.dart';
 import 'package:anytime/entities/downloadable.dart';
+import 'package:anytime/entities/value.dart';
 import 'package:flutter/foundation.dart';
 import 'package:html/parser.dart' show parseFragment;
 import 'package:logging/logging.dart';
@@ -104,8 +105,8 @@ class Episode {
   /// Podcast metadata.
   Map<String, dynamic> metadata;
 
-  /// Episode metadata.
-  Map<String, dynamic> episodeMetadata;
+  /// Value for value payment information.
+  Value value;
 
   /// Set to true if chapter data is currently being loaded.
   bool chaptersLoading = false;
@@ -140,7 +141,7 @@ class Episode {
     this.chapters = const <Chapter>[],
     this.lastUpdated,
     this.metadata,
-    this.episodeMetadata,
+    this.value,
   });
 
   Map<String, dynamic> toMap() {
@@ -170,7 +171,7 @@ class Episode {
       'chapters': (chapters ?? <Chapter>[]).map((chapter) => chapter.toMap())?.toList(growable: false),
       'lastUpdated': lastUpdated?.millisecondsSinceEpoch.toString() ?? '',
       'metadata': metadata,
-      'episodeMetadata': episodeMetadata,
+      'value': value.toMap(),
     };
   }
 
@@ -185,6 +186,11 @@ class Episode {
           chapters.add(Chapter.fromMap(chapter));
         }
       }
+    }
+
+    Value value;
+    if (episode['value'] != null && episode['value'] is Map<String, dynamic>) {
+      value = Value.fromMap(episode['value'] as Map<String, dynamic>);
     }
 
     return Episode(
@@ -218,7 +224,7 @@ class Episode {
           ? DateTime.now()
           : DateTime.fromMillisecondsSinceEpoch(int.parse(episode['lastUpdated'] as String)),
       metadata: episode['metadata'] as Map<String, dynamic>,
-      episodeMetadata: episode['episodeMetadata'] as Map<String, dynamic>,
+      value: value,
     );
   }
 

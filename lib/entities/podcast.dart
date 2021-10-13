@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:anytime/entities/funding.dart';
+import 'package:anytime/entities/value.dart';
 import 'package:flutter/foundation.dart';
 import 'package:podcast_search/podcast_search.dart' as search;
 
@@ -50,9 +51,14 @@ class Podcast {
 
   /// One or more episodes for this podcast.
   List<Episode> episodes;
+
+  /// Podcast metadata.
   Map<String, dynamic> metadata;
 
   bool newEpisodes;
+
+  /// Value for value payment information.
+  Value value;
 
   Podcast({
     @required this.guid,
@@ -70,6 +76,7 @@ class Podcast {
     this.newEpisodes = false,
     DateTime lastUpdated,
     this.metadata,
+    this.value,
   }) {
     _lastUpdated = lastUpdated;
     episodes ??= [];
@@ -109,6 +116,7 @@ class Podcast {
       'funding': (funding ?? <Funding>[]).map((funding) => funding.toMap())?.toList(growable: false),
       'lastUpdated': _lastUpdated?.millisecondsSinceEpoch ?? DateTime.now().millisecondsSinceEpoch,
       'metadata': metadata,
+      'value': value.toMap(),
     };
   }
 
@@ -136,6 +144,11 @@ class Podcast {
       }
     }
 
+    Value value;
+    if (podcast['value'] != null && podcast['value'] is Map<String, dynamic>) {
+      value = Value.fromMap(podcast['value'] as Map<String, dynamic>);
+    }
+
     return Podcast(
       id: key,
       guid: podcast['guid'] as String,
@@ -150,6 +163,7 @@ class Podcast {
       subscribedDate: sd,
       lastUpdated: lastUpdated,
       metadata: podcast['metadata'] as Map<String, dynamic>,
+      value: value,
     );
   }
 

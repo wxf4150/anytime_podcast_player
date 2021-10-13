@@ -29,8 +29,8 @@ dependencies:
   permission_handler: ^8.1.4+2
   podcast_search:
     git:
-      url: https://github.com/breez/podcast_search.git
-      ref: 7515c62c7a5001aa9f22849aa5fc8195ff65ba3c
+      url: https://github.com/dnlggr/podcast_search.git
+      ref: 1a2f3ab5c3274464382cf70f4a5f7d16628368cd
   provider: ^5.0.0
   rxdart: ^0.27.1
   scrollable_positioned_list: ^0.1.10
