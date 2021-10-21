@@ -105,6 +105,9 @@ class Episode {
   /// Podcast metadata.
   Map<String, dynamic> metadata;
 
+  /// Episode metadata.
+  Map<String, dynamic> episodeMetadata;
+
   /// Value for value payment information.
   Value value;
 
@@ -141,6 +144,7 @@ class Episode {
     this.chapters = const <Chapter>[],
     this.lastUpdated,
     this.metadata,
+    this.episodeMetadata,
     this.value,
   });
 
@@ -171,6 +175,7 @@ class Episode {
       'chapters': (chapters ?? <Chapter>[]).map((chapter) => chapter.toMap())?.toList(growable: false),
       'lastUpdated': lastUpdated?.millisecondsSinceEpoch.toString() ?? '',
       'metadata': metadata,
+      'episodeMetadata': episodeMetadata,
       'value': value.toMap(),
     };
   }
@@ -224,6 +229,7 @@ class Episode {
           ? DateTime.now()
           : DateTime.fromMillisecondsSinceEpoch(int.parse(episode['lastUpdated'] as String)),
       metadata: episode['metadata'] as Map<String, dynamic>,
+      episodeMetadata: episode['episodeMetadata'] as Map<String, dynamic>,
       value: value,
     );
   }

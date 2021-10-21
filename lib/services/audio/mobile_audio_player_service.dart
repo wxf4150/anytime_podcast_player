@@ -36,6 +36,7 @@ class MobileAudioPlayerService extends AudioPlayerService {
   final SettingsService settingsService;
   final PodcastService podcastService;
   final Color androidNotificationColor;
+  final Future<Map<String, dynamic>> Function(int feedId, String guid) loadEpisodeMetadata;
   double _playbackSpeed;
   bool _trimSilence = false;
   bool _volumeBoost = false;
@@ -62,6 +63,7 @@ class MobileAudioPlayerService extends AudioPlayerService {
     @required this.repository,
     @required this.settingsService,
     @required this.podcastService,
+    this.loadEpisodeMetadata,
     this.androidNotificationColor,
   }) {
     _handleAudioServiceTransitions();
@@ -140,6 +142,15 @@ class MobileAudioPlayerService extends AudioPlayerService {
       // Store reference
       _episode = episode;
       _episode.played = false;
+
+      if (streaming) {
+        if (_episode.metadata != null && _episode.metadata["feed"] != null) {
+          final feedId = _episode.metadata["feed"]["id"];
+          if (feedId != null && feedId is int) {
+            _episode.episodeMetadata = await loadEpisodeMetadata(feedId as int, _episode.guid);
+          }
+        }
+      }
 
       await repository.saveEpisode(_episode);
 
