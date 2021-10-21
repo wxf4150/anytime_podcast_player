@@ -143,7 +143,7 @@ class MobileAudioPlayerService extends AudioPlayerService {
       _episode = episode;
       _episode.played = false;
 
-      if (streaming) {
+      if (streaming && loadEpisodeMetadata != null) {
         if (_episode.metadata != null && _episode.metadata["feed"] != null) {
           final feedId = _episode.metadata["feed"]["id"];
           if (feedId != null && feedId is int) {
