@@ -116,7 +116,7 @@ class Podcast {
       'funding': (funding ?? <Funding>[]).map((funding) => funding.toMap())?.toList(growable: false),
       'lastUpdated': _lastUpdated?.millisecondsSinceEpoch ?? DateTime.now().millisecondsSinceEpoch,
       'metadata': metadata,
-      'value': value.toMap(),
+      'value': value?.toMap(),
     };
   }
 

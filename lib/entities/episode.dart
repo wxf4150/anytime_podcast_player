@@ -176,7 +176,7 @@ class Episode {
       'lastUpdated': lastUpdated?.millisecondsSinceEpoch.toString() ?? '',
       'metadata': metadata,
       'episodeMetadata': episodeMetadata,
-      'value': value.toMap(),
+      'value': value?.toMap(),
     };
   }
 
