@@ -886,6 +886,7 @@ class L {
           desc: 'Label for playback settings widget',
           locale: localeName,
         );
+  }
 
   String get sleep_episode_function_header {
     return Intl.message(
