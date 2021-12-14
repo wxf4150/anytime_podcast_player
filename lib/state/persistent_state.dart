@@ -75,6 +75,14 @@ class PersistentState {
     await sink.close();
   }
 
+  static Future<void> clearState() async {
+    var file = await _getFile();
+
+    if (file.existsSync()) {
+      return file.delete();
+    }
+  }
+
   static Future<File> _getFile() async {
     var d = await getApplicationSupportDirectory();
 
