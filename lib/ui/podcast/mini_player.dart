@@ -10,9 +10,7 @@ import 'package:anytime/services/audio/audio_player_service.dart';
 import 'package:anytime/ui/podcast/now_playing.dart';
 import 'package:anytime/ui/widgets/placeholder_builder.dart';
 import 'package:anytime/ui/widgets/podcast_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 /// Displays a mini podcast player widget if a podcast is playing or paused.
@@ -120,6 +118,7 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
                                 ? PodcastImage(
                                     key: Key('mini${snapshot.data.imageUrl}'),
                                     url: snapshot.data.imageUrl,
+                                    rounded: true,
                                     placeholder: placeholderBuilder != null
                                         ? placeholderBuilder?.builder()(context)
                                         : Image(image: AssetImage('assets/images/anytime-placeholder-logo.png')),

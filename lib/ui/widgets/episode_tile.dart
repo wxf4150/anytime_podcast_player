@@ -10,8 +10,6 @@ import 'package:anytime/ui/podcast/transport_controls.dart';
 import 'package:anytime/ui/widgets/action_text.dart';
 import 'package:anytime/ui/widgets/tile_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_dialogs/flutter_dialogs.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -164,7 +162,6 @@ class EpisodeTile extends StatelessWidget {
                     children: <Widget>[
                       Icon(
                         Icons.delete_outline,
-                        color: Theme.of(context).buttonColor,
                         size: 22,
                       ),
                       Padding(
@@ -174,7 +171,6 @@ class EpisodeTile extends StatelessWidget {
                         L.of(context).delete_label,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Theme.of(context).buttonColor,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
@@ -203,7 +199,6 @@ class EpisodeTile extends StatelessWidget {
                     children: <Widget>[
                       Icon(
                         Icons.wysiwyg_outlined,
-                        color: Theme.of(context).buttonColor,
                         size: 22,
                       ),
                       Padding(
@@ -213,7 +208,6 @@ class EpisodeTile extends StatelessWidget {
                         L.of(context).show_notes_label,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Theme.of(context).buttonColor,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
@@ -236,7 +230,6 @@ class EpisodeTile extends StatelessWidget {
                     children: <Widget>[
                       Icon(
                         Icons.bookmark_border_outlined,
-                        color: Theme.of(context).buttonColor,
                         size: 22,
                       ),
                       Padding(
@@ -246,7 +239,6 @@ class EpisodeTile extends StatelessWidget {
                         episode.played ? L.of(context).mark_unplayed_label : L.of(context).mark_played_label,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Theme.of(context).buttonColor,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
