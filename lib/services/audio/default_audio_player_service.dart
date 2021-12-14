@@ -4,6 +4,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:anytime/core/environment.dart';
 import 'package:anytime/core/utils.dart';
@@ -34,6 +35,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
   final Repository repository;
   final SettingsService settingsService;
   final PodcastService podcastService;
+  final Future<Map<String, dynamic>> Function(Episode episode) loadEpisodeMetadata;
 
   AudioHandler _audioHandler;
   var _initialised = false;
@@ -65,6 +67,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
     @required this.repository,
     @required this.settingsService,
     @required this.podcastService,
+    this.loadEpisodeMetadata,
   }) {
     AudioService.init(
       builder: () => _DefaultAudioPlayerHandler(
@@ -77,6 +80,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
         androidNotificationIcon: 'drawable/ic_stat_name',
         androidNotificationOngoing: false,
         androidStopForegroundOnPause: true,
+        notificationColor: Color.fromRGBO(5, 93, 235, 1.0), // Breez Blue
         rewindInterval: Duration(seconds: 10),
         fastForwardInterval: Duration(seconds: 30),
       ),
@@ -173,6 +177,9 @@ class DefaultAudioPlayerService extends AudioPlayerService {
       _episode = episode;
       _episode.played = false;
 
+      if (streaming && loadEpisodeMetadata != null) {
+        _episode.episodeMetadata = await loadEpisodeMetadata(_episode);
+      }
       await repository.saveEpisode(_episode);
 
       try {
