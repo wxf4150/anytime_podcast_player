@@ -68,6 +68,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final audioBloc = Provider.of<AudioBloc>(context, listen: false);
     final playerBuilder = PlayerControlsBuilder.of(context);
+    final isLight = Theme.of(context).brightness == Brightness.light;
 
     return StreamBuilder<Episode>(
         stream: audioBloc.nowPlaying,
@@ -83,10 +84,11 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
               length: snapshot.data.hasChapters ? 3 : 2,
               initialIndex: snapshot.data.hasChapters ? 1 : 0,
               child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: Theme.of(context)
-                    .appBarTheme
-                    .systemOverlayStyle
-                    .copyWith(systemNavigationBarColor: Theme.of(context).cardColor),
+                value: SystemUiOverlayStyle(
+                  statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
+                  systemNavigationBarColor: isLight ? Theme.of(context).primaryColorDark : Theme.of(context).bottomAppBarColor,
+                  statusBarColor: Colors.transparent,
+                ),
                 child: Scaffold(
                   appBar: AppBar(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
