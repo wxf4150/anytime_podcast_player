@@ -30,7 +30,7 @@ dependencies:
   podcast_search:
     git:
       url: https://github.com/breez/podcast_search.git
-      ref: 40a7709
+      ref: 8210f8a
   provider: ^6.0.1
   rxdart: ^0.27.3
   scrollable_positioned_list: ^0.1.10
