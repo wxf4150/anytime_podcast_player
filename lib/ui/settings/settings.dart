@@ -161,7 +161,11 @@ class _SettingsState extends State<Settings> {
 
   Widget _buildAndroid(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: Theme.of(context).appBarTheme.systemOverlayStyle,
+      value: SystemUiOverlayStyle(
+        statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
+        systemNavigationBarColor: Theme.of(context).dialogBackgroundColor,
+        statusBarColor: Colors.transparent,
+      ),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
@@ -198,6 +202,7 @@ class _SettingsState extends State<Settings> {
           BasicDialogAction(
             title: Text(
               L.of(context).ok_button_label,
+              style: TextStyle(color: Theme.of(context).buttonColor),
             ),
             onPressed: () {
               Navigator.pop(context);

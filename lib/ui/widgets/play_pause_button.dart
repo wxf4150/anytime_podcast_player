@@ -25,13 +25,11 @@ class PlayPauseButton extends StatelessWidget {
       child: CircularPercentIndicator(
         radius: 38.0,
         lineWidth: 1.5,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).buttonColor,
         percent: 0.0,
         center: Icon(
           icon,
           size: 22.0,
-
-          /// Why is this not picking up the theme like other widgets?!?!?!
           color: Theme.of(context).primaryColor,
         ),
       ),
@@ -69,12 +67,12 @@ class PlayPauseBusyButton extends StatelessWidget {
                 center: Icon(
                   icon,
                   size: 22.0,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).buttonColor,
                 ),
               ),
               SpinKitRing(
                 lineWidth: 1.5,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).buttonColor,
                 size: 38.0,
               ),
             ],

@@ -57,6 +57,7 @@ class _MaterialPodcastMenu extends StatelessWidget {
             },
             icon: Icon(
               Icons.more_vert,
+              color: Theme.of(context).buttonColor,
             ),
             itemBuilder: (BuildContext context) {
               return <PopupMenuEntry<String>>[
@@ -103,7 +104,7 @@ class _CupertinoContextMenu extends StatelessWidget {
         stream: bloc.details,
         builder: (context, snapshot) {
           return IconButton(
-            icon: Icon(CupertinoIcons.ellipsis),
+            icon: Icon(CupertinoIcons.ellipsis, color: Theme.of(context).buttonColor),
             onPressed: () => showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {

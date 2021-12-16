@@ -66,7 +66,7 @@ class _SpeedSelectorWidgetState extends State<SpeedSelectorWidget> {
                       snapshot.data.playbackSpeed == 1.0 ? 'x1' : 'x${snapshot.data.playbackSpeed}',
                       style: TextStyle(
                         fontSize: 14.0,
-                        color: Theme.of(context).iconTheme.color,
+                        color: Theme.of(context).buttonColor,
                       ),
                     ),
                   ),

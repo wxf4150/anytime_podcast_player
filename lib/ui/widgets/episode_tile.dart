@@ -163,6 +163,7 @@ class EpisodeTile extends StatelessWidget {
                       Icon(
                         Icons.delete_outline,
                         size: 22,
+                        color: Theme.of(context).buttonColor,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -171,6 +172,7 @@ class EpisodeTile extends StatelessWidget {
                         L.of(context).delete_label,
                         textAlign: TextAlign.center,
                         style: TextStyle(
+                          color: Theme.of(context).buttonColor,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
@@ -200,6 +202,7 @@ class EpisodeTile extends StatelessWidget {
                       Icon(
                         Icons.wysiwyg_outlined,
                         size: 22,
+                        color: Theme.of(context).buttonColor,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -208,6 +211,7 @@ class EpisodeTile extends StatelessWidget {
                         L.of(context).show_notes_label,
                         textAlign: TextAlign.center,
                         style: TextStyle(
+                          color: Theme.of(context).buttonColor,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
@@ -231,6 +235,7 @@ class EpisodeTile extends StatelessWidget {
                       Icon(
                         Icons.bookmark_border_outlined,
                         size: 22,
+                        color: Theme.of(context).buttonColor,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -239,6 +244,7 @@ class EpisodeTile extends StatelessWidget {
                         episode.played ? L.of(context).mark_unplayed_label : L.of(context).mark_played_label,
                         textAlign: TextAlign.center,
                         style: TextStyle(
+                          color: Theme.of(context).buttonColor,
                           fontWeight: FontWeight.normal,
                         ),
                       ),

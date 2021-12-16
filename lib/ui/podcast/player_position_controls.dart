@@ -96,14 +96,14 @@ class _PlayerPositionControlsState extends State<PlayerPositionControls> {
                           min: 0.0,
                           max: length.inSeconds.toDouble(),
                           divisions: divisions,
-                          activeColor: Theme.of(context).primaryColor,
+                          activeColor: Theme.of(context).buttonColor,
                         )
                       : Slider(
                           onChanged: null,
                           value: 0,
                           min: 0.0,
                           max: 1.0,
-                          activeColor: Theme.of(context).primaryColor,
+                          activeColor: Theme.of(context).buttonColor,
                         ),
                 ),
                 FittedBox(
