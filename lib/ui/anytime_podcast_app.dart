@@ -307,7 +307,6 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
                           onSelected: _menuSelect,
                           icon: Icon(
                             Icons.more_vert,
-                            color: Theme.of(context).buttonColor,
                           ),
                           itemBuilder: (BuildContext context) {
                             return <PopupMenuEntry<String>>[

@@ -62,7 +62,7 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).accentTextTheme;
+    final textTheme = Theme.of(context).textTheme;
     final audioBloc = Provider.of<AudioBloc>(context, listen: false);
     final width = MediaQuery.of(context).size.width;
     final placeholderBuilder = PlaceholderBuilder.of(context);
@@ -138,14 +138,23 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
                                 Text(
                                   snapshot.data?.title ?? '',
                                   overflow: TextOverflow.ellipsis,
-                                  style: textTheme.bodyText1.copyWith(height: 1.22, fontSize: 14),
+                                  style: textTheme.bodyText1.copyWith(
+                                    height: 1.22,
+                                    fontSize: 14,
+                                    color: Theme.of(context).colorScheme.onSecondary,
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 4.0),
                                   child: Text(
                                     snapshot.data?.author ?? '',
                                     overflow: TextOverflow.ellipsis,
-                                    style: textTheme.subtitle1.copyWith(letterSpacing: 0.25, height: 1.22, fontSize: 12.3),
+                                    style: textTheme.subtitle1.copyWith(
+                                      letterSpacing: 0.25,
+                                      height: 1.22,
+                                      fontSize: 12.3,
+                                      color: Theme.of(context).colorScheme.onSecondary,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -163,7 +172,7 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(horizontal: 0.0),
                                     backgroundColor: Theme.of(context).brightness == Brightness.light
-                                        ? Theme.of(context).buttonColor
+                                        ? Theme.of(context).buttonTheme.colorScheme.onPrimary
                                         : Theme.of(context).bottomAppBarColor,
                                     shape: CircleBorder(),
                                   ),

@@ -32,7 +32,6 @@ class ShowNotes extends StatelessWidget {
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: CustomScrollView(controller: _sliverScrollController, slivers: <Widget>[
               SliverAppBar(
-                brightness: Theme.of(context).brightness,
                 title: Text(episode.podcast),
                 floating: false,
                 pinned: true,

@@ -32,8 +32,8 @@ class DownloadButton extends StatelessWidget {
         child: CircularPercentIndicator(
           radius: 38.0,
           lineWidth: 1.5,
-          backgroundColor: Theme.of(context).buttonColor,
-          progressColor: Theme.of(context).cursorColor,
+          backgroundColor: Theme.of(context).buttonTheme.colorScheme.onPrimary,
+          progressColor: Theme.of(context).buttonTheme.colorScheme.onSecondary,
           animation: true,
           animateFromLastPercent: true,
           percent: progress,
@@ -47,7 +47,7 @@ class DownloadButton extends StatelessWidget {
               : Icon(
                   icon,
                   size: 20.0,
-                  color: Theme.of(context).buttonColor,
+                  color: Theme.of(context).buttonTheme.colorScheme.onPrimary,
                 ),
         ),
       ),

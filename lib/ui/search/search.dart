@@ -58,12 +58,10 @@ class _SearchState extends State<Search> {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            backwardsCompatibility: false,
             systemOverlayStyle: SystemUiOverlayStyle(
               statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
               statusBarColor: Colors.transparent,
             ),
-            brightness: Theme.of(context).brightness,
             leading: IconButton(
               tooltip: L.of(context).search_back_button_label,
               icon: Platform.isAndroid

@@ -77,7 +77,6 @@ class _MaterialFundingMenu extends StatelessWidget {
                 },
                 icon: Icon(
                   Icons.payment,
-                  color: Theme.of(context).buttonColor,
                 ),
                 itemBuilder: (BuildContext context) {
                   return List<PopupMenuEntry<String>>.generate(funding.length, (index) {
@@ -114,7 +113,7 @@ class _CupertinoFundingMenu extends StatelessWidget {
             initialData: AppSettings.sensibleDefaults(),
             builder: (context, snapshot) {
               return IconButton(
-                icon: Icon(Icons.payment, color: Theme.of(context).buttonColor),
+                icon: Icon(Icons.payment),
                 onPressed: () => showCupertinoModalPopup<void>(
                   context: context,
                   builder: (BuildContext context) {
