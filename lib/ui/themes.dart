@@ -15,6 +15,15 @@ ThemeData _buildLightTheme() {
     colorScheme: ColorScheme.light(
       primary: Color(0xffff9800),
       background: Color(0xffffe0b2),
+      onSecondary: Colors.black,
+    ),
+    buttonTheme: base.buttonTheme.copyWith(
+        colorScheme: base.buttonTheme.colorScheme
+            .copyWith(onPrimary: Colors.orange, onSecondary: Color(0xffffe0b2), onSurface: Colors.grey[800].withOpacity(0.5))),
+    textButtonTheme: base.textButtonTheme,
+    elevatedButtonTheme: base.elevatedButtonTheme,
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(primary: Colors.grey[800]),
     ),
     brightness: Brightness.light,
     primaryColor: Color(0xffff9800),
@@ -32,20 +41,16 @@ ThemeData _buildLightTheme() {
     disabledColor: Color(0x61000000),
     toggleableActiveColor: Color(0xfffb8c00),
     secondaryHeaderColor: Color(0xfffff3e0),
-    textSelectionColor: Color(0xffffcc80),
-    cursorColor: Colors.blue,
-    textSelectionHandleColor: Color(0xffffb74d),
+    textSelectionTheme: TextSelectionThemeData(
+        selectionColor: Color(0xffffcc80), cursorColor: Colors.blue, selectionHandleColor: Color(0xffffb74d)),
     backgroundColor: Color(0xfffafafa),
     dialogBackgroundColor: Color(0xffffffff),
-    indicatorColor: Colors.blue,
+    indicatorColor: Colors.orange,
     hintColor: Color(0x8a000000),
     errorColor: Color(0xffd32f2f),
     primaryTextTheme: Typography.material2018(platform: TargetPlatform.android).black,
     textTheme: Typography.material2018(platform: TargetPlatform.android).black,
     primaryIconTheme: IconThemeData(color: Colors.grey[800]),
-    buttonTheme: base.buttonTheme.copyWith(
-      buttonColor: Colors.orange,
-    ),
     iconTheme: base.iconTheme.copyWith(
       color: Colors.orange,
     ),
@@ -63,12 +68,9 @@ ThemeData _buildLightTheme() {
     snackBarTheme: base.snackBarTheme.copyWith(
       actionTextColor: Colors.orange,
     ),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(primary: Colors.grey[800]),
-    ),
     radioTheme: base.radioTheme.copyWith(
       fillColor: MaterialStateProperty.resolveWith(
-            (states) {
+        (states) {
           if (states.contains(MaterialState.selected)) {
             return Colors.orange;
           } else {
@@ -87,6 +89,7 @@ ThemeData _buildDarktheme() {
     colorScheme: ColorScheme.dark(
       primary: Color(0xffffffff),
       background: Color(0x80ffffff),
+      onSecondary: Colors.white,
     ),
     brightness: Brightness.dark,
     primaryColor: Color(0xffffffff),
@@ -105,9 +108,8 @@ ThemeData _buildDarktheme() {
     disabledColor: Color(0x77ffffff),
     toggleableActiveColor: Color(0xfffb8c00),
     secondaryHeaderColor: Color(0xfffff3e0),
-    textSelectionColor: Color(0xffffcc80),
-    cursorColor: Colors.orange,
-    textSelectionHandleColor: Color(0xffffb74d),
+    textSelectionTheme: TextSelectionThemeData(
+        selectionColor: Color(0xffffcc80), cursorColor: Colors.orange, selectionHandleColor: Color(0xffffb74d)),
     backgroundColor: Color(0xff333333),
     dialogBackgroundColor: Color(0xff222222),
     indicatorColor: Colors.orange,
@@ -138,6 +140,11 @@ ThemeData _buildDarktheme() {
     snackBarTheme: base.snackBarTheme.copyWith(
       actionTextColor: Colors.orange,
     ),
+    buttonTheme: base.buttonTheme.copyWith(
+        colorScheme: base.buttonTheme.colorScheme
+            .copyWith(onSecondary: Colors.orange, onSurface: Colors.grey[800])),
+    textButtonTheme: base.textButtonTheme,
+    elevatedButtonTheme: base.elevatedButtonTheme,
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         primary: Color(0xffffffff),

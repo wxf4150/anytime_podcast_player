@@ -2,7 +2,6 @@ import 'package:anytime/bloc/podcast/audio_bloc.dart';
 import 'package:anytime/l10n/L.dart';
 import 'package:anytime/state/sleep_policy.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class SleepSelector extends StatelessWidget {
@@ -73,7 +72,6 @@ class SleepSelector extends StatelessWidget {
               },
               child: Text(
                 texts.cancel_button_label,
-                style: TextStyle(color: theme.buttonColor),
               ),
             )
           ],
@@ -108,7 +106,7 @@ class SleepSelector extends StatelessWidget {
 
   List<SleepOption> sleepOptions(L texts, SleepPolicy sleepPolicy) {
     var options = <SleepOption>[];
-    if (!(sleepPolicy is SleepPolicyOff)) {
+    if (sleepPolicy is! SleepPolicyOff) {
       options.add(SleepOption(
         texts.sleep_episode_function_turn_off,
         sleepPolicyOff(),
@@ -150,7 +148,7 @@ class SleepSelector extends StatelessWidget {
     SleepOption option,
   ) {
     return InkWell(
-      highlightColor: theme.buttonColor.withAlpha(50),
+      highlightColor: theme.buttonTheme.colorScheme.onPrimary.withAlpha(50),
       onTap: () {
         changeSleepPolicy(context, texts, audioBloc, option.policy);
       },
@@ -187,14 +185,12 @@ class SleepSelector extends StatelessWidget {
           Icon(
             Icons.nightlight_outlined,
             size: 24.0,
-            color: theme.buttonColor,
           );
     } else {
       return iconOn ??
           Icon(
             Icons.nightlight_round,
             size: 24.0,
-            color: theme.buttonColor,
           );
     }
   }

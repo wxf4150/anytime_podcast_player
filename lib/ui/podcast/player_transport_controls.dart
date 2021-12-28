@@ -96,7 +96,6 @@ class _PlayerTransportControlsState extends State<PlayerTransportControls> with 
               icon: Icon(
                 Icons.replay_30,
                 size: 48.0,
-                color: Theme.of(context).buttonColor,
               ),
             ),
             Expanded(flex: 1, child: Container()),
@@ -115,7 +114,6 @@ class _PlayerTransportControlsState extends State<PlayerTransportControls> with 
               icon: Icon(
                 Icons.forward_30,
                 size: 48.0,
-                color: Theme.of(context).buttonColor,
               ),
             ),
             Expanded(flex: 1, child: Container()),

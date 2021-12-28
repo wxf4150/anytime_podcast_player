@@ -87,9 +87,10 @@ class _ChapterSelectorState extends State<ChapterSelector> {
                     final index = i < 0 ? 0 : i;
                     final chapter = snapshot.data.chapters[index];
                     final chapterSelected = chapter == snapshot.data.currentChapter;
-                    final textStyle = Theme.of(context).accentTextTheme.bodyText1.copyWith(
+                    final textStyle = Theme.of(context).textTheme.bodyText1.copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
+                          color: Theme.of(context).colorScheme.onSecondary,
                         );
 
                     /// We should be able to use the selectedTileColor property but, if we do, when

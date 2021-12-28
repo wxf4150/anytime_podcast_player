@@ -254,7 +254,6 @@ class _PodcastDetailsState extends State<PodcastDetails> {
                                 Icon(
                                   Icons.error_outline,
                                   size: 50,
-                                  color: Theme.of(context).buttonColor,
                                 ),
                                 Text(
                                   L.of(context).no_podcast_details_message,
@@ -386,12 +385,18 @@ class PodcastTitle extends StatelessWidget {
                         width: 0.0,
                         height: 0.0,
                       ),
-                sharePodcastButtonBuilder != null ? sharePodcastButtonBuilder?.builder(podcast.title, podcast.url)(context) : Container(),
                 Expanded(
-                    child: Align(
-                  alignment: Alignment.centerRight,
-                  child: const SyncSpinner(),
-                )),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: const SyncSpinner(),
+                  ),
+                ),
+                sharePodcastButtonBuilder != null
+                    ? sharePodcastButtonBuilder?.builder(podcast.title, podcast.url)(context)
+                    : const SizedBox(
+                        width: 0.0,
+                        height: 0.0,
+                      ),
               ],
             ),
           )
@@ -426,7 +431,6 @@ class SubscriptionButton extends StatelessWidget {
                       ),
                       icon: Icon(
                         Icons.delete_outline,
-                        color: Theme.of(context).buttonColor,
                       ),
                       label: Text(L.of(context).unsubscribe_label),
                       onPressed: () {
@@ -469,7 +473,6 @@ class SubscriptionButton extends StatelessWidget {
                       ),
                       icon: Icon(
                         Icons.add,
-                        color: Theme.of(context).buttonColor,
                       ),
                       label: Text(L.of(context).subscribe_label),
                       onPressed: () {
