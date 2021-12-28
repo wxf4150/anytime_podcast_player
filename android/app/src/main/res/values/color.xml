@@ -7,4 +7,5 @@
 
 <resources>
     <color name="splash">#FF9800</color>
+    <color name="mediaControl">#055DEB</color>
 </resources>
