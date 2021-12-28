@@ -29,12 +29,14 @@ class MobilePodcastService extends PodcastService {
   final log = Logger('MobilePodcastService');
   final _cache = _PodcastCache(maxItems: 10, expiration: Duration(minutes: 30));
   final Future<Map<String, dynamic>> Function(String url) loadMetadata;
+  final Future<Map<String, dynamic>> Function(String url) loadEpisodesMetadata;
 
   MobilePodcastService({
     @required PodcastApi api,
     @required Repository repository,
     @required SettingsService settingsService,
     this.loadMetadata, // Podcast metadata
+    this.loadEpisodesMetadata,// Episodes metadata
   }) : super(api: api, repository: repository, settingsService: settingsService);
 
   @override
@@ -81,6 +83,7 @@ class MobilePodcastService extends PodcastService {
       var imageUrl = podcast.imageUrl;
       var thumbImageUrl = podcast.thumbImageUrl;
       Map<String, dynamic> metadata;
+      Map<String, dynamic> episodesMetadata;
 
       if (!refresh) {
         log.fine('Not a refresh so try to fetch from cache');
@@ -156,6 +159,21 @@ class MobilePodcastService extends PodcastService {
           }
         }
 
+        if (loadEpisodesMetadata != null) {
+          episodesMetadata = await loadEpisodesMetadata(loadedPodcast.url);
+        }
+
+        List<Map<String, dynamic>> episodesMetadataItems;
+        if (episodesMetadata != null) {
+          if (episodesMetadata['items'] != null && episodesMetadata['items'] is List) {
+            episodesMetadataItems = (episodesMetadata['items'] as List).map((dynamic item) {
+              if (item is Map<String, dynamic>) {
+                return item;
+              }
+            }).toList();
+          }
+        }
+
         for (final episode in loadedPodcast.episodes) {
           final existingEpisode = existingEpisodes.firstWhere((ep) => ep.guid == episode.guid, orElse: () => null);
           final author = episode.author?.replaceAll('\n', '')?.trim() ?? '';
@@ -164,6 +182,16 @@ class MobilePodcastService extends PodcastService {
           final episodeImage = episode.imageUrl == null || episode.imageUrl.isEmpty ? pc.imageUrl : episode.imageUrl;
           final episodeThumbImage =
               episode.imageUrl == null || episode.imageUrl.isEmpty ? pc.thumbImageUrl : episode.imageUrl;
+          
+          Map<String, dynamic> episodeMetadata;
+          if (episodesMetadataItems != null) {
+            episodeMetadata = episodesMetadataItems.firstWhere((item) {
+              if (item['guid'] != null) {
+                return item['guid'] as String == episode.guid;
+              }
+              return false;
+            }, orElse: () => null);
+          }
 
           if (existingEpisode == null) {
             pc.newEpisodes = pc.id != null;
@@ -187,6 +215,7 @@ class MobilePodcastService extends PodcastService {
               chaptersUrl: episode.chapters?.url,
               chapters: <Chapter>[],
               metadata: metadata,
+              episodeMetadata: episodeMetadata,
               value: Value.fromPodcastSearchValue(episode.value),
             ));
           } else {
@@ -203,6 +232,7 @@ class MobilePodcastService extends PodcastService {
             existingEpisode.publicationDate = episode.publicationDate;
             existingEpisode.chaptersUrl = episode.chapters?.url;
             existingEpisode.metadata = metadata;
+            existingEpisode.episodeMetadata = episodeMetadata;
             existingEpisode.value = Value.fromPodcastSearchValue(episode.value);
 
             pc.episodes.add(existingEpisode);
