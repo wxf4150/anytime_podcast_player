@@ -92,7 +92,7 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
           });
         },
         child: Container(
-          height: 66,
+          height: 60,
           decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
               border: Border(
@@ -100,7 +100,7 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
                 bottom: Divider.createBorderSide(context, width: 0.5, color: Theme.of(context).dividerColor),
               )),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               StreamBuilder<Episode>(
