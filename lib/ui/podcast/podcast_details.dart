@@ -386,12 +386,18 @@ class PodcastTitle extends StatelessWidget {
                         width: 0.0,
                         height: 0.0,
                       ),
-                sharePodcastButtonBuilder != null ? sharePodcastButtonBuilder?.builder(podcast.title, podcast.url)(context) : Container(),
                 Expanded(
-                    child: Align(
-                  alignment: Alignment.centerRight,
-                  child: const SyncSpinner(),
-                )),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: const SyncSpinner(),
+                  ),
+                ),
+                sharePodcastButtonBuilder != null
+                    ? sharePodcastButtonBuilder?.builder(podcast.title, podcast.url)(context)
+                    : const SizedBox(
+                        width: 0.0,
+                        height: 0.0,
+                      ),
               ],
             ),
           )
