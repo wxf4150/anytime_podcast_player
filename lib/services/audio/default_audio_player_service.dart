@@ -45,6 +45,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
   bool _trimSilence = false;
   bool _volumeBoost = false;
   Episode _episode;
+  Timer _durationTimer;
 
   /// Subscription to the position ticker.
   StreamSubscription<int> _positionSubscription;
@@ -80,7 +81,8 @@ class DefaultAudioPlayerService extends AudioPlayerService {
         androidNotificationIcon: 'drawable/ic_stat_name',
         androidNotificationOngoing: false,
         androidStopForegroundOnPause: true,
-        notificationColor: Color.fromRGBO(5, 93, 235, 1.0), // Breez Blue
+        notificationColor: Color.fromRGBO(5, 93, 235, 1.0),
+        // Breez Blue
         rewindInterval: Duration(seconds: 10),
         fastForwardInterval: Duration(seconds: 30),
       ),
@@ -92,7 +94,12 @@ class DefaultAudioPlayerService extends AudioPlayerService {
   }
 
   @override
-  Future<void> pause() async => _audioHandler.pause();
+  Future<void> pause() async => _audioHandler.pause().whenComplete(
+        () {
+          _durationTimer?.cancel();
+          _persistState(LastState.paused);
+        },
+      );
 
   @override
   Future<void> play() {
@@ -208,16 +215,17 @@ class DefaultAudioPlayerService extends AudioPlayerService {
         _playingState.add(AudioState.error);
         _playingState.add(AudioState.stopped);
 
+        _durationTimer?.cancel();
         await _audioHandler.stop();
       }
     }
   }
 
   @override
-  Future<void> rewind() => _audioHandler.rewind();
+  Future<void> rewind() => _audioHandler.rewind().whenComplete(() => _persistState(LastState.playing));
 
   @override
-  Future<void> fastForward() => _audioHandler.fastForward();
+  Future<void> fastForward() => _audioHandler.fastForward().whenComplete(() => _persistState(LastState.playing));
 
   @override
   Future<void> seek({int position}) async {
@@ -235,6 +243,9 @@ class DefaultAudioPlayerService extends AudioPlayerService {
 
     await _audioHandler.seek(Duration(seconds: position));
 
+    // Update state after seek
+    _persistState(LastState.playing);
+
     _positionSubscription?.resume();
   }
 
@@ -242,7 +253,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
   Future<void> setPlaybackSpeed(double speed) => _audioHandler.setSpeed(speed);
 
   @override
-  Future<void> stop() => _audioHandler.stop();
+  Future<void> stop() => _audioHandler.stop().whenComplete(() => _durationTimer?.cancel());
 
   void updateCurrentPosition(Episode e) {
     if (e != null) {
@@ -256,7 +267,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
   @override
   Future<void> suspend() async {
     _stopTicker();
-    _persistState();
+    _persistState(LastState.paused);
   }
 
   @override
@@ -269,7 +280,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
           // Let's see if we have a persisted state
           var ps = await PersistentState.fetchState();
 
-          if (ps != null && ps.state == LastState.paused) {
+          if (ps != null && (ps.state == LastState.paused || ps.state == LastState.playing)) {
             _episode = await repository.findEpisodeById(ps.episodeId);
             _episode.position = ps.position;
             _playingState.add(AudioState.pausing);
@@ -288,8 +299,6 @@ class DefaultAudioPlayerService extends AudioPlayerService {
         }
       }
 
-      await PersistentState.clearState();
-
       _episodeEvent.sink.add(_episode);
 
       return Future.value(_episode);
@@ -298,17 +307,14 @@ class DefaultAudioPlayerService extends AudioPlayerService {
     return Future.value(null);
   }
 
-  Future<void> _persistState() async {
+  Future<void> _persistState(LastState state) async {
     var currentPosition = _audioHandler?.playbackState?.value?.position?.inMilliseconds ?? 0;
 
-    /// We only need to persist if we are paused.
-    if (_playingState.value == AudioState.pausing) {
-      await PersistentState.persistState(Persistable(
-        episodeId: _episode.id,
-        position: currentPosition,
-        state: LastState.paused,
-      ));
-    }
+    await PersistentState.persistState(Persistable(
+      episodeId: _episode.id,
+      position: currentPosition,
+      state: state,
+    ));
   }
 
   @override
@@ -345,8 +351,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
 
   void _handleAudioServiceTransitions() {
     _audioHandler.playbackState.distinct((previousState, currentState) {
-      return previousState.playing == currentState.playing &&
-          previousState.processingState == currentState.processingState;
+      return previousState.playing == currentState.playing && previousState.processingState == currentState.processingState;
     }).listen((PlaybackState state) {
       switch (state.processingState) {
         case AudioProcessingState.idle:
@@ -359,6 +364,15 @@ class DefaultAudioPlayerService extends AudioPlayerService {
         case AudioProcessingState.ready:
           if (state.playing) {
             _startTicker();
+            // Save episode state every seconds after playing
+            _persistState(LastState.playing).whenComplete(
+              () => _durationTimer = Timer.periodic(
+                Duration(seconds: 10),
+                (timer) {
+                  _persistState(LastState.playing);
+                },
+              ),
+            );
             _playingState.add(AudioState.playing);
           } else {
             _stopTicker();
