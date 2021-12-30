@@ -145,6 +145,7 @@ class AudioBloc extends Bloc {
   }
 
   void _handleSleepPolicyChanges() {
+    changeSleepPolicy(sleepPolicyOff(true));
     _sleepPolicy.listen((SleepPolicy policy) async {
       log.fine('Policy changed to $policy');
       if (policy is SleepPolicyTimer) {
