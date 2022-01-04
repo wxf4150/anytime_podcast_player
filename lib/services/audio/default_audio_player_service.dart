@@ -700,9 +700,10 @@ class _DefaultAudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   }
 
   PlaybackState _transformEvent(PlaybackEvent event) {
-    int currentDuration = _currentItem.duration.inSeconds;
-    if (currentDuration == 0 && currentDuration != event?.duration?.inSeconds) {
-      _currentItem = _currentItem.copyWith.call(duration: event.duration ?? Duration(seconds: 0));
+    int currentDuration = _currentItem?.duration?.inSeconds ?? 0;
+    int updatedDuration = event?.duration?.inSeconds ?? 0;
+    if (currentDuration == 0 && currentDuration != updatedDuration) {
+      _currentItem = _currentItem.copyWith.call(duration: Duration(seconds: updatedDuration));
       super.mediaItem.add(_currentItem);
     }
     return PlaybackState(
