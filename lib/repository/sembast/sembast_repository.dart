@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:anytime/core/extensions.dart';
 import 'package:anytime/entities/episode.dart';
 import 'package:anytime/entities/podcast.dart';
@@ -24,6 +26,8 @@ class SembastRepository extends Repository {
   DatabaseService _databaseService;
 
   Future<Database> get _db async => _databaseService.database;
+
+  final StreamController<bool> _backupDatabaseController = StreamController<bool>.broadcast();
 
   SembastRepository({
     bool cleanup = true,
@@ -363,4 +367,10 @@ class SembastRepository extends Repository {
 
   @override
   Stream<Podcast> get podcastListener => _podcastSubject.stream;
+
+  @override
+  Stream<bool> get backupDatabaseListener => _backupDatabaseController.stream;
+
+  @override
+  Sink<bool> get backupDatabaseSink => _backupDatabaseController.sink;
 }

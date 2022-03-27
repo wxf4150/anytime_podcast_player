@@ -358,7 +358,7 @@ class MobilePodcastService extends PodcastService {
       }
     }
 
-    return repository.deletePodcast(podcast);
+    return repository.deletePodcast(podcast).whenComplete(() => repository.backupDatabaseSink.add(true));
   }
 
   @override
@@ -373,7 +373,7 @@ class MobilePodcastService extends PodcastService {
       episode.pguid = podcast.guid;
     }
 
-    return repository.savePodcast(podcast);
+    return repository.savePodcast(podcast).whenComplete(() => repository.backupDatabaseSink.add(true));
   }
 
   @override

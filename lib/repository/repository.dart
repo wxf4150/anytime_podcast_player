@@ -33,4 +33,6 @@ abstract class Repository {
   /// Event listeners
   Stream<Podcast> podcastListener;
   Stream<EpisodeState> episodeListener;
+  Stream<bool> backupDatabaseListener;
+  Sink<bool> backupDatabaseSink;
 }
