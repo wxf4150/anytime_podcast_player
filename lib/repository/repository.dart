@@ -35,4 +35,5 @@ abstract class Repository {
   Stream<EpisodeState> episodeListener;
   Stream<bool> backupDatabaseListener;
   Sink<bool> backupDatabaseSink;
+  Sink<bool> reloadDatabaseSink;
 }

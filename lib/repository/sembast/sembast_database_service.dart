@@ -33,4 +33,12 @@ class DatabaseService {
 
     _databaseCompleter.complete(database);
   }
+
+  Future<Database> reloadDatabase() async {
+    var db = await _databaseCompleter.future;
+    await db.close();
+    _databaseCompleter = Completer();
+    await _openDatabase();
+    return _databaseCompleter.future;
+  }
 }

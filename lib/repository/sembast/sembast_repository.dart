@@ -28,12 +28,14 @@ class SembastRepository extends Repository {
   Future<Database> get _db async => _databaseService.database;
 
   final StreamController<bool> _backupDatabaseController = StreamController<bool>.broadcast();
+  final StreamController<bool> _reloadDatabaseController = StreamController<bool>.broadcast();
 
   SembastRepository({
     bool cleanup = true,
     String databaseName = 'anytime.db',
   }) {
     _databaseService = DatabaseService(databaseName);
+    _listenReloadDBRequests();
 
     if (cleanup) {
       _deleteOrphanedEpisodes().then((value) {
@@ -362,6 +364,10 @@ class SembastRepository extends Repository {
     await d.close();
   }
 
+  void _listenReloadDBRequests() {
+    _reloadDatabaseController.stream.listen((event) async => await _databaseService.reloadDatabase());
+  }
+
   @override
   Stream<EpisodeState> get episodeListener => _episodeSubject.stream;
 
@@ -373,4 +379,7 @@ class SembastRepository extends Repository {
 
   @override
   Sink<bool> get backupDatabaseSink => _backupDatabaseController.sink;
+
+  @override
+  Sink<bool> get reloadDatabaseSink => _reloadDatabaseController.sink;
 }
