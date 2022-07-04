@@ -46,7 +46,7 @@ dev_dependencies:
   podcast_search:
     git:
       url: https://github.com/breez/podcast_search.git
-      ref: e5edaea
+      ref: 13bc13bda6432d53905b7b72217b810c5f2db92e
   mockito: ^5.0.16
   pedantic: ^1.11.1
   lints: ^1.0.1

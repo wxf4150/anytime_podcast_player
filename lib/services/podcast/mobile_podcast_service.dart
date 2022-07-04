@@ -153,9 +153,17 @@ class MobilePodcastService extends PodcastService {
         // Enforce that ordering. To prevent unnecessary sorting, we'll sample the
         // first two episodes to see what order they are in.
         if (loadedPodcast.episodes.length > 1) {
-          if (loadedPodcast.episodes[0].publicationDate.millisecondsSinceEpoch <
-              loadedPodcast.episodes[1].publicationDate.millisecondsSinceEpoch) {
+          final first = loadedPodcast.episodes[0]?.publicationDate;
+          final second = loadedPodcast.episodes[1]?.publicationDate;
+          if (first != null && second != null &&
+              first.millisecondsSinceEpoch < second.millisecondsSinceEpoch) {
             loadedPodcast.episodes.sort((e1, e2) => e2.publicationDate.compareTo(e1.publicationDate));
+          } else {
+            log.warning(
+                "Podcast episodes date are not available, maybe there is a different date and time pattern. "
+                "podcast title ${loadedPodcast.title} "
+                "episode 0 title ${loadedPodcast.episodes[0]?.title} "
+                "episode 1 title ${loadedPodcast.episodes[1]?.title}");
           }
         }
 

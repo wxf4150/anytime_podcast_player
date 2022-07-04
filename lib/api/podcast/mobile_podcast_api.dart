@@ -64,11 +64,8 @@ class MobilePodcastApi extends PodcastApi {
             secret: podcastIndexSecret,
           );
 
-    return Search(userAgent: Environment.userAgent())
-        .search(
-          term,
-          searchProvider: provider,
-        )
+    return Search(userAgent: Environment.userAgent(), searchProvider: provider)
+        .search(term)
         .timeout(Duration(seconds: 30));
   }
 
