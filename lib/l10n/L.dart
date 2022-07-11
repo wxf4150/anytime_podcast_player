@@ -967,6 +967,7 @@ class L {
       desc: '',
       args: [],
     );
+  }
 
   String get empty_queue_message {
     return message('empty_queue_message') ??
