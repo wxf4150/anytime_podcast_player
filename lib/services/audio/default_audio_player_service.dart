@@ -163,7 +163,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
       _episode = episode;
       _episode.played = false;
 
-      if (streaming && loadEpisodeMetadata != null) {
+      if (_episode.streaming && loadEpisodeMetadata != null) {
         _episode.episodeMetadata = await loadEpisodeMetadata(_episode);
       }
       await repository.saveEpisode(_episode);
@@ -222,10 +222,6 @@ class DefaultAudioPlayerService extends AudioPlayerService {
   @override
   Future<void> setPlaybackSpeed(double speed) => _audioHandler.setSpeed(speed);
 
-  @override
-<<<<<<< HEAD
-  Future<void> stop() => _audioHandler.stop().whenComplete(() => _durationTimer?.cancel());
-=======
   Future<void> addUpNextEpisode(Episode episode) async {
     log.fine('addUpNextEpisode Adding ${episode.title} - ${episode.guid}');
 
@@ -273,9 +269,8 @@ class DefaultAudioPlayerService extends AudioPlayerService {
   @override
   Future<void> stop() {
     _episode = null;
-    return _audioHandler.stop();
+    return _audioHandler.stop().whenComplete(() =>  _durationTimer?.cancel());
   }
->>>>>>> anytime/master
 
   void updateCurrentPosition(Episode e) {
     if (e != null) {
@@ -338,9 +333,6 @@ class DefaultAudioPlayerService extends AudioPlayerService {
     return Future.value(null);
   }
 
-<<<<<<< HEAD
-  Future<void> _persistState(LastState state) async {
-=======
   void _updateQueueState() {
     _queueState.add(QueueListState(playing: _episode, queue: _queue));
   }
@@ -361,8 +353,8 @@ class DefaultAudioPlayerService extends AudioPlayerService {
     return uri;
   }
 
-  Future<void> _persistState() async {
->>>>>>> anytime/master
+
+  Future<void> _persistState(LastState state) async {
     var currentPosition = _audioHandler?.playbackState?.value?.position?.inMilliseconds ?? 0;
 
     await PersistentState.persistState(Persistable(
@@ -829,21 +821,19 @@ class _DefaultAudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   }
 
   PlaybackState _transformEvent(PlaybackEvent event) {
-<<<<<<< HEAD
     int currentDuration = _currentItem?.duration?.inSeconds ?? 0;
     int updatedDuration = event?.duration?.inSeconds ?? 0;
     if (currentDuration == 0 && currentDuration != updatedDuration) {
       _currentItem = _currentItem.copyWith.call(duration: Duration(seconds: updatedDuration));
       super.mediaItem.add(_currentItem);
     }
-=======
+
     log.fine('_transformEvent Sending state ${_player.processingState}');
 
     if (_player.processingState == ProcessingState.completed) {
       complete();
     }
 
->>>>>>> anytime/master
     return PlaybackState(
       controls: [
         rewindControl,
