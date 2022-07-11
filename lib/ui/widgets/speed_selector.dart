@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -6,6 +6,7 @@ import 'package:anytime/bloc/podcast/audio_bloc.dart';
 import 'package:anytime/bloc/settings/settings_bloc.dart';
 import 'package:anytime/entities/app_settings.dart';
 import 'package:anytime/l10n/L.dart';
+import 'package:anytime/ui/widgets/slider_handle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,7 @@ import 'package:provider/provider.dart';
 /// currently Android only.
 class SpeedSelectorWidget extends StatefulWidget {
   @override
-  _SpeedSelectorWidgetState createState() => _SpeedSelectorWidgetState();
+  State<SpeedSelectorWidget> createState() => _SpeedSelectorWidgetState();
 }
 
 class _SpeedSelectorWidgetState extends State<SpeedSelectorWidget> {
@@ -47,11 +48,11 @@ class _SpeedSelectorWidgetState extends State<SpeedSelectorWidget> {
                 onTap: () {
                   showModalBottomSheet<void>(
                       context: context,
-                      backgroundColor: theme.bottomAppBarColor,
+                      backgroundColor: theme.secondaryHeaderColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10.0),
-                          topRight: Radius.circular(10.0),
+                          topLeft: Radius.circular(16.0),
+                          topRight: Radius.circular(16.0),
                         ),
                       ),
                       builder: (context) {
@@ -81,7 +82,7 @@ class SpeedSlider extends StatefulWidget {
   const SpeedSlider({Key key}) : super(key: key);
 
   @override
-  _SpeedSliderState createState() => _SpeedSliderState();
+  State<SpeedSlider> createState() => _SpeedSliderState();
 }
 
 class _SpeedSliderState extends State<SpeedSlider> {
@@ -111,17 +112,7 @@ class _SpeedSliderState extends State<SpeedSlider> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            width: 24,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.all(Radius.circular(4.0)),
-            ),
-          ),
-        ),
+        SliderHandle(),
         Padding(
           padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
           child: Text(

@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -125,6 +125,7 @@ class PodcastBloc extends Bloc {
         if ((_podcast == null || lastFeed.podcast.url == _podcast.url) && !silent) {
           _podcastStream.sink.add(BlocErrorState<Podcast>());
           log.fine('Error loading podcast', e);
+          log.fine(e);
         }
       }
     });
@@ -174,6 +175,7 @@ class PodcastBloc extends Bloc {
   Future<void> _loadNewEpisodes(Feed feed) async {
     _podcast = await podcastService.loadPodcast(
       podcast: feed.podcast,
+      highlightNewEpisodes: true,
       refresh: true,
     );
 

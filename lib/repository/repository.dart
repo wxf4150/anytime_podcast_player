@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -20,6 +20,7 @@ abstract class Repository {
   Future<List<Podcast>> subscriptions();
 
   /// Episodes
+  Future<List<Episode>> findAllEpisodes();
   Future<Episode> findEpisodeById(int id);
   Future<Episode> findEpisodeByGuid(String guid);
   Future<List<Episode>> findEpisodesByPodcastGuid(String pguid);
@@ -29,6 +30,10 @@ abstract class Repository {
   Future<void> deleteEpisodes(List<Episode> episodes);
   Future<List<Episode>> findDownloadsByPodcastGuid(String pguid);
   Future<List<Episode>> findDownloads();
+
+  /// Queue
+  Future<void> saveQueue(List<Episode> episodes);
+  Future<List<Episode>> loadQueue();
 
   /// Event listeners
   Stream<Podcast> podcastListener;

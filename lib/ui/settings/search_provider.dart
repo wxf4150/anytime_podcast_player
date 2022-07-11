@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -15,7 +15,7 @@ class SearchProviderWidget extends StatefulWidget {
   SearchProviderWidget({this.onChanged});
 
   @override
-  _SearchProviderWidgetState createState() => _SearchProviderWidgetState();
+  State<SearchProviderWidget> createState() => _SearchProviderWidgetState();
 }
 
 class _SearchProviderWidgetState extends State<SearchProviderWidget> {

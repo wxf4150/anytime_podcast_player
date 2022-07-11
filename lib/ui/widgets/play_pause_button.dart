@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -23,7 +23,7 @@ class PlayPauseButton extends StatelessWidget {
     return Semantics(
       label: '$label $title',
       child: CircularPercentIndicator(
-        radius: 38.0,
+        radius: 19.0,
         lineWidth: 1.5,
         backgroundColor: Theme.of(context).buttonTheme.colorScheme.onPrimary,
         percent: 0.0,
@@ -60,7 +60,7 @@ class PlayPauseBusyButton extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               CircularPercentIndicator(
-                radius: 38.0,
+                radius: 19.0,
                 lineWidth: 1.5,
                 backgroundColor: Theme.of(context).buttonTheme.colorScheme.onSurface,
                 percent: 0.0,

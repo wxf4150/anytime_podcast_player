@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -7,9 +7,11 @@ import 'dart:async';
 import 'package:anytime/core/extensions.dart';
 import 'package:anytime/entities/episode.dart';
 import 'package:anytime/entities/podcast.dart';
+import 'package:anytime/entities/queue.dart';
 import 'package:anytime/repository/repository.dart';
 import 'package:anytime/repository/sembast/sembast_database_service.dart';
 import 'package:anytime/state/episode_state.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sembast/sembast.dart';
@@ -23,6 +25,10 @@ class SembastRepository extends Repository {
 
   final _podcastStore = intMapStoreFactory.store('podcast');
   final _episodeStore = intMapStoreFactory.store('episode');
+  final _queueStore = intMapStoreFactory.store('queue');
+
+  final _queueGuids = <String>[];
+
   DatabaseService _databaseService;
 
   Future<Database> get _db async => _databaseService.database;
@@ -148,6 +154,23 @@ class SembastRepository extends Repository {
   }
 
   @override
+  Future<List<Episode>> findAllEpisodes() async {
+    final finder = Finder(
+      sortOrders: [SortOrder('publicationDate', false)],
+    );
+
+    final recordSnapshots = await _episodeStore.find(await _db, finder: finder);
+
+    final results = recordSnapshots.map((snapshot) {
+      final episode = Episode.fromMap(snapshot.key, snapshot.value);
+
+      return episode;
+    }).toList();
+
+    return results;
+  }
+
+  @override
   Future<Episode> findEpisodeById(int id) async {
     final snapshot = await _episodeStore.record(id).get(await _db);
 
@@ -262,6 +285,55 @@ class SembastRepository extends Repository {
     _episodeSubject.add(EpisodeUpdateState(e));
 
     return e;
+  }
+
+  @override
+  Future<List<Episode>> loadQueue() async {
+    var episodes = <Episode>[];
+
+    final snapshot = await _queueStore.record(1).getSnapshot(await _db);
+
+    if (snapshot != null) {
+      var queue = Queue.fromMap(snapshot.key, snapshot.value);
+
+      if (queue != null) {
+        var episodeFinder = Finder(filter: Filter.inList('guid', queue.guids));
+
+        final recordSnapshots = await _episodeStore.find(await _db, finder: episodeFinder);
+
+        episodes = recordSnapshots.map((snapshot) {
+          final episode = Episode.fromMap(snapshot.key, snapshot.value);
+
+          return episode;
+        }).toList();
+      }
+    }
+
+    return episodes;
+  }
+
+  @override
+  Future<void> saveQueue(List<Episode> episodes) async {
+    if (episodes != null) {
+      /// Check to see if we have any ad-hoc episodes and save them first
+      for (var e in episodes) {
+        if (e.pguid == null || e.pguid.isEmpty) {
+          _saveEpisode(e, false);
+        }
+      }
+
+      var guids = episodes.map((e) => e.guid).toList();
+
+      /// Only bother saving if the queue has changed
+      if (!listEquals(guids, _queueGuids)) {
+        final queue = Queue(guids: guids);
+
+        await _queueStore.record(1).put(await _db, queue.toMap());
+
+        _queueGuids.clear();
+        _queueGuids.addAll(guids);
+      }
+    }
   }
 
   Future<void> _deleteOrphanedEpisodes() async {

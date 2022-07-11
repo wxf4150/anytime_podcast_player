@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -11,7 +11,7 @@ class SyncSpinner extends StatefulWidget {
   const SyncSpinner({Key key}) : super(key: key);
 
   @override
-  _SyncSpinnerState createState() => _SyncSpinnerState();
+  State<SyncSpinner> createState() => _SyncSpinnerState();
 }
 
 class _SyncSpinnerState extends State<SyncSpinner> with SingleTickerProviderStateMixin {
@@ -37,11 +37,11 @@ class _SyncSpinnerState extends State<SyncSpinner> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    final _podcastBloc = Provider.of<PodcastBloc>(context, listen: false);
+    final podcastBloc = Provider.of<PodcastBloc>(context, listen: false);
 
     return StreamBuilder<BlocState<void>>(
         initialData: BlocEmptyState<void>(),
-        stream: _podcastBloc.backgroundLoading,
+        stream: podcastBloc.backgroundLoading,
         builder: (context, snapshot) {
           final state = snapshot.data;
 

@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -9,8 +9,8 @@ import 'package:anytime/core/environment.dart';
 import 'package:flutter/foundation.dart';
 import 'package:podcast_search/podcast_search.dart';
 
-/// An implementation of the PodcastApi. A simple wrapper class that
-/// interacts with the iTunes/Podcastindex search API via the
+/// An implementation of the [PodcastApi]. A simple wrapper class that
+/// interacts with the iTunes/PodcastIndex search API via the
 /// podcast_search package.
 class MobilePodcastApi extends PodcastApi {
   SecurityContext _defaultSecurityContext;
@@ -36,10 +36,33 @@ class MobilePodcastApi extends PodcastApi {
   }
 
   @override
-  Future<SearchResult> charts(
-    int size,
-  ) async {
-    return compute(_charts, 0);
+  Future<SearchResult> charts({
+    int size = 20,
+    String genre,
+    String searchProvider,
+  }) async {
+    var searchParams = {
+      'size': size.toString(),
+      'genre': genre,
+      'searchProvider': searchProvider,
+    };
+
+    return compute(_charts, searchParams);
+  }
+
+  @override
+  List<String> genres(String searchProvider) {
+    var provider = searchProvider == 'itunes'
+        ? ITunesProvider()
+        : PodcastIndexProvider(
+            key: podcastIndexKey,
+            secret: podcastIndexSecret,
+          );
+
+    return Search(
+      userAgent: Environment.userAgent(),
+      searchProvider: provider,
+    ).genres();
   }
 
   @override
@@ -69,8 +92,18 @@ class MobilePodcastApi extends PodcastApi {
         .timeout(Duration(seconds: 30));
   }
 
-  static Future<SearchResult> _charts(int size) =>
-      Search(userAgent: Environment.userAgent()).charts().timeout(Duration(seconds: 30));
+  static Future<SearchResult> _charts(Map<String, String> searchParams) {
+    var provider = searchParams['searchProvider'] == 'itunes'
+        ? ITunesProvider()
+        : PodcastIndexProvider(
+            key: podcastIndexKey,
+            secret: podcastIndexSecret,
+          );
+
+    return Search(userAgent: Environment.userAgent(), searchProvider: provider)
+        .charts(genre: searchParams['genre'])
+        .timeout(Duration(seconds: 30));
+  }
 
   Future<Podcast> _loadFeed(String url) {
     _setupSecurityContext();

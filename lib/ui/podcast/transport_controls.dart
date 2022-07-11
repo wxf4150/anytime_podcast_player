@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -31,11 +31,11 @@ class PlayControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _audioBloc = Provider.of<AudioBloc>(context, listen: false);
+    final audioBloc = Provider.of<AudioBloc>(context, listen: false);
     final settings = Provider.of<SettingsBloc>(context, listen: false).currentSettings;
 
     return StreamBuilder<PlayerControlState>(
-        stream: Rx.combineLatest2(_audioBloc.playingState, _audioBloc.nowPlaying,
+        stream: Rx.combineLatest2(audioBloc.playingState, audioBloc.nowPlaying,
             (AudioState audioState, Episode episode) => PlayerControlState(audioState, episode)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -49,7 +49,7 @@ class PlayControl extends StatelessWidget {
                 if (audioState == AudioState.playing) {
                   return InkWell(
                     onTap: () {
-                      _audioBloc.transitionState(TransitionState.pause);
+                      audioBloc.transitionState(TransitionState.pause);
                     },
                     child: PlayPauseButton(
                       title: episode.title,
@@ -66,7 +66,7 @@ class PlayControl extends StatelessWidget {
                 } else if (audioState == AudioState.pausing) {
                   return InkWell(
                     onTap: () {
-                      _audioBloc.transitionState(TransitionState.play);
+                      audioBloc.transitionState(TransitionState.play);
                       optionalShowNowPlaying(context, settings);
                     },
                     child: PlayPauseButton(
@@ -82,7 +82,7 @@ class PlayControl extends StatelessWidget {
               // user to start playing this episode.
               return InkWell(
                 onTap: () {
-                  _audioBloc.play(episode);
+                  audioBloc.play(episode);
                   optionalShowNowPlaying(context, settings);
                 },
                 child: PlayPauseButton(
@@ -109,7 +109,7 @@ class PlayControl extends StatelessWidget {
             if (episode.downloadState != DownloadState.downloading) {
               return InkWell(
                 onTap: () {
-                  _audioBloc.play(episode);
+                  audioBloc.play(episode);
                   optionalShowNowPlaying(context, settings);
                 },
                 child: PlayPauseButton(
@@ -138,7 +138,11 @@ class PlayControl extends StatelessWidget {
     if (settings.autoOpenNowPlaying) {
       Navigator.push(
         context,
-        MaterialPageRoute<void>(builder: (context) => NowPlaying(), fullscreenDialog: false),
+        MaterialPageRoute<void>(
+          builder: (context) => NowPlaying(),
+          settings: RouteSettings(name: 'nowplaying'),
+          fullscreenDialog: false,
+        ),
       );
     }
   }
@@ -153,11 +157,11 @@ class DownloadControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _audioBloc = Provider.of<AudioBloc>(context);
-    final _podcastBloc = Provider.of<PodcastBloc>(context);
+    final audioBloc = Provider.of<AudioBloc>(context);
+    final podcastBloc = Provider.of<PodcastBloc>(context);
 
     return StreamBuilder<PlayerControlState>(
-        stream: Rx.combineLatest2(_audioBloc.playingState, _audioBloc.nowPlaying,
+        stream: Rx.combineLatest2(audioBloc.playingState, audioBloc.nowPlaying,
             (AudioState audioState, Episode episode) => PlayerControlState(audioState, episode)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -204,7 +208,7 @@ class DownloadControl extends StatelessWidget {
             return DownloadButton(
               onPressed: () => _showCancelDialog(context),
               title: episode.title,
-              icon: Icons.timer,
+              icon: Icons.timer_outlined,
               percent: 0,
               label: L.of(context).download_episode_button_label,
             );
@@ -212,14 +216,14 @@ class DownloadControl extends StatelessWidget {
             return DownloadButton(
               onPressed: () => _showCancelDialog(context),
               title: episode.title,
-              icon: Icons.timer,
+              icon: Icons.timer_outlined,
               percent: episode.downloadPercentage,
               label: L.of(context).download_episode_button_label,
             );
           }
 
           return DownloadButton(
-            onPressed: () => _podcastBloc.downloadEpisode(episode),
+            onPressed: () => podcastBloc.downloadEpisode(episode),
             title: episode.title,
             icon: Icons.save_alt,
             percent: 0,
@@ -229,7 +233,7 @@ class DownloadControl extends StatelessWidget {
   }
 
   Future<void> _showCancelDialog(BuildContext context) {
-    final _episodeBloc = Provider.of<EpisodeBloc>(context, listen: false);
+    final episodeBloc = Provider.of<EpisodeBloc>(context, listen: false);
 
     return showDialog<void>(
       context: context,
@@ -254,7 +258,7 @@ class DownloadControl extends StatelessWidget {
             ),
             iosIsDefaultAction: true,
             onPressed: () {
-              _episodeBloc.deleteDownload(episode);
+              episodeBloc.deleteDownload(episode);
               Navigator.pop(context);
             },
           ),

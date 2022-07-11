@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -30,7 +30,7 @@ class DownloadButton extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         child: CircularPercentIndicator(
-          radius: 38.0,
+          radius: 19.0,
           lineWidth: 1.5,
           backgroundColor: Theme.of(context).buttonTheme.colorScheme.onPrimary,
           progressColor: Theme.of(context).buttonTheme.colorScheme.onSecondary,

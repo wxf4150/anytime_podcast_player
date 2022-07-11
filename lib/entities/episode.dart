@@ -1,7 +1,8 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:anytime/core/annotations.dart';
 import 'package:anytime/entities/chapter.dart';
 import 'package:anytime/entities/downloadable.dart';
 import 'package:anytime/entities/value.dart';
@@ -112,9 +113,17 @@ class Episode {
   Value value;
 
   /// Set to true if chapter data is currently being loaded.
+  @Transient()
   bool chaptersLoading = false;
 
+  @Transient()
   bool highlight = false;
+
+  @Transient()
+  bool queued = false;
+
+  @Transient()
+  bool streaming = true;
 
   Episode({
     @required this.guid,
@@ -320,6 +329,11 @@ class Episode {
       chapters.hashCode ^
       lastUpdated.hashCode;
 
+  @override
+  String toString() {
+    return 'Episode{id: $id, guid: $guid, pguid: $pguid, filepath: $filepath, title: $title, contentUrl: $contentUrl, episode: $episode, duration: $duration, position: $position, downloadPercentage: $downloadPercentage, played: $played, queued: $queued}';
+  }
+
   bool get downloaded => downloadPercentage == 100;
 
   Duration get timeRemaining {
@@ -339,8 +353,6 @@ class Episode {
       var pc = (position / (duration * 1000)) * 100;
 
       if (pc > 100.0) {
-        log.info('ERROR: Calculated episode percentage played over 100%');
-        log.info('       - position $position; duration in seconds ${duration * 1000}');
         pc = 100.0;
       }
 

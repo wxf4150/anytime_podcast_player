@@ -1,6 +1,8 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
+import 'dart:async';
 
 import 'package:anytime/bloc/settings/settings_bloc.dart';
 import 'package:anytime/entities/app_settings.dart';
@@ -10,7 +12,6 @@ import 'package:anytime/ui/widgets/action_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogs/flutter_dialogs.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -160,9 +161,10 @@ class FundingLink {
 
     if (consent) {
       result = true;
+      final uri = Uri.parse(url);
 
       unawaited(
-        canLaunch(url).then((value) => launch(url)),
+        canLaunchUrl(uri).then((value) => launchUrl(uri)),
       );
     } else {
       result = await showPlatformDialog<bool>(
@@ -194,8 +196,10 @@ class FundingLink {
       );
 
       if (result) {
+        var uri = Uri.parse(url);
+
         unawaited(
-          canLaunch(url).then((value) => launch(url)),
+          canLaunchUrl(uri).then((value) => launchUrl(uri)),
         );
       }
     }

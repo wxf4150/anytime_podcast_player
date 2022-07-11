@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -21,7 +21,15 @@ abstract class PodcastApi {
   });
 
   /// Request the top podcast charts from iTunes, and at most [size] records.
-  Future<SearchResult> charts(int size);
+  Future<SearchResult> charts({
+    int size,
+    String searchProvider,
+    String genre,
+  });
+
+  List<String> genres(
+    String searchProvider,
+  );
 
   /// Request the most recent podcast charts
   Future<SearchResult> mostRecent();
