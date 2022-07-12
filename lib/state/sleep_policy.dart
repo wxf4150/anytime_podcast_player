@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 abstract class SleepPolicy {
   bool feedbackGiven;
 
@@ -15,6 +17,9 @@ class SleepPolicyOff extends SleepPolicy {
   bool operator ==(Object other) {
     return other is SleepPolicyOff;
   }
+
+  @override
+  int get hashCode => feedbackGiven.hashCode;
 }
 
 class SleepPolicyTimer extends SleepPolicy {
@@ -29,10 +34,11 @@ class SleepPolicyTimer extends SleepPolicy {
 
   @override
   bool operator ==(Object other) {
-    return other is SleepPolicyTimer &&
-        other.duration == duration &&
-        other._millisecond == _millisecond;
+    return other is SleepPolicyTimer && other.duration == duration && other._millisecond == _millisecond;
   }
+
+  @override
+  int get hashCode => hashValues(duration.hashCode, _millisecond.hashCode);
 
   @override
   String toString() {
@@ -44,7 +50,7 @@ SleepPolicy sleepPolicyOff([bool feedbackGiven = false]) =>
     SleepPolicyOff(feedbackGiven);
 
 SleepPolicy sleepPolicyMinutes(int minutes) => SleepPolicyTimer(
-      Duration(minutes: minutes),
-      DateTime.now().millisecondsSinceEpoch,
-      false,
-    );
+  Duration(minutes: minutes),
+  DateTime.now().millisecondsSinceEpoch,
+  false,
+);

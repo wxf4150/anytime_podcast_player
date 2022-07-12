@@ -222,6 +222,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
   @override
   Future<void> setPlaybackSpeed(double speed) => _audioHandler.setSpeed(speed);
 
+  @override
   Future<void> addUpNextEpisode(Episode episode) async {
     log.fine('addUpNextEpisode Adding ${episode.title} - ${episode.guid}');
 
