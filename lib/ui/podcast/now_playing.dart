@@ -40,8 +40,7 @@ class NowPlaying extends StatefulWidget {
 class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
   StreamSubscription<AudioState> playingStateSubscription;
   var textGroup = AutoSizeGroup();
-  double scrollPos = 0.0;
-  double opacity = 0.0;
+  double opacity, scrollPos = 0.0;
 
   @override
   void initState() {
@@ -92,13 +91,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
           return NotificationListener<DraggableScrollableNotification>(
             onNotification: (notification) {
               setState(() {
-                if (notification.extent > (notification.minExtent)) {
-                  opacity = 1 - (notification.maxExtent - notification.extent);
-                  scrollPos = 1.0;
-                } else {
-                  opacity = 0.0;
-                  scrollPos = 0.0;
-                }
+                opacity = scrollPos = (notification.extent - notification.minExtent) / (notification.maxExtent - notification.minExtent);
               });
 
               return true;
