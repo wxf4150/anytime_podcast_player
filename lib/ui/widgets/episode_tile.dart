@@ -258,7 +258,7 @@ class EpisodeTile extends StatelessWidget {
                   onPressed: () {
                     showModalBottomSheet<void>(
                         context: context,
-                        backgroundColor: theme.bottomAppBarColor,
+                        backgroundColor: theme.backgroundColor,
                         isScrollControlled: true,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
