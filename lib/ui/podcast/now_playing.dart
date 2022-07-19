@@ -109,56 +109,54 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
                 DefaultTabController(
                     length: snapshot.data.hasChapters ? 3 : 2,
                     initialIndex: snapshot.data.hasChapters ? 1 : 0,
-                    child: AnnotatedRegion<SystemUiOverlayStyle>(
-                      value: SystemUiOverlayStyle(
-                        statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
-                        systemNavigationBarColor: isLight ? Theme.of(context).primaryColorDark : Theme.of(context).bottomAppBarColor,
-                        statusBarColor: Colors.transparent,
-                      ),
-                      child: Scaffold(
-                        appBar: AppBar(
-                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                          elevation: 0.0,
-                          leading: IconButton(
-                            tooltip: L.of(context).minimise_player_window_button_label,
-                            icon: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Theme.of(context).primaryIconTheme.color,
-                            ),
-                            onPressed: () => {
-                              Navigator.pop(context),
-                            },
-                          ),
-                          flexibleSpace: PlaybackErrorListener(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                EpisodeTabBar(
-                                  chapters: snapshot.data.hasChapters,
-                                ),
-                              ],
-                            ),
-                          ),
+                    child: Scaffold(
+                      appBar: AppBar(
+                        systemOverlayStyle: SystemUiOverlayStyle(
+                          statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
+                          systemNavigationBarColor: Theme.of(context).bottomAppBarColor,
+                          statusBarColor: Colors.transparent,
                         ),
-                        body: Column(
-                          children: [
-                            Expanded(
-                              child: EpisodeTabBarView(
-                                episode: snapshot.data,
+                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                        elevation: 0.0,
+                        leading: IconButton(
+                          tooltip: L.of(context).minimise_player_window_button_label,
+                          icon: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Theme.of(context).primaryIconTheme.color,
+                          ),
+                          onPressed: () => {
+                            Navigator.pop(context),
+                          },
+                        ),
+                        flexibleSpace: PlaybackErrorListener(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              EpisodeTabBar(
                                 chapters: snapshot.data.hasChapters,
                               ),
-                            ),
-                            transportBuilder != null
-                                ? transportBuilder(context)
-                                : SizedBox(
-                                    height: 148.0,
-                                    child: NowPlayingTransport(),
-                                  ),
-                            SizedBox(
-                              height: 48.0,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
+                      ),
+                      body: Column(
+                        children: [
+                          Expanded(
+                            child: EpisodeTabBarView(
+                              episode: snapshot.data,
+                              chapters: snapshot.data.hasChapters,
+                            ),
+                          ),
+                          transportBuilder != null
+                              ? transportBuilder(context)
+                              : SizedBox(
+                                  height: 148.0,
+                                  child: NowPlayingTransport(),
+                                ),
+                          SizedBox(
+                            height: 48.0,
+                          ),
+                        ],
                       ),
                     )),
                 if (scrollPos > 0)
