@@ -166,7 +166,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
                       ],
                     ),
                   ),
-                NowPlayingOptionsSelector(),
+                NowPlayingOptionsSelector(scrollPos: scrollPos),
               ],
             ),
           );

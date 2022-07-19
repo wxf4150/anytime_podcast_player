@@ -32,9 +32,18 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
     const baseSize = 48;
     final topMargin = baseSize + MediaQuery.of(context).viewPadding.top;
     final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
     final windowHeight = MediaQuery.of(context).size.height;
     final minSize = baseSize / (windowHeight - baseSize);
     final maxSize = (windowHeight - topMargin - 16) / windowHeight;
+    final l10n = L.of(context);
+
+    final ColorTween sheetColor = ColorTween(begin: theme.scaffoldBackgroundColor, end: theme.bottomAppBarColor);
+
+    final ColorTween labelColor = ColorTween(
+      begin: theme.primaryIconTheme.color,
+      end: theme.iconTheme.color,
+    );
 
     return DraggableScrollableSheet(
       initialChildSize: minSize,
@@ -47,40 +56,45 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
         return SingleChildScrollView(
           controller: scrollController,
           child: Material(
-            color: theme.secondaryHeaderColor,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(
-                color: Theme.of(context).highlightColor,
-                width: 1.0,
+            color: theme.backgroundColor.withOpacity(widget.scrollPos > 0 ? 0 : 1),
+            child: Container(
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: theme.highlightColor,
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(18.0),
+                    topRight: Radius.circular(18.0),
+                  ),
+                ),
+                color: sheetColor.animate(AlwaysStoppedAnimation(widget.scrollPos)).value,
               ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(18.0),
-                topRight: Radius.circular(18.0),
-              ),
-            ),
-            child: SizedBox(
               height: MediaQuery.of(context).size.height - 64 - MediaQuery.of(context).viewPadding.top,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  SliderHandle(),
+                  SliderHandle(scrollPos: widget.scrollPos),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                     child: Text(
-                      L.of(context).up_next_queue_label.toUpperCase(),
-                      style: Theme.of(context).textTheme.button,
+                      l10n.up_next_queue_label.toUpperCase(),
+                      style: textTheme.button.copyWith(
+                        color: labelColor.animate(AlwaysStoppedAnimation(widget.scrollPos)).value,
+                      ),
                     ),
                   ),
-                  Divider(),
+                  Divider(color: theme.highlightColor),
                   Row(
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16.0, 8.0, 24.0, 8.0),
                         child: Text(
-                          L.of(context).now_playing_queue_label,
-                          style: Theme.of(context).textTheme.headline6,
+                          l10n.now_playing_queue_label,
+                          style: textTheme.headline6.copyWith(color: theme.iconTheme.color),
                         ),
                       ),
                     ],
@@ -106,8 +120,8 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16.0, 0.0, 24.0, 8.0),
                         child: Text(
-                          L.of(context).up_next_queue_label,
-                          style: Theme.of(context).textTheme.headline6,
+                          l10n.up_next_queue_label,
+                          style: textTheme.headline6.copyWith(color: theme.iconTheme.color),
                         ),
                       ),
                       Spacer(),
@@ -120,13 +134,13 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                               useRootNavigator: false,
                               builder: (_) => BasicDialogAlert(
                                 title: Text(
-                                  L.of(context).queue_clear_label_title,
+                                  l10n.queue_clear_label_title,
                                 ),
-                                content: Text(L.of(context).queue_clear_label),
+                                content: Text(l10n.queue_clear_label),
                                 actions: <Widget>[
                                   BasicDialogAction(
                                     title: ActionText(
-                                      L.of(context).cancel_button_label,
+                                      l10n.cancel_button_label,
                                     ),
                                     onPressed: () {
                                       Navigator.pop(context);
@@ -134,9 +148,9 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                                   ),
                                   BasicDialogAction(
                                     title: ActionText(
-                                      Theme.of(context).platform == TargetPlatform.iOS
-                                          ? L.of(context).queue_clear_button_label.toUpperCase()
-                                          : L.of(context).queue_clear_button_label,
+                                      theme.platform == TargetPlatform.iOS
+                                          ? l10n.queue_clear_button_label.toUpperCase()
+                                          : l10n.queue_clear_button_label,
                                     ),
                                     iosIsDefaultAction: true,
                                     iosIsDestructiveAction: true,
@@ -150,11 +164,8 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                             );
                           },
                           child: Text(
-                            L.of(context).clear_queue_button_label,
-                            style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                  fontSize: 12.0,
-                                  color: Theme.of(context).primaryColor,
-                                ),
+                            l10n.clear_queue_button_label,
+                            style: textTheme.subtitle2.copyWith(fontSize: 12.0, color: theme.iconTheme.color),
                           ),
                         ),
                       ),
@@ -169,16 +180,16 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                                 padding: const EdgeInsets.all(24.0),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: Theme.of(context).dividerColor,
+                                      color: theme.dividerColor,
                                       border: Border.all(
-                                        color: Theme.of(context).dividerColor,
+                                        color: theme.dividerColor,
                                       ),
                                       borderRadius: BorderRadius.all(Radius.circular(10))),
                                   child: Padding(
                                     padding: const EdgeInsets.all(24.0),
                                     child: Text(
-                                      L.of(context).empty_queue_message,
-                                      style: Theme.of(context).textTheme.subtitle1,
+                                      l10n.empty_queue_message,
+                                      style: textTheme.subtitle1.copyWith(color: theme.iconTheme.color),
                                     ),
                                   ),
                                 ),

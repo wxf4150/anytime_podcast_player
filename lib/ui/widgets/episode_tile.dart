@@ -358,7 +358,8 @@ class EpisodeSubtitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
     var timeRemaining = episode.timeRemaining;
 
     String title;
@@ -387,7 +388,7 @@ class EpisodeSubtitle extends StatelessWidget {
         title,
         overflow: TextOverflow.ellipsis,
         softWrap: false,
-        style: textTheme.caption,
+        style: textTheme.caption.copyWith(color: theme.iconTheme.color),
       ),
     );
   }

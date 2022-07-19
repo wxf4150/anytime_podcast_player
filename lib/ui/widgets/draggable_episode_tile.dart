@@ -23,7 +23,8 @@ class DraggableEpisodeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
     final audioBloc = Provider.of<AudioBloc>(context, listen: false);
 
     return ListTile(
@@ -38,13 +39,13 @@ class DraggableEpisodeTile extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
         softWrap: false,
-        style: textTheme.bodyText2,
+        style: textTheme.bodyText2.copyWith(color: theme.iconTheme.color),
       ),
       subtitle: EpisodeSubtitle(episode),
       trailing: draggable
           ? ReorderableDragStartListener(
               index: index,
-              child: Icon(Icons.drag_handle),
+              child: Icon(Icons.drag_handle, color: theme.iconTheme.color),
             )
           : SizedBox(
               width: 0.0,
