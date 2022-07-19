@@ -41,7 +41,7 @@ class DraggableEpisodeTile extends StatelessWidget {
         softWrap: false,
         style: textTheme.bodyText2.copyWith(color: theme.iconTheme.color),
       ),
-      subtitle: EpisodeSubtitle(episode),
+      subtitle: EpisodeSubtitle(episode, textColor: theme.iconTheme.color),
       trailing: draggable
           ? ReorderableDragStartListener(
               index: index,

@@ -348,8 +348,9 @@ class EpisodeSubtitle extends StatelessWidget {
   final Episode episode;
   final String date;
   final Duration length;
+  final Color textColor;
 
-  EpisodeSubtitle(this.episode)
+  EpisodeSubtitle(this.episode, {this.textColor})
       : date = episode.publicationDate == null
             ? ''
             : DateFormat(episode.publicationDate.year == DateTime.now().year ? 'd MMM' : 'd MMM yy')
@@ -388,7 +389,7 @@ class EpisodeSubtitle extends StatelessWidget {
         title,
         overflow: TextOverflow.ellipsis,
         softWrap: false,
-        style: textTheme.caption.copyWith(color: theme.iconTheme.color),
+        style: textColor != null ? textTheme.caption.copyWith(color: textColor) : textTheme.caption,
       ),
     );
   }
