@@ -167,7 +167,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
                         FloatingPlayer(),
                         Expanded(
                           child: Container(
-                            color: Theme.of(context).canvasColor,
+                            color: Theme.of(context).scaffoldBackgroundColor,
                           ),
                         ),
                       ],

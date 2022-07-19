@@ -72,7 +72,7 @@ class _FloatingPlayerBuilderState extends State<_FloatingPlayerBuilder> with Sin
       padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
       child: Container(
         height: 64,
-        color: Theme.of(context).canvasColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: StreamBuilder<Episode>(
             stream: audioBloc.nowPlaying,
             builder: (context, snapshot) {
@@ -122,9 +122,10 @@ class _FloatingPlayerBuilderState extends State<_FloatingPlayerBuilder> with Sin
                           ),
                         ],
                       )),
-                  SizedBox(
-                    height: 64.0,
-                    width: 64.0,
+                  Container(
+                    height: 56.0,
+                    width: 56.0,
+                    padding: EdgeInsets.only(right: 16),
                     child: StreamBuilder<AudioState>(
                         stream: audioBloc.playingState,
                         builder: (context, snapshot) {
@@ -133,8 +134,10 @@ class _FloatingPlayerBuilderState extends State<_FloatingPlayerBuilder> with Sin
                           return TextButton(
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                              shape:
-                                  CircleBorder(side: BorderSide(color: Theme.of(context).backgroundColor, width: 0.0)),
+                              shape: CircleBorder(side: BorderSide(color: Theme.of(context).backgroundColor, width: 0.0)),
+                              backgroundColor: Theme.of(context).brightness == Brightness.light
+                                  ? Theme.of(context).buttonTheme.colorScheme.onPrimary
+                                  : Theme.of(context).bottomAppBarColor,
                             ),
                             onPressed: () {
                               if (playing) {
@@ -144,9 +147,9 @@ class _FloatingPlayerBuilderState extends State<_FloatingPlayerBuilder> with Sin
                               }
                             },
                             child: AnimatedIcon(
-                              size: 48.0,
+                              size: 24.0,
                               icon: AnimatedIcons.play_pause,
-                              color: Theme.of(context).iconTheme.color,
+                              color: Colors.white,
                               progress: _playPauseController,
                             ),
                           );
