@@ -381,9 +381,7 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
-        systemNavigationBarColor: isLight
-            ? Theme.of(context).primaryColorDark
-            : Theme.of(context).bottomAppBarColor,
+        systemNavigationBarColor: Theme.of(context).bottomAppBarColor,
         statusBarColor: Colors.transparent,
       ),
       child: Scaffold(
