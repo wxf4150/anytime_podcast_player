@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -17,7 +17,7 @@ class OPMLImport extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _OPMLImportState createState() => _OPMLImportState();
+  State<OPMLImport> createState() => _OPMLImportState();
 }
 
 class _OPMLImportState extends State<OPMLImport> {

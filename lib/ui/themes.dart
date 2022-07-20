@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -29,7 +29,7 @@ ThemeData _buildLightTheme() {
     primaryColor: Color(0xffff9800),
     primaryColorLight: Color(0xffffe0b2),
     primaryColorDark: Color(0xfff57c00),
-    canvasColor: Color(0xfffafafa),
+    canvasColor: Color(0xffffffff),
     scaffoldBackgroundColor: Color(0xffffffff),
     bottomAppBarColor: Color(0xffffffff),
     cardColor: Color(0xffffffff),
@@ -56,6 +56,11 @@ ThemeData _buildLightTheme() {
     ),
     sliderTheme: SliderThemeData().copyWith(
       valueIndicatorColor: Colors.orange,
+      trackHeight: 2.0,
+      thumbShape: RoundSliderThumbShape(
+        enabledThumbRadius: 6.0,
+        disabledThumbRadius: 6.0,
+      ),
     ),
     appBarTheme: base.appBarTheme.copyWith(
         backgroundColor: Colors.white,
@@ -93,7 +98,6 @@ ThemeData _buildDarktheme() {
     ),
     brightness: Brightness.dark,
     primaryColor: Color(0xffffffff),
-    primaryColorBrightness: Brightness.dark,
     primaryColorLight: Color(0xffffe0b2),
     primaryColorDark: Color(0xfff57c00),
     canvasColor: Color(0xff000000),
@@ -126,6 +130,11 @@ ThemeData _buildDarktheme() {
     ),
     sliderTheme: SliderThemeData().copyWith(
       valueIndicatorColor: Colors.white,
+      trackHeight: 2.0,
+      thumbShape: RoundSliderThumbShape(
+        enabledThumbRadius: 6.0,
+        disabledThumbRadius: 6.0,
+      ),
     ),
     appBarTheme: base.appBarTheme.copyWith(
         backgroundColor: Color(0xff222222),

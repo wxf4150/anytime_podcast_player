@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -14,7 +14,7 @@ class OPMLExport extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _OPMLExportState createState() => _OPMLExportState();
+  State<OPMLExport> createState() => _OPMLExportState();
 }
 
 class _OPMLExportState extends State<OPMLExport> {

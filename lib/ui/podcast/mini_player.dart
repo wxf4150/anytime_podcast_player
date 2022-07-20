@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -49,7 +49,7 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
     _playPauseController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _playPauseController.value = 1;
 
-    audioStateListener();
+    _audioStateListener();
   }
 
   @override
@@ -86,9 +86,13 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
 
           return Navigator.push(
             context,
-            MaterialPageRoute<void>(builder: (context) => NowPlaying(), fullscreenDialog: true),
+            MaterialPageRoute<void>(
+              builder: (context) => NowPlaying(),
+              settings: RouteSettings(name: 'nowplaying'),
+              fullscreenDialog: true,
+            ),
           ).then((value) {
-            audioStateListener();
+            _audioStateListener();
           });
         },
         child: Container(
@@ -118,7 +122,9 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
                                 ? PodcastImage(
                                     key: Key('mini${snapshot.data.imageUrl}'),
                                     url: snapshot.data.imageUrl,
-                                    rounded: true,
+                                    width: 58.0,
+                                    height: 58.0,
+                                    borderRadius: 4.0,
                                     placeholder: placeholderBuilder != null
                                         ? placeholderBuilder?.builder()(context)
                                         : Image(image: AssetImage('assets/images/anytime-placeholder-logo.png')),
@@ -220,35 +226,35 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
     );
   }
 
-  /// We call this method to setup a listener for changing [AudioState]. This
-  /// in turns calls upon the [_pauseController] to animate the play/pause icon.
-  /// The [AudioBloc] playingState method is backed by a [BehaviorSubject] so
-  /// we'll always get the current state when we subscribe. This, however, has
-  /// a side effect causing the play/pause icon to animate when returning from
-  /// the full-size player, which looks a little odd. Therefore, on the first
-  /// event we move the controller to the correct state without animating. This
-  /// feels a little hacky, but stops the UI from looking a little odd.
-  void audioStateListener() {
-    final audioBloc = Provider.of<AudioBloc>(context, listen: false);
-    var firstEvent = true;
+  /// We call this method to setup a listener for changing [AudioState]. This in turns calls upon the [_pauseController]
+  /// to animate the play/pause icon. The [AudioBloc] playingState method is backed by a [BehaviorSubject] so we'll
+  /// always get the current state when we subscribe. This, however, has a side effect causing the play/pause icon to
+  /// animate when returning from the full-size player, which looks a little odd. Therefore, on the first event we move
+  /// the controller to the correct state without animating. This feels a little hacky, but stops the UI from looking a
+  /// little odd.
+  void _audioStateListener() {
+    if (mounted) {
+      final audioBloc = Provider.of<AudioBloc>(context, listen: false);
+      var firstEvent = true;
 
-    _audioStateSubscription = audioBloc.playingState.listen((event) {
-      if (event == AudioState.playing || event == AudioState.buffering) {
-        if (firstEvent) {
-          _playPauseController.value = 1;
-          firstEvent = false;
+      _audioStateSubscription = audioBloc.playingState.listen((event) {
+        if (event == AudioState.playing || event == AudioState.buffering) {
+          if (firstEvent) {
+            _playPauseController.value = 1;
+            firstEvent = false;
+          } else {
+            _playPauseController.forward();
+          }
         } else {
-          _playPauseController.forward();
+          if (firstEvent) {
+            _playPauseController.value = 0;
+            firstEvent = false;
+          } else {
+            _playPauseController.reverse();
+          }
         }
-      } else {
-        if (firstEvent) {
-          _playPauseController.value = 0;
-          firstEvent = false;
-        } else {
-          _playPauseController.reverse();
-        }
-      }
-    });
+      });
+    }
   }
 
   void _play(AudioBloc audioBloc) {

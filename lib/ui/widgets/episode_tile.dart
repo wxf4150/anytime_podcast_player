@@ -1,11 +1,13 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 import 'package:anytime/bloc/podcast/episode_bloc.dart';
+import 'package:anytime/bloc/podcast/queue_bloc.dart';
 import 'package:anytime/entities/episode.dart';
 import 'package:anytime/l10n/L.dart';
-import 'package:anytime/ui/podcast/show_notes.dart';
+import 'package:anytime/state/queue_event_state.dart';
+import 'package:anytime/ui/podcast/episode_details.dart';
 import 'package:anytime/ui/podcast/transport_controls.dart';
 import 'package:anytime/ui/widgets/tile_image.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +19,16 @@ import 'package:provider/provider.dart';
 /// episode's basic details, thumbnail and play button. It can then be
 /// expanded to present addition information about the episode and further
 /// controls.
+///
+/// TODO: Replace [Opacity] with [Container] with a transparent colour.
 class EpisodeTile extends StatelessWidget {
   final String podcastTitle;
   final String podcastURL;
   final Episode episode;
   final bool download;
   final bool play;
+  final bool playing;
+  final bool queued;
 
   const EpisodeTile({
     this.podcastTitle,
@@ -30,12 +36,16 @@ class EpisodeTile extends StatelessWidget {
     @required this.episode,
     @required this.download,
     @required this.play,
+    this.playing = false,
+    this.queued = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final textTheme = Theme.of(context).textTheme;
-    final bloc = Provider.of<EpisodeBloc>(context);
+    final episodeBloc = Provider.of<EpisodeBloc>(context);
+    final queueBloc = Provider.of<QueueBloc>(context);
     final shareEpisodeButtonBuilder = ShareEpisodeButtonBuilder.of(context);
 
     return ExpansionTile(
@@ -60,15 +70,10 @@ class EpisodeTile extends StatelessWidget {
               highlight: episode.highlight,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 1.0,
-              right: 1.0,
-              bottom: 1.0,
-            ),
+          SizedBox(
+            height: 5.0,
+            width: 56.0 * (episode.percentagePlayed / 100),
             child: Container(
-              height: 4.0,
-              width: 56.0 * (episode.percentagePlayed / 100),
               color: Theme.of(context).primaryColor,
             ),
           ),
@@ -148,7 +153,7 @@ class EpisodeTile extends StatelessWidget {
                                   iosIsDefaultAction: true,
                                   iosIsDestructiveAction: true,
                                   onPressed: () {
-                                    bloc.deleteDownload(episode);
+                                    episodeBloc.deleteDownload(episode);
                                     Navigator.pop(context);
                                   },
                                 ),
@@ -183,28 +188,26 @@ class EpisodeTile extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
                   ),
-                  onPressed: () {
-                    return Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (context) => ShowNotes(
-                          episode: episode,
-                        ),
-                        fullscreenDialog: true,
-                      ),
-                    ).then((value) {});
-                  },
+                  onPressed: playing
+                      ? null
+                      : () {
+                          if (queued) {
+                            queueBloc.queueEvent(QueueRemoveEvent(episode: episode));
+                          } else {
+                            queueBloc.queueEvent(QueueAddEvent(episode: episode));
+                          }
+                        },
                   child: Column(
                     children: <Widget>[
                       Icon(
-                        Icons.wysiwyg_outlined,
+                        queued ? Icons.playlist_add_check_outlined : Icons.playlist_add_outlined,
                         size: 22,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 2.0),
                       ),
                       Text(
-                        L.of(context).show_notes_label,
+                        queued ? 'Remove' : 'Add',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
@@ -221,14 +224,14 @@ class EpisodeTile extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
                   ),
                   onPressed: () {
-                    bloc.togglePlayed(episode);
+                    episodeBloc.togglePlayed(episode);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Icon(
-                        Icons.bookmark_border_outlined,
+                        episode.played ? Icons.unpublished_outlined : Icons.check_circle_outline,
                         size: 22,
                       ),
                       Padding(
@@ -246,6 +249,51 @@ class EpisodeTile extends StatelessWidget {
                 ),
               ),
               shareEpisodeButtonBuilder != null ? shareEpisodeButtonBuilder?.builder(podcastTitle, podcastURL, episode.title, episode.guid)(context) : Container(),
+              Expanded(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                  ),
+                  onPressed: () {
+                    showModalBottomSheet<void>(
+                        context: context,
+                        backgroundColor: theme.backgroundColor,
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10.0),
+                            topRight: Radius.circular(10.0),
+                          ),
+                        ),
+                        builder: (context) {
+                          return EpisodeDetails(
+                            episode: episode,
+                          );
+                        });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.unfold_more_outlined,
+                        size: 22,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                      ),
+                      Text(
+                        L.of(context).more_label,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -300,8 +348,9 @@ class EpisodeSubtitle extends StatelessWidget {
   final Episode episode;
   final String date;
   final Duration length;
+  final Color textColor;
 
-  EpisodeSubtitle(this.episode)
+  EpisodeSubtitle(this.episode, {this.textColor})
       : date = episode.publicationDate == null
             ? ''
             : DateFormat(episode.publicationDate.year == DateTime.now().year ? 'd MMM' : 'd MMM yy')
@@ -310,7 +359,8 @@ class EpisodeSubtitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
     var timeRemaining = episode.timeRemaining;
 
     String title;
@@ -339,7 +389,7 @@ class EpisodeSubtitle extends StatelessWidget {
         title,
         overflow: TextOverflow.ellipsis,
         softWrap: false,
-        style: textTheme.caption,
+        style: textColor != null ? textTheme.caption.copyWith(color: textColor) : textTheme.caption,
       ),
     );
   }

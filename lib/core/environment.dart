@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -16,8 +16,8 @@ const userAgentAppString = String.fromEnvironment('USER_AGENT', defaultValue: ''
 class Environment {
   static const _applicationName = 'Anytime';
   static const _applicationUrl = 'https://github.com/amugofjava/anytime_podcast_player';
-  static const _projectVersion = '1.1';
-  static const _build = '64';
+  static const _projectVersion = '1.2';
+  static const _build = '73';
 
   static var _agentString = userAgentAppString;
 

@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -22,11 +22,11 @@ void main() async {
     print('${record.level.name}: - ${record.time}: ${record.loggerName}: ${record.message}');
   });
 
-  var _mobileSettingsService = await MobileSettingsService.instance();
+  var mobileSettingsService = await MobileSettingsService.instance();
   certificateAuthorityBytes = await setupCertificateAuthority();
 
   runApp(AnytimePodcastApp(
-    _mobileSettingsService,
+    mobileSettingsService,
     certificateAuthorityBytes: certificateAuthorityBytes,
   ));
 }

@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -19,9 +19,11 @@ class DiscoveryBloc extends Bloc {
   final PodcastService podcastService;
 
   final BehaviorSubject<DiscoveryEvent> _discoveryInput = BehaviorSubject<DiscoveryEvent>();
+  final PublishSubject<List<String>> _genres = PublishSubject<List<String>>();
 
   Stream<DiscoveryState> _discoveryResults;
   pcast.SearchResult _resultsCache;
+  String _lastGenre = '';
 
   DiscoveryBloc({@required this.podcastService}) {
     _init();
@@ -29,14 +31,22 @@ class DiscoveryBloc extends Bloc {
 
   void _init() {
     _discoveryResults = _discoveryInput.switchMap<DiscoveryState>((DiscoveryEvent event) => _charts(event));
+    _genres.onListen = loadGenres;
+  }
+
+  void loadGenres() {
+    _genres.sink.add(podcastService.genres());
   }
 
   Stream<DiscoveryState> _charts(DiscoveryEvent event) async* {
     yield DiscoveryLoadingState();
 
     if (event is DiscoveryChartEvent) {
-      if (_resultsCache == null || DateTime.now().difference(_resultsCache.processedTime).inMinutes > cacheMinutes) {
-        _resultsCache = await podcastService.charts(size: event.count);
+      if (_resultsCache == null ||
+          event.genre != _lastGenre ||
+          DateTime.now().difference(_resultsCache.processedTime).inMinutes > cacheMinutes) {
+        _lastGenre = event.genre;
+        _resultsCache = await podcastService.charts(size: event.count, genre: event.genre);
       }
 
       yield DiscoveryPopulatedState<pcast.SearchResult>(_resultsCache);
@@ -49,5 +59,7 @@ class DiscoveryBloc extends Bloc {
   }
 
   void Function(DiscoveryEvent) get discover => _discoveryInput.add;
+
   Stream<DiscoveryState> get results => _discoveryResults;
+  Stream<List<String>> get genres => _genres.stream;
 }

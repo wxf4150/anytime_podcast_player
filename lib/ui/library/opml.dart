@@ -1,7 +1,8 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:anytime/l10n/L.dart';
 import 'package:anytime/ui/library/opml_import.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,7 @@ class OPMLSelect extends StatefulWidget {
   const OPMLSelect({Key key}) : super(key: key);
 
   @override
-  _OPMLSelectState createState() => _OPMLSelectState();
+  State<OPMLSelect> createState() => _OPMLSelectState();
 }
 
 class _OPMLSelectState extends State<OPMLSelect> {
@@ -34,7 +35,7 @@ class _OPMLSelectState extends State<OPMLSelect> {
       appBar: AppBar(
         elevation: 0.0,
         title: Text(
-          'OPML Import/Export',
+          L.of(context).opml_import_export_label,
         ),
       ),
       body: _buildBody(context),
@@ -66,6 +67,7 @@ class _OPMLSelectState extends State<OPMLSelect> {
                   await Navigator.push(
                     context,
                     MaterialPageRoute<void>(
+                      settings: RouteSettings(name: 'opmlimport'),
                       builder: (context) => OPMLImport(file: file.path),
                       fullscreenDialog: true,
                     ),
@@ -74,11 +76,11 @@ class _OPMLSelectState extends State<OPMLSelect> {
                   Navigator.pop(context);
                 }
               },
-              child: Text('Import'),
+              child: Text(L.of(context).opml_import_button_label),
             ),
             ElevatedButton(
               onPressed: () {},
-              child: Text('Export'),
+              child: Text(L.of(context).opml_export_button_label),
             ),
           ],
         ),

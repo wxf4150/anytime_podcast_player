@@ -1,11 +1,14 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 import 'package:anytime/bloc/podcast/podcast_bloc.dart';
+import 'package:anytime/bloc/settings/settings_bloc.dart';
+import 'package:anytime/entities/app_settings.dart';
 import 'package:anytime/entities/podcast.dart';
 import 'package:anytime/l10n/L.dart';
 import 'package:anytime/ui/widgets/platform_progress_indicator.dart';
+import 'package:anytime/ui/widgets/podcast_grid_tile.dart';
 import 'package:anytime/ui/widgets/podcast_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,16 +19,17 @@ class Library extends StatefulWidget {
   const Library({this.noSubscriptionsMessage});
 
   @override
-  _LibraryState createState() => _LibraryState();
+  State<Library> createState() => _LibraryState();
 }
 
 class _LibraryState extends State<Library> {
   @override
   Widget build(BuildContext context) {
-    final _podcastBloc = Provider.of<PodcastBloc>(context);
+    final podcastBloc = Provider.of<PodcastBloc>(context);
+    final settingsBloc = Provider.of<SettingsBloc>(context);
 
     return StreamBuilder<List<Podcast>>(
-        stream: _podcastBloc.subscriptions,
+        stream: podcastBloc.subscriptions,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.isEmpty) {
@@ -52,14 +56,46 @@ class _LibraryState extends State<Library> {
                 ),
               );
             } else {
-              return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return PodcastTile(podcast: snapshot.data.elementAt(index));
-                },
-                childCount: snapshot.data.length,
-                addAutomaticKeepAlives: false,
-              ));
+              return StreamBuilder<AppSettings>(
+                  stream: settingsBloc.settings,
+                  builder: (context, settingsSnapshot) {
+                    if (settingsSnapshot.hasData) {
+                      var mode = settingsSnapshot.data.layout;
+                      var size = mode == 1 ? 100.0 : 160.0;
+
+                      if (mode == 0) {
+                        return SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return PodcastTile(podcast: snapshot.data.elementAt(index));
+                          },
+                          childCount: snapshot.data.length,
+                          addAutomaticKeepAlives: false,
+                        ));
+                      }
+                      return SliverGrid(
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: size,
+                          mainAxisSpacing: 10.0,
+                          crossAxisSpacing: 10.0,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return PodcastGridTile(podcast: snapshot.data.elementAt(index));
+                          },
+                          childCount: snapshot.data.length,
+                        ),
+                      );
+                    } else {
+                      return SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: SizedBox(
+                          height: 0,
+                          width: 0,
+                        ),
+                      );
+                    }
+                  });
             }
           } else {
             return SliverFillRemaining(

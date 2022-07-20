@@ -62,9 +62,23 @@ class MobilePodcastService extends PodcastService {
 
   @override
   Future<psearch.SearchResult> charts({
-    int size,
+    int size = 20,
+    String genre,
   }) {
-    return api.charts(size);
+    return api.charts(
+      size: size,
+      searchProvider: settingsService.searchProvider,
+      genre: genre,
+    );
+  }
+
+  @override
+  List<String> genres() {
+    var results = <String>['All'];
+    results.addAll(api.genres(settingsService.searchProvider));
+
+    //.addAll(api.genres(settingsService.searchProvider));
+    return results;
   }
 
   @override
@@ -75,7 +89,11 @@ class MobilePodcastService extends PodcastService {
   /// recently and return that if available. If not, we'll make a call to load
   /// it from the network.
   @override
-  Future<Podcast> loadPodcast({@required Podcast podcast, bool refresh}) async {
+  Future<Podcast> loadPodcast({
+    @required Podcast podcast,
+    bool highlightNewEpisodes = false,
+    bool refresh,
+  }) async {
     log.fine('loadPodcast. ID ${podcast.id} - refresh $refresh');
 
     if (podcast.id == null || refresh) {
@@ -190,7 +208,8 @@ class MobilePodcastService extends PodcastService {
           final episodeImage = episode.imageUrl == null || episode.imageUrl.isEmpty ? pc.imageUrl : episode.imageUrl;
           final episodeThumbImage =
               episode.imageUrl == null || episode.imageUrl.isEmpty ? pc.thumbImageUrl : episode.imageUrl;
-          
+          final duration = episode.duration?.inSeconds ?? 0;
+
           Map<String, dynamic> episodeMetadata;
           if (episodesMetadataItems != null) {
             episodeMetadata = episodesMetadataItems.firstWhere((item) {
@@ -202,7 +221,7 @@ class MobilePodcastService extends PodcastService {
           }
 
           if (existingEpisode == null) {
-            pc.newEpisodes = pc.id != null;
+            pc.newEpisodes = highlightNewEpisodes && pc.id != null;
 
             pc.episodes.add(Episode(
               highlight: pc.newEpisodes,
@@ -218,7 +237,7 @@ class MobilePodcastService extends PodcastService {
               link: episode.link,
               imageUrl: episodeImage,
               thumbImageUrl: episodeThumbImage,
-              duration: episode.duration?.inSeconds ?? 0,
+              duration: duration,
               publicationDate: episode.publicationDate,
               chaptersUrl: episode.chapters?.url,
               chapters: <Chapter>[],
@@ -236,12 +255,16 @@ class MobilePodcastService extends PodcastService {
             existingEpisode.link = episode.link;
             existingEpisode.imageUrl = episodeImage;
             existingEpisode.thumbImageUrl = episodeThumbImage;
-            existingEpisode.duration = episode.duration?.inSeconds ?? 0;
             existingEpisode.publicationDate = episode.publicationDate;
             existingEpisode.chaptersUrl = episode.chapters?.url;
             existingEpisode.metadata = metadata;
             existingEpisode.episodeMetadata = episodeMetadata;
             existingEpisode.value = Value.fromPodcastSearchValue(episode.value);
+
+            // If the source duration is 0 do not update any saved, calculated duration.
+            if (duration > 0) {
+              existingEpisode.duration = duration;
+            }
 
             pc.episodes.add(existingEpisode);
 
@@ -308,6 +331,11 @@ class MobilePodcastService extends PodcastService {
   @override
   Future<List<Episode>> loadDownloads() async {
     return repository.findDownloads();
+  }
+
+  @override
+  Future<List<Episode>> loadEpisodes() async {
+    return repository.findAllEpisodes();
   }
 
   @override
@@ -392,6 +420,16 @@ class MobilePodcastService extends PodcastService {
   @override
   Future<Episode> saveEpisode(Episode episode) async {
     return repository.saveEpisode(episode);
+  }
+
+  @override
+  Future<void> saveQueue(List<Episode> episodes) async {
+    await repository.saveQueue(episodes);
+  }
+
+  @override
+  Future<List<Episode>> loadQueue() async {
+    return await repository.loadQueue();
   }
 
   /// Remove HTML padding from the content. The padding may look fine within

@@ -1,6 +1,8 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
+import 'dart:async';
 
 import 'package:anytime/api/podcast/mobile_podcast_api.dart';
 import 'package:anytime/api/podcast/podcast_api.dart';
@@ -10,13 +12,16 @@ import 'package:anytime/bloc/podcast/audio_bloc.dart';
 import 'package:anytime/bloc/podcast/episode_bloc.dart';
 import 'package:anytime/bloc/podcast/opml_bloc.dart';
 import 'package:anytime/bloc/podcast/podcast_bloc.dart';
+import 'package:anytime/bloc/podcast/queue_bloc.dart';
 import 'package:anytime/bloc/search/search_bloc.dart';
 import 'package:anytime/bloc/settings/settings_bloc.dart';
 import 'package:anytime/bloc/ui/pager_bloc.dart';
 import 'package:anytime/core/environment.dart';
 import 'package:anytime/entities/app_settings.dart';
+import 'package:anytime/entities/feed.dart';
 import 'package:anytime/entities/podcast.dart';
 import 'package:anytime/l10n/L.dart';
+import 'package:anytime/navigation/navigation_route_observer.dart';
 import 'package:anytime/repository/repository.dart';
 import 'package:anytime/repository/sembast/sembast_repository.dart';
 import 'package:anytime/services/audio/audio_player_service.dart';
@@ -39,6 +44,7 @@ import 'package:anytime/ui/search/search.dart';
 import 'package:anytime/ui/settings/settings.dart';
 import 'package:anytime/ui/themes.dart';
 import 'package:anytime/ui/widgets/action_text.dart';
+import 'package:anytime/ui/widgets/layout_selector.dart';
 import 'package:anytime/ui/widgets/search_slide_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,6 +53,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 var theme = Themes.lightTheme().themeData;
@@ -94,10 +101,10 @@ class AnytimePodcastApp extends StatefulWidget {
   }
 
   @override
-  _AnytimePodcastAppState createState() => _AnytimePodcastAppState();
+  AnytimePodcastAppState createState() => AnytimePodcastAppState();
 }
 
-class _AnytimePodcastAppState extends State<AnytimePodcastApp> with WidgetsBindingObserver {
+class AnytimePodcastAppState extends State<AnytimePodcastApp> with WidgetsBindingObserver {
   ThemeData theme;
   AudioBloc audioBloc;
 
@@ -216,11 +223,19 @@ class _AnytimePodcastAppState extends State<AnytimePodcastApp> with WidgetsBindi
         Provider<OPMLBloc>(
           create: (_) => OPMLBloc(opmlService: widget.opmlService),
           dispose: (_, value) => value.dispose(),
+        ),
+        Provider<QueueBloc>(
+          create: (_) => QueueBloc(
+            audioPlayerService: widget.audioPlayerService,
+            podcastService: widget.podcastService,
+          ),
+          dispose: (_, value) => value.dispose(),
         )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Anytime Podcast Player',
+        navigatorObservers: [NavigationRouteObserver()],
         localizationsDelegates: [
           const LocalisationsDelegate(),
           GlobalMaterialLocalizations.delegate,
@@ -248,17 +263,112 @@ class AnytimeHomePage extends StatefulWidget {
   AnytimeHomePage({this.title, this.noSubscriptionsMessage, this.topBarVisible = true, this.inlineSearch = false});
 
   @override
-  _AnytimeHomePageState createState() => _AnytimeHomePageState();
+  State<AnytimeHomePage> createState() => _AnytimeHomePageState();
 }
 
-class _AnytimeHomePageState extends State<AnytimeHomePage> {
+class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingObserver {
+  StreamSubscription deepLinkSubscription;
   final log = Logger('_AnytimeHomePageState');
+  bool handledInitialLink = false;
   Widget library;
 
   @override
   void initState() {
     super.initState();
     Environment.loadEnvironment();
+
+    final audioBloc = Provider.of<AudioBloc>(context, listen: false);
+
+    WidgetsBinding.instance.addObserver(this);
+
+    audioBloc.transitionLifecycleState(LifecyleState.resume);
+
+    /// Handle deep links
+    _setupLinkListener();
+  }
+
+  /// We listen to external links from outside the app. For example, someone may navigate
+  /// to a web page that supports 'Open with Anytime'.
+  void _setupLinkListener() async {
+    /// First, setup a handler to listen for links whilst Anytime is running - a warm start
+    deepLinkSubscription = uriLinkStream.listen((uri) async {
+      _handleLinkEvent(uri);
+    });
+
+    /// Handle initial link
+    if (!handledInitialLink) {
+      handledInitialLink = true;
+
+      final uri = await getInitialUri();
+
+      if (uri != null) {
+        _handleLinkEvent(uri);
+      }
+    }
+  }
+
+  /// This method handles the actual link supplied from [uni_links], either
+  /// at app startup or during running.
+  void _handleLinkEvent(Uri uri) async {
+    if (uri.scheme == 'anytime-subscribe' && uri.query.startsWith('uri=')) {
+      var path = uri.query.substring(4);
+      var loadPodcastBloc = Provider.of<PodcastBloc>(context, listen: false);
+      var routeName = NavigationRouteObserver().top.settings?.name;
+
+      /// If we are currently on the podcast details page, we can simply request (via
+      /// the BLoC) that we load this new URL. If not, we pop the stack until we are
+      /// back at root and then load the podcast details page.
+      if (routeName != null && routeName == 'podcastdetails') {
+        loadPodcastBloc.load(Feed(
+          podcast: Podcast.fromUrl(url: path),
+          backgroundFresh: false,
+          silently: false,
+        ));
+      } else {
+        /// Pop back to route.
+        Navigator.of(context).popUntil((route) {
+          var currentRouteName = NavigationRouteObserver().top.settings.name;
+
+          return currentRouteName == null || currentRouteName == '' || currentRouteName == '/';
+        });
+
+        /// Once we have reached the root route, push podcast details.
+        await Navigator.push(
+          context,
+          MaterialPageRoute<void>(
+              fullscreenDialog: true,
+              settings: RouteSettings(name: 'podcastdetails'),
+              builder: (context) => PodcastDetails(Podcast.fromUrl(url: path), loadPodcastBloc)),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    final audioBloc = Provider.of<AudioBloc>(context, listen: false);
+    audioBloc.transitionLifecycleState(LifecyleState.pause);
+
+    deepLinkSubscription?.cancel();
+
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    final audioBloc = Provider.of<AudioBloc>(context, listen: false);
+
+    switch (state) {
+      case AppLifecycleState.resumed:
+        audioBloc.transitionLifecycleState(LifecyleState.resume);
+        break;
+      case AppLifecycleState.paused:
+        audioBloc.transitionLifecycleState(LifecyleState.pause);
+        break;
+      default:
+        break;
+    }
   }
 
   @override
@@ -271,9 +381,7 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
-        systemNavigationBarColor: isLight
-            ? Theme.of(context).primaryColorDark
-            : Theme.of(context).bottomAppBarColor,
+        systemNavigationBarColor: Theme.of(context).bottomAppBarColor,
         statusBarColor: Colors.transparent,
       ),
       child: Scaffold(
@@ -298,7 +406,10 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
                           onPressed: () async {
                             await Navigator.push(
                               context,
-                              SlideRightRoute(widget: Search()),
+                              SlideRightRoute(
+                                widget: Search(),
+                                settings: RouteSettings(name: 'search'),
+                              ),
                             );
                           },
                         ),
@@ -312,18 +423,57 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
                             return <PopupMenuEntry<String>>[
                               PopupMenuItem<String>(
                                 textStyle: Theme.of(context).textTheme.subtitle1,
+                                value: 'layout',
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: Icon(Icons.dashboard, size: 18.0),
+                                    ),
+                                    Text(L.of(context).layout_label),
+                                  ],
+                                ),
+                              ),
+                              PopupMenuItem<String>(
+                                textStyle: Theme.of(context).textTheme.subtitle1,
                                 value: 'rss',
-                                child: Text(L.of(context).add_rss_feed_option),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: Icon(Icons.rss_feed, size: 18.0),
+                                    ),
+                                    Text(L.of(context).add_rss_feed_option),
+                                  ],
+                                ),
                               ),
                               PopupMenuItem<String>(
                                 textStyle: Theme.of(context).textTheme.subtitle1,
                                 value: 'settings',
-                                child: Text(L.of(context).settings_label),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: Icon(Icons.settings, size: 18.0),
+                                    ),
+                                    Text(L.of(context).settings_label),
+                                  ],
+                                ),
                               ),
                               PopupMenuItem<String>(
                                 textStyle: Theme.of(context).textTheme.subtitle1,
                                 value: 'about',
-                                child: Text(L.of(context).about_label),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: Icon(Icons.info_outline, size: 18.0),
+                                    ),
+                                    Text(L.of(context).about_label),
+                                  ],
+                                ),
                               ),
                             ];
                           },
@@ -348,6 +498,7 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
               stream: pager.currentPage,
               initialData: 0,
               builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+
                 var selectedItemColor = Theme.of(context).iconTheme.color;
                 var unselectedItemColor = HSLColor.fromColor(Theme.of(context).bottomAppBarColor).withLightness(0.85).toColor();
                 return BottomNavigationBar(
@@ -411,8 +562,9 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
   }
 
   void _menuSelect(String choice) async {
-    var _textFieldController = TextEditingController();
-    var _podcastBloc = Provider.of<PodcastBloc>(context, listen: false);
+    var textFieldController = TextEditingController();
+    var podcastBloc = Provider.of<PodcastBloc>(context, listen: false);
+    final theme = Theme.of(context);
     var url = '';
 
     switch (choice) {
@@ -427,7 +579,7 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
               height: 52.0,
             ),
             children: <Widget>[
-              Text('\u00a9 2020-2021 Ben Hills'),
+              Text('\u00a9 2020-2022 Ben Hills'),
               GestureDetector(
                 onTap: () {
                   _launchEmail();
@@ -445,7 +597,23 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
       case 'settings':
         await Navigator.push(
           context,
-          MaterialPageRoute<void>(builder: (context) => Settings()),
+          MaterialPageRoute<void>(
+            settings: RouteSettings(name: 'settings'),
+            builder: (context) => Settings(),
+          ),
+        );
+        break;
+      case 'layout':
+        await showModalBottomSheet<void>(
+          context: context,
+          backgroundColor: theme.secondaryHeaderColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+          ),
+          builder: (context) => LayoutSelectorWidget(),
         );
         break;
       case 'rss':
@@ -459,7 +627,7 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
                   url = value;
                 });
               },
-              controller: _textFieldController,
+              controller: textFieldController,
               decoration: InputDecoration(hintText: 'https://'),
             ),
             actions: <Widget>[
@@ -480,7 +648,8 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute<void>(
-                        builder: (context) => PodcastDetails(Podcast.fromUrl(url: url), _podcastBloc)),
+                        settings: RouteSettings(name: 'podcastdetails'),
+                        builder: (context) => PodcastDetails(Podcast.fromUrl(url: url), podcastBloc)),
                   ).then((value) => Navigator.pop(context));
                 },
               ),
@@ -492,11 +661,12 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> {
   }
 
   void _launchEmail() async {
-    const url = 'mailto:hello@anytimeplayer.app';
-    if (await canLaunch(url)) {
-      await launch(url);
+    final uri = Uri.parse('mailto:hello@anytimeplayer.app');
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
-      throw 'Could not launch $url';
+      throw 'Could not launch $uri';
     }
   }
 }

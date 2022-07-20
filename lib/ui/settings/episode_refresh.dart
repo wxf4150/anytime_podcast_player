@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -13,7 +13,7 @@ class EpisodeRefreshWidget extends StatefulWidget {
   const EpisodeRefreshWidget({Key key}) : super(key: key);
 
   @override
-  _EpisodeRefreshWidgetState createState() => _EpisodeRefreshWidgetState();
+  State<EpisodeRefreshWidget> createState() => _EpisodeRefreshWidgetState();
 }
 
 class _EpisodeRefreshWidgetState extends State<EpisodeRefreshWidget> {

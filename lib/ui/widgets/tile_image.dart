@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -32,21 +32,18 @@ class TileImage extends StatelessWidget {
       url: url,
       height: size,
       width: size,
-      rounded: true,
+      borderRadius: 4.0,
+      fit: BoxFit.contain,
       placeholder: placeholderBuilder != null
           ? placeholderBuilder?.builder()(context)
           : Image(
-              fit: BoxFit.cover,
-              width: size,
-              height: size,
+              fit: BoxFit.contain,
               image: AssetImage('assets/images/anytime-placeholder-logo.png'),
             ),
       errorPlaceholder: placeholderBuilder != null
           ? placeholderBuilder?.errorBuilder()(context)
           : Image(
-              fit: BoxFit.cover,
-              width: size,
-              height: size,
+              fit: BoxFit.contain,
               image: AssetImage('assets/images/anytime-placeholder-logo.png'),
             ),
     );

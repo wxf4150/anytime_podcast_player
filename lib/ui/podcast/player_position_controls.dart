@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 /// time, time remaining and the time [Slider].
 class PlayerPositionControls extends StatefulWidget {
   @override
-  _PlayerPositionControlsState createState() => _PlayerPositionControlsState();
+  State<PlayerPositionControls> createState() => _PlayerPositionControlsState();
 }
 
 class _PlayerPositionControlsState extends State<PlayerPositionControls> {
@@ -68,7 +68,7 @@ class _PlayerPositionControlsState extends State<PlayerPositionControls> {
                 ),
                 Expanded(
                   child: snapshot.hasData
-                      ? Slider(
+                      ? Slider.adaptive(
                           label: _formatDuration(Duration(seconds: p)),
                           onChanged: (value) {
                             setState(() {

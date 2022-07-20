@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -14,10 +14,10 @@ import 'package:anytime/state/bloc_state.dart';
 import 'package:anytime/ui/podcast/funding_menu.dart';
 import 'package:anytime/ui/podcast/playback_error_listener.dart';
 import 'package:anytime/ui/podcast/podcast_context_menu.dart';
+import 'package:anytime/ui/podcast/podcast_episode_list.dart';
 import 'package:anytime/ui/widgets/action_text.dart';
 import 'package:anytime/ui/widgets/decorated_icon_button.dart';
 import 'package:anytime/ui/widgets/delayed_progress_indicator.dart';
-import 'package:anytime/ui/widgets/episode_tile.dart';
 import 'package:anytime/ui/widgets/placeholder_builder.dart';
 import 'package:anytime/ui/widgets/platform_progress_indicator.dart';
 import 'package:anytime/ui/widgets/podcast_html.dart';
@@ -39,7 +39,7 @@ class PodcastDetails extends StatefulWidget {
   PodcastDetails(this.podcast, this._podcastBloc);
 
   @override
-  _PodcastDetailsState createState() => _PodcastDetailsState();
+  State<PodcastDetails> createState() => _PodcastDetailsState();
 }
 
 class _PodcastDetailsState extends State<PodcastDetails> {
@@ -155,7 +155,7 @@ class _PodcastDetailsState extends State<PodcastDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final _podcastBloc = Provider.of<PodcastBloc>(context, listen: false);
+    final podcastBloc = Provider.of<PodcastBloc>(context, listen: false);
     final placeholderBuilder = PlaceholderBuilder.of(context);
 
     return WillPopScope(
@@ -202,7 +202,7 @@ class _PodcastDetailsState extends State<PodcastDetails> {
                         child: ExcludeSemantics(
                           child: StreamBuilder<BlocState<Podcast>>(
                               initialData: BlocEmptyState<Podcast>(),
-                              stream: _podcastBloc.details,
+                              stream: podcastBloc.details,
                               builder: (context, snapshot) {
                                 final state = snapshot.data;
                                 var podcast = widget.podcast;
@@ -225,7 +225,7 @@ class _PodcastDetailsState extends State<PodcastDetails> {
                     )),
                 StreamBuilder<BlocState<Podcast>>(
                     initialData: BlocEmptyState<Podcast>(),
-                    stream: _podcastBloc.details,
+                    stream: podcastBloc.details,
                     builder: (context, snapshot) {
                       final state = snapshot.data;
 
@@ -287,23 +287,14 @@ class _PodcastDetailsState extends State<PodcastDetails> {
                       );
                     }),
                 StreamBuilder<List<Episode>>(
-                    stream: _podcastBloc.episodes,
+                    stream: podcastBloc.episodes,
                     builder: (context, snapshot) {
-                      return snapshot.hasData
-                          ? SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return EpisodeTile(
-                                  podcastTitle: widget.podcast.title,
-                                  podcastURL: widget.podcast.url,
-                                  episode: snapshot.data[index],
-                                  download: true,
-                                  play: true,
-                                );
-                              },
-                              childCount: snapshot.data.length,
-                              addAutomaticKeepAlives: false,
-                            ))
+                      return snapshot.hasData && snapshot.data.isNotEmpty
+                          ? PodcastEpisodeList(
+                              episodes: snapshot.data,
+                              play: true,
+                              download: true,
+                            )
                           : SliverToBoxAdapter(child: Container());
                     }),
               ],
@@ -334,9 +325,10 @@ class PodcastHeaderImage extends StatelessWidget {
       );
     }
 
-    return PodcastImage(
+    return PodcastBannerImage(
       key: Key('details${podcast.imageUrl}'),
       url: podcast.imageUrl,
+      fit: BoxFit.cover,
       placeholder:
           placeholderBuilder != null ? placeholderBuilder?.builder()(context) : DelayedCircularProgressIndicator(),
       errorPlaceholder: placeholderBuilder != null

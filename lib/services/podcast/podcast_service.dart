@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -35,12 +35,16 @@ abstract class PodcastService {
 
   Future<pcast.SearchResult> charts({
     @required int size,
+    String genre,
   });
 
   Future<pcast.SearchResult> mostRecent();
 
+  List<String> genres();
+
   Future<Podcast> loadPodcast({
     @required Podcast podcast,
+    bool highlightNewEpisodes,
     bool refresh,
   });
 
@@ -49,6 +53,7 @@ abstract class PodcastService {
   });
 
   Future<List<Episode>> loadDownloads();
+  Future<List<Episode>> loadEpisodes();
 
   Future<List<Chapter>> loadChaptersByUrl({@required String url});
 
@@ -59,6 +64,8 @@ abstract class PodcastService {
   Future<void> unsubscribe(Podcast podcast);
   Future<Podcast> save(Podcast podcast);
   Future<Episode> saveEpisode(Episode episode);
+  Future<void> saveQueue(List<Episode> episodes);
+  Future<List<Episode>> loadQueue();
 
   /// Event listeners
   Stream<Podcast> podcastListener;

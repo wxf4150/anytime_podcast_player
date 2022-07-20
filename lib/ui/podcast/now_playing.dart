@@ -1,4 +1,4 @@
-// Copyright 2020-2021 Ben Hills. All rights reserved.
+// Copyright 2020-2022 Ben Hills. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -11,6 +11,8 @@ import 'package:anytime/services/audio/audio_player_service.dart';
 import 'package:anytime/state/sleep_policy.dart';
 import 'package:anytime/ui/podcast/chapter_selector.dart';
 import 'package:anytime/ui/podcast/dot_decoration.dart';
+import 'package:anytime/ui/podcast/now_playing_floating_player.dart';
+import 'package:anytime/ui/podcast/now_playing_options.dart';
 import 'package:anytime/ui/podcast/playback_error_listener.dart';
 import 'package:anytime/ui/podcast/player_position_controls.dart';
 import 'package:anytime/ui/podcast/player_transport_controls.dart';
@@ -26,14 +28,19 @@ import 'package:url_launcher/url_launcher.dart';
 
 /// This is the full-screen player Widget which is invoked by touching the mini player.
 /// This displays the podcast image, episode notes and standard playback controls.
+///
+/// TODO: The fade in/out transition applied when scrolling the queue is the first implementation.
+/// Using [Opacity] is a very inefficient way of achieving this effect, but will do as a place
+/// holder until a better animation can be achieved.
 class NowPlaying extends StatefulWidget {
   @override
-  _NowPlayingState createState() => _NowPlayingState();
+  State<NowPlaying> createState() => _NowPlayingState();
 }
 
 class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
   StreamSubscription<AudioState> playingStateSubscription;
   var textGroup = AutoSizeGroup();
+  double opacity, scrollPos = 0.0;
 
   @override
   void initState() {
@@ -61,6 +68,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     playingStateSubscription.cancel();
+
     super.dispose();
   }
 
@@ -80,52 +88,88 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
           var duration = snapshot.data == null ? 0 : snapshot.data.duration;
           final transportBuilder = playerBuilder?.builder(duration);
 
-          return DefaultTabController(
-              length: snapshot.data.hasChapters ? 3 : 2,
-              initialIndex: snapshot.data.hasChapters ? 1 : 0,
-              child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle(
-                  statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
-                  systemNavigationBarColor: isLight ? Theme.of(context).primaryColorDark : Theme.of(context).bottomAppBarColor,
-                  statusBarColor: Colors.transparent,
-                ),
-                child: Scaffold(
-                  appBar: AppBar(
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    elevation: 0.0,
-                    leading: IconButton(
-                      tooltip: L.of(context).minimise_player_window_button_label,
-                      icon: Icon(
-                        Icons.keyboard_arrow_down,
-                        color: Theme.of(context).primaryIconTheme.color,
+          return NotificationListener<DraggableScrollableNotification>(
+            onNotification: (notification) {
+              setState(() {
+                opacity = scrollPos = (notification.extent - notification.minExtent) / (notification.maxExtent - notification.minExtent);
+              });
+
+              return true;
+            },
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                DefaultTabController(
+                    length: snapshot.data.hasChapters ? 3 : 2,
+                    initialIndex: snapshot.data.hasChapters ? 1 : 0,
+                    child: Scaffold(
+                      appBar: AppBar(
+                        systemOverlayStyle: SystemUiOverlayStyle(
+                          statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
+                          systemNavigationBarColor: Theme.of(context).bottomAppBarColor,
+                          statusBarColor: Colors.transparent,
+                        ),
+                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                        elevation: 0.0,
+                        leading: IconButton(
+                          tooltip: L.of(context).minimise_player_window_button_label,
+                          icon: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Theme.of(context).primaryIconTheme.color,
+                          ),
+                          onPressed: () => {
+                            Navigator.pop(context),
+                          },
+                        ),
+                        flexibleSpace: PlaybackErrorListener(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              EpisodeTabBar(
+                                chapters: snapshot.data.hasChapters,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      onPressed: () => {
-                        Navigator.pop(context),
-                      },
-                    ),
-                    flexibleSpace: PlaybackErrorListener(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          EpisodeTabBar(
-                            chapters: snapshot.data.hasChapters,
+                      body: Column(
+                        children: [
+                          Expanded(
+                            child: EpisodeTabBarView(
+                              episode: snapshot.data,
+                              chapters: snapshot.data.hasChapters,
+                            ),
+                          ),
+                          transportBuilder != null
+                              ? transportBuilder(context)
+                              : SizedBox(
+                                  height: 148.0,
+                                  child: NowPlayingTransport(),
+                                ),
+                          SizedBox(
+                            height: 48.0,
                           ),
                         ],
                       ),
+                    )),
+                if (scrollPos > 0)
+                  Opacity(
+                    opacity: opacity,
+                    child: Column(
+                      children: [
+                        FloatingPlayer(),
+                        Expanded(
+                          child: Container(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  body: EpisodeTabBarView(
-                    episode: snapshot.data,
-                    chapters: snapshot.data.hasChapters,
-                  ),
-                  bottomNavigationBar: transportBuilder != null
-                      ? transportBuilder(context)
-                      : SizedBox(
-                          height: 148.0,
-                          child: NowPlayingTransport(),
-                        ),
-                ),
-              ));
+                NowPlayingOptionsSelector(scrollPos: scrollPos),
+              ],
+            ),
+          );
         });
   }
 
@@ -258,9 +302,10 @@ class NowPlayingEpisode extends StatelessWidget {
                       child: PodcastImage(
                         key: Key('nowplaying$imageUrl'),
                         url: imageUrl,
-                        height: 360,
-                        width: 360,
+                        width: MediaQuery.of(context).size.width * .75,
+                        height: MediaQuery.of(context).size.height * .75,
                         fit: BoxFit.contain,
+                        borderRadius: 6.0,
                         placeholder: placeholderBuilder != null
                             ? placeholderBuilder?.builder()(context)
                             : DelayedCircularProgressIndicator(),
@@ -286,9 +331,10 @@ class NowPlayingEpisode extends StatelessWidget {
                       child: PodcastImage(
                         key: Key('nowplaying$imageUrl'),
                         url: imageUrl,
-                        height: 360,
-                        width: 360,
+                        height: 280,
+                        width: 280,
                         fit: BoxFit.contain,
+                        borderRadius: 8.0,
                         placeholder: placeholderBuilder != null
                             ? placeholderBuilder?.builder()(context)
                             : DelayedCircularProgressIndicator(),
@@ -390,10 +436,12 @@ class NowPlayingEpisodeDetails extends StatelessWidget {
   }
 
   void _chapterLink(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    final uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
-      throw 'Could not launch $url';
+      throw 'Could not launch chapter link: $url';
     }
   }
 }
