@@ -54,8 +54,8 @@ class _LayoutSelectorWidgetState extends State<LayoutSelectorWidget> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                            child: Icon(
-                              Icons.grid_view,
+                            child: ImageIcon(
+                              AssetImage("assets/icons/layout.png"),
                               size: 18,
                               color: theme.primaryIconTheme.color,
                             ),
