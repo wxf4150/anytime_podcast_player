@@ -29,6 +29,7 @@ class _LayoutSelectorWidgetState extends State<LayoutSelectorWidget> {
   @override
   Widget build(BuildContext context) {
     final settingsBloc = Provider.of<SettingsBloc>(context, listen: false);
+    var theme = Theme.of(context);
 
     return StreamBuilder<AppSettings>(
         stream: settingsBloc.settings,
@@ -41,7 +42,7 @@ class _LayoutSelectorWidgetState extends State<LayoutSelectorWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SliderHandle(),
+              SliderHandle(scrollPos: 0.0),
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 24.0, 8.0, 24.0),
                 child: Row(
@@ -56,11 +57,12 @@ class _LayoutSelectorWidgetState extends State<LayoutSelectorWidget> {
                             child: Icon(
                               Icons.grid_view,
                               size: 18,
+                              color: theme.primaryIconTheme.color,
                             ),
                           ),
                           Text(
                             L.of(context).layout_label,
-                            style: Theme.of(context).textTheme.subtitle1,
+                            style: theme.textTheme.subtitle1,
                           ),
                         ],
                       )),
@@ -74,11 +76,11 @@ class _LayoutSelectorWidgetState extends State<LayoutSelectorWidget> {
                             settingsBloc.layoutMode(0);
                           },
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: mode == 0 ? Theme.of(context).primaryColor : null,
+                            backgroundColor: mode == 0 ? theme.bottomAppBarColor : null,
                           ),
                           child: Icon(
                             Icons.list,
-                            color: mode == 0 ? Theme.of(context).canvasColor : Theme.of(context).primaryColor,
+                            color: mode == 0 ? theme.iconTheme.color :theme.primaryIconTheme.color,
                           ),
                         ),
                       ),
@@ -91,11 +93,11 @@ class _LayoutSelectorWidgetState extends State<LayoutSelectorWidget> {
                             settingsBloc.layoutMode(1);
                           },
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: mode == 1 ? Theme.of(context).primaryColor : null,
+                            backgroundColor: mode == 1 ? theme.bottomAppBarColor : null,
                           ),
                           child: Icon(
                             Icons.grid_on,
-                            color: mode == 1 ? Theme.of(context).canvasColor : Theme.of(context).primaryColor,
+                            color: mode == 1 ? theme.iconTheme.color :theme.primaryIconTheme.color,
                           ),
                         ),
                       ),
@@ -108,11 +110,11 @@ class _LayoutSelectorWidgetState extends State<LayoutSelectorWidget> {
                             settingsBloc.layoutMode(2);
                           },
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: mode == 2 ? Theme.of(context).primaryColor : null,
+                            backgroundColor: mode == 2 ? theme.bottomAppBarColor : null,
                           ),
                           child: Icon(
                             Icons.grid_view,
-                            color: mode == 2 ? Theme.of(context).canvasColor : Theme.of(context).primaryColor,
+                            color: mode == 2 ? theme.iconTheme.color :theme.primaryIconTheme.color,
                           ),
                         ),
                       ),
