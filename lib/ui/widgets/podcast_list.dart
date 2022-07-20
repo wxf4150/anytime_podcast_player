@@ -62,8 +62,7 @@ class PodcastList extends StatelessWidget {
                 ),
               );
             } else {
-              return SliverFillRemaining(
-                hasScrollBody: false,
+              return SliverToBoxAdapter(
                 child: SizedBox(
                   height: 0,
                   width: 0,
