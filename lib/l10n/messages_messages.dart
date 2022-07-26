@@ -130,6 +130,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "unsubscribe_label": MessageLookupByLibrary.simpleMessage("Unsubscribe"),
         "unsubscribe_message":
             MessageLookupByLibrary.simpleMessage("Unsubscribing will delete all downloaded episodes of this podcast."),
-        "up_next_queue_label": MessageLookupByLibrary.simpleMessage("Up Next")
+        "up_next_queue_label": MessageLookupByLibrary.simpleMessage("Up Next"),
+        "proceed_button_label": MessageLookupByLibrary.simpleMessage("Proceed anyway"),
+        "non_secure_connection_dialog_header": MessageLookupByLibrary.simpleMessage("Your connection is not private"),
+        "non_secure_connection_message": MessageLookupByLibrary.simpleMessage("The site isn't using a private connection. Someone might be able to see or change the information you send or get through this site. Contact the site owner to ask that they secure the site and your data with HTTPS.")
       };
 }

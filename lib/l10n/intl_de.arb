@@ -595,5 +595,17 @@
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
-  }
+  },
+  "sleep_episode_function_header": "Ausschalten nach",
+  "sleep_episode_function_turn_off": "Timer ausschalten",
+  "sleep_episode_function_toggled_on": "Dein Sleeptimer ist eingestellt",
+  "sleep_episode_function_toggled_off": "Dein Sleeptimer ist ausgeschaltet",
+  "sleep_episode_function_5_minutes": "5 Minuten",
+  "sleep_episode_function_15_minutes": "15 Minuten",
+  "sleep_episode_function_30_minutes": "30 Minuten",
+  "sleep_episode_function_45_minutes": "45 Minuten",
+  "sleep_episode_function_60_minutes": "1 Stunde",
+  "proceed_button_label": "Trotzdem fortfahren",
+  "non_secure_connection_dialog_header": "Ihre Verbindung ist nicht privat",
+  "non_secure_connection_message": "Die Website nutzt keine private Verbindung. Es ist möglich, dass eine unbefugte Person Zugriff auf Informationen erhält, die Sie an die Website gesendet haben oder die Ihnen von der Website übermittelt wurden, und diese ändern kann. Wenden Sie sich an den Inhaber der Website und bitten Sie ihn, die Website und Ihre Daten mit HTTPS zu sichern.",
 }

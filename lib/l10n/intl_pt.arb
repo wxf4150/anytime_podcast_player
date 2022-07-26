@@ -375,4 +375,7 @@
   "sleep_episode_function_30_minutes": "30 minutos",
   "sleep_episode_function_45_minutes": "45 minutos",
   "sleep_episode_function_60_minutes": "1 hora",
+  "proceed_button_label": "Prosseguir",
+  "non_secure_connection_dialog_header": "Sua conexão não é particular",
+  "non_secure_connection_message": "Este site não está a utilizar uma ligação privada. Alguém pode conseguir ver ou alterar as informações que enviar ou receber através deste site. Contacte o proprietário do site e peça-lhe que proteja o site e os seus dados com HTTPS.",
 }

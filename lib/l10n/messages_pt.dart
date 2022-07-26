@@ -91,6 +91,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "subscribe_label" : MessageLookupByLibrary.simpleMessage("Seguir"),
     "unsubscribe_button_label" : MessageLookupByLibrary.simpleMessage("NÃO SEGUIR"),
     "unsubscribe_label" : MessageLookupByLibrary.simpleMessage("Não Seguir"),
-    "unsubscribe_message" : MessageLookupByLibrary.simpleMessage("Ao não seguir mais este podcast todos os episódios baixados serão deletados.")
+    "unsubscribe_message" : MessageLookupByLibrary.simpleMessage("Ao não seguir mais este podcast todos os episódios baixados serão deletados."),
+    "up_next_queue_label": MessageLookupByLibrary.simpleMessage("A Seguir"),
+    "proceed_button_label": MessageLookupByLibrary.simpleMessage("Prosseguir"),
+    "non_secure_connection_dialog_header": MessageLookupByLibrary.simpleMessage("Sua conexão não é particular"),
+    "non_secure_connection_message": MessageLookupByLibrary.simpleMessage("Este site não está a utilizar uma ligação privada. Alguém pode conseguir ver ou alterar as informações que enviar ou receber através deste site. Contacte o proprietário do site e peça-lhe que proteja o site e os seus dados com HTTPS.")
   };
 }

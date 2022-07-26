@@ -300,11 +300,8 @@ class DownloadControl extends StatelessWidget {
       context: context,
       useRootNavigator: false,
       builder: (_) => BasicDialogAlert(
-        title: Text(
-          'Your connection is not private',
-        ),
-        content: Text(
-            "The site isn't using a private connection. Someone might be able to see or change the information you send or get through this site. Contact the site owner to ask that they secure the site and your data with HTTPS."),
+        title: Text(L.of(context).non_secure_connection_dialog_header),
+        content: Text(L.of(context).non_secure_connection_message),
         actions: <Widget>[
           BasicDialogAction(
             title: Text(
@@ -315,9 +312,7 @@ class DownloadControl extends StatelessWidget {
             },
           ),
           BasicDialogAction(
-            title: Text(
-              'Proceed anyway',
-            ),
+            title: Text(L.of(context).proceed_button_label),
             iosIsDefaultAction: true,
             onPressed: () {
               podcastBloc.downloadEpisode(episode);
