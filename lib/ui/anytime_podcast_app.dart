@@ -106,18 +106,18 @@ class AnytimePodcastApp extends StatefulWidget {
 
 class AnytimePodcastAppState extends State<AnytimePodcastApp> with WidgetsBindingObserver {
   ThemeData theme;
-  AudioBloc audioBloc;
+  //AudioBloc audioBloc;
 
   @override
   void initState() {
     super.initState();
-
+/*
     audioBloc = Provider.of<AudioBloc>(context, listen: false);
 
     WidgetsBinding.instance.addObserver(this);
 
     audioBloc.transitionLifecycleState(LifecyleState.resume);
-
+*/
     widget.settingsBloc.settings.listen((event) {
       setState(() {
         var newTheme = event.theme == 'dark' ? Themes.darkTheme().themeData : Themes.lightTheme().themeData;
@@ -135,7 +135,7 @@ class AnytimePodcastAppState extends State<AnytimePodcastApp> with WidgetsBindin
       theme = Themes.lightTheme().themeData;
     }
   }
-
+/*
   @override
   void dispose() {
     audioBloc.transitionLifecycleState(LifecyleState.pause);
@@ -158,7 +158,7 @@ class AnytimePodcastAppState extends State<AnytimePodcastApp> with WidgetsBindin
         break;
     }
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
