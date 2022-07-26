@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:io';
+
 import 'package:anytime/bloc/podcast/audio_bloc.dart';
 import 'package:anytime/bloc/podcast/episode_bloc.dart';
 import 'package:anytime/bloc/podcast/podcast_bloc.dart';
@@ -223,7 +225,13 @@ class DownloadControl extends StatelessWidget {
           }
 
           return DownloadButton(
-            onPressed: () => podcastBloc.downloadEpisode(episode),
+            onPressed: () async {
+              if (await _resolveDownloadURL(episode.contentUrl)) {
+                _showWarningDialog(context, podcastBloc);
+              } else {
+                podcastBloc.downloadEpisode(episode);
+              }
+            },
             title: episode.title,
             icon: Icons.save_alt,
             percent: 0,
@@ -259,6 +267,55 @@ class DownloadControl extends StatelessWidget {
             iosIsDefaultAction: true,
             onPressed: () {
               episodeBloc.deleteDownload(episode);
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+  Future<bool> _resolveDownloadURL(String url) async {
+    // Check if final redirected url is non-secure
+    final client = HttpClient();
+    var uri = Uri.parse(url);
+    var request = await client.getUrl(uri);
+    request.followRedirects = false;
+    var response = await request.close();
+    while (response.isRedirect) {
+      response.drain(null);
+      final location = response.headers.value(HttpHeaders.locationHeader);
+      if (location != null) {
+        uri = uri.resolve(location);
+        request = await client.getUrl(uri);
+        // Set the body or headers as desired.
+        request.followRedirects = false;
+        response = await request.close();
+      }
+    }
+    return uri.scheme.compareTo('http') == 0;
+  }
+
+  Future<void> _showWarningDialog(BuildContext context, PodcastBloc podcastBloc) {
+    return showDialog<void>(
+      context: context,
+      useRootNavigator: false,
+      builder: (_) => BasicDialogAlert(
+        title: Text(L.of(context).non_secure_connection_dialog_header),
+        content: Text(L.of(context).non_secure_connection_message),
+        actions: <Widget>[
+          BasicDialogAction(
+            title: Text(
+              L.of(context).cancel_button_label,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          BasicDialogAction(
+            title: Text(L.of(context).proceed_button_label),
+            iosIsDefaultAction: true,
+            onPressed: () {
+              podcastBloc.downloadEpisode(episode);
               Navigator.pop(context);
             },
           ),

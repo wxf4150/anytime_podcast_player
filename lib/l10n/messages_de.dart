@@ -126,6 +126,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings_playback_divider_label": MessageLookupByLibrary.simpleMessage("WIEDERGABE"),
         "settings_theme_switch_label": MessageLookupByLibrary.simpleMessage("Dark theme"),
         "show_notes_label": MessageLookupByLibrary.simpleMessage("Notizen anzeigen"),
+        "sleep_episode_function_5_minutes" : MessageLookupByLibrary.simpleMessage("5 Minuten"),
+        "sleep_episode_function_15_minutes" : MessageLookupByLibrary.simpleMessage("15 Minuten"),
+        "sleep_episode_function_30_minutes" : MessageLookupByLibrary.simpleMessage("30 Minuten"),
+        "sleep_episode_function_45_minutes" : MessageLookupByLibrary.simpleMessage("45 Minuten"),
+        "sleep_episode_function_60_minutes" : MessageLookupByLibrary.simpleMessage("1 Stunde"),
+        "sleep_episode_function_header" : MessageLookupByLibrary.simpleMessage("Ausschalten nach"),
+        "sleep_episode_function_toggled_off" : MessageLookupByLibrary.simpleMessage("Dein Sleeptimer ist ausgeschaltet"),
+        "sleep_episode_function_toggled_on" : MessageLookupByLibrary.simpleMessage("Dein Sleeptimer ist eingestellt"),
+        "sleep_episode_function_turn_off" : MessageLookupByLibrary.simpleMessage("Timer ausschalten"),
         "stop_download_button_label": MessageLookupByLibrary.simpleMessage("Halt"),
         "stop_download_confirmation": MessageLookupByLibrary.simpleMessage(
             "Möchten Sie diesen Download wirklich beenden und die Episode löschen?"),
@@ -136,6 +145,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "unsubscribe_label": MessageLookupByLibrary.simpleMessage("Nicht mehr folgen"),
         "unsubscribe_message": MessageLookupByLibrary.simpleMessage(
             "Wenn Sie nicht mehr folgen, werden alle heruntergeladenen Folgen dieses Podcasts gelöscht."),
-        "up_next_queue_label": MessageLookupByLibrary.simpleMessage("Als nächstes")
+        "up_next_queue_label": MessageLookupByLibrary.simpleMessage("Als nächstes"),
+        "proceed_button_label": MessageLookupByLibrary.simpleMessage("Trotzdem fortfahren"),
+        "non_secure_connection_dialog_header": MessageLookupByLibrary.simpleMessage("Ihre Verbindung ist nicht privat"),
+        "non_secure_connection_message": MessageLookupByLibrary.simpleMessage("Die Website nutzt keine private Verbindung. Es ist möglich, dass eine unbefugte Person Zugriff auf Informationen erhält, die Sie an die Website gesendet haben oder die Ihnen von der Website übermittelt wurden, und diese ändern kann. Wenden Sie sich an den Inhaber der Website und bitten Sie ihn, die Website und Ihre Daten mit HTTPS zu sichern.")
       };
 }

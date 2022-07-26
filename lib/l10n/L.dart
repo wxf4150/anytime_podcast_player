@@ -889,84 +889,102 @@ class L {
   }
 
   String get sleep_episode_function_header {
-    return Intl.message(
-      'Stop audio in',
-      name: 'sleep_episode_function_header',
-      desc: '',
-      args: [],
-    );
+    return message('sleep_episode_function_header') ??
+        Intl.message(
+          'Stop audio in',
+          name: 'sleep_episode_function_header',
+          desc: 'Title for Sleep Selector',
+          args: [],
+          locale: localeName,
+        );
   }
 
   String get sleep_episode_function_turn_off {
-    return Intl.message(
-      'Turn off timer',
-      name: 'sleep_episode_function_turn_off',
-      desc: '',
-      args: [],
-    );
+    return message('sleep_episode_function_turn_off') ??
+        Intl.message(
+          'Turn off timer',
+          name: 'sleep_episode_function_turn_off',
+          desc: 'Label for turning off sleep timer',
+          args: [],
+          locale: localeName,
+        );
   }
 
   String get sleep_episode_function_toggled_on {
-    return Intl.message(
-      'Your sleep timer is set',
-      name: 'sleep_episode_function_toggled_on',
-      desc: '',
-      args: [],
-    );
+    return message('sleep_episode_function_toggled_on') ??
+        Intl.message(
+          'Your sleep timer is set',
+          name: 'sleep_episode_function_toggled_on',
+          desc: 'Label for toggling on sleep timer',
+          args: [],
+          locale: localeName,
+        );
   }
 
   String get sleep_episode_function_toggled_off {
-    return Intl.message(
-      'Your sleep timer is turned off',
-      name: 'sleep_episode_function_toggled_off',
-      desc: '',
-      args: [],
-    );
+    return message('sleep_episode_function_toggled_off') ??
+        Intl.message(
+          'Your sleep timer is turned off',
+          name: 'sleep_episode_function_toggled_off',
+          desc: 'Label for toggling off sleep timer',
+          args: [],
+          locale: localeName,
+        );
   }
 
   String get sleep_episode_function_5_minutes {
-    return Intl.message(
-      '5 minutes',
-      name: 'sleep_episode_function_5_minutes',
-      desc: '',
-      args: [],
-    );
+    return message('sleep_episode_function_5_minutes') ??
+        Intl.message(
+          '5 minutes',
+          name: 'sleep_episode_function_5_minutes',
+          desc: '',
+          args: [],
+          locale: localeName,
+        );
   }
 
   String get sleep_episode_function_15_minutes {
-    return Intl.message(
-      '15 minutes',
-      name: 'sleep_episode_function_15_minutes',
-      desc: '',
-      args: [],
-    );
+    return message('sleep_episode_function_15_minutes') ??
+        Intl.message(
+          '15 minutes',
+          name: 'sleep_episode_function_15_minutes',
+          desc: '',
+          args: [],
+          locale: localeName,
+        );
   }
 
   String get sleep_episode_function_30_minutes {
-    return Intl.message(
-      '30 minutes',
-      name: 'sleep_episode_function_30_minutes',
-      desc: '',
-      args: [],
-    );
+    return message('sleep_episode_function_30_minutes') ??
+        Intl.message(
+          '30 minutes',
+          name: 'sleep_episode_function_30_minutes',
+          desc: '',
+          args: [],
+          locale: localeName,
+        );
   }
 
   String get sleep_episode_function_45_minutes {
-    return Intl.message(
-      '45 minutes',
-      name: 'sleep_episode_function_45_minutes',
-      desc: '',
-      args: [],
-    );
+    return message('sleep_episode_function_45_minutes') ??
+        Intl.message(
+          '45 minutes',
+          name: 'sleep_episode_function_45_minutes',
+          desc: '',
+          args: [],
+          locale: localeName,
+        );
   }
 
   String get sleep_episode_function_60_minutes {
-    return Intl.message(
-      '1 hour',
-      name: 'sleep_episode_function_60_minutes',
-      desc: '',
-      args: [],
-    );
+    return message('sleep_episode_function_60_minutes') ??
+        Intl.message(
+          '1 hour',
+          name: 'sleep_episode_function_60_minutes',
+          desc: '',
+          args: [],
+          locale: localeName,
+        );
   }
 
   String get empty_queue_message {
@@ -1105,6 +1123,36 @@ class L {
           'Layout',
           name: 'layout_label',
           desc: 'Layout menu label',
+          locale: localeName,
+        );
+  }
+
+  String get proceed_button_label {
+    return message('proceed_button_label') ??
+        Intl.message(
+          'Proceed anyway',
+          name: 'proceed_button_label',
+          desc: 'Shown on dialog box when accepting non-secure connection download',
+          locale: localeName,
+        );
+  }
+
+  String get non_secure_connection_dialog_header {
+    return message('non_secure_connection_dialog_header') ??
+        Intl.message(
+          'Your connection is not private',
+          name: 'non_secure_connection_dialog_header',
+          desc: 'Header on non-secure connection warning dialog',
+          locale: localeName,
+        );
+  }
+
+  String get non_secure_connection_message {
+    return message('non_secure_connection_message') ??
+        Intl.message(
+          "The site isn't using a private connection. Someone might be able to see or change the information you send or get through this site. Contact the site owner to ask that they secure the site and your data with HTTPS.",
+          name: 'non_secure_connection_message',
+          desc: 'Displayed on non-secure connection warning dialog',
           locale: localeName,
         );
   }

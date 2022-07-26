@@ -596,8 +596,7 @@
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
-  }
-}
+  },
   "sleep_episode_function_header": "Sleep after",
   "sleep_episode_function_turn_off": "Turn off timer",
   "sleep_episode_function_toggled_on": "Your sleep timer is on.",
@@ -607,4 +606,7 @@
   "sleep_episode_function_30_minutes": "30 minutes",
   "sleep_episode_function_45_minutes": "45 minutes",
   "sleep_episode_function_60_minutes": "1 hour",
+  "proceed_button_label": "Proceed anyway",
+  "non_secure_connection_dialog_header": "Your connection is not private",
+  "non_secure_connection_message": "The site isn't using a private connection. Someone might be able to see or change the information you send or get through this site. Contact the site owner to ask that they secure the site and your data with HTTPS.",
 }
