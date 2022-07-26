@@ -223,7 +223,13 @@ class DownloadControl extends StatelessWidget {
           }
 
           return DownloadButton(
-            onPressed: () => podcastBloc.downloadEpisode(episode),
+            onPressed: () {
+              if (episode.contentUrl.startsWith('http:')) {
+                _showWarningDialog(context, podcastBloc);
+              } else {
+                podcastBloc.downloadEpisode(episode);
+              }
+            },
             title: episode.title,
             icon: Icons.save_alt,
             percent: 0,
@@ -259,6 +265,40 @@ class DownloadControl extends StatelessWidget {
             iosIsDefaultAction: true,
             onPressed: () {
               episodeBloc.deleteDownload(episode);
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showWarningDialog(BuildContext context, PodcastBloc podcastBloc) {
+    return showDialog<void>(
+      context: context,
+      useRootNavigator: false,
+      builder: (_) => BasicDialogAlert(
+        title: Text(
+          'Your connection is not private',
+        ),
+        content: Text(
+            "The site isn't using a private connection. Someone might be able to see or change the information you send or get through this site. Contact the site owner to ask that they secure the site and your data with HTTPS."),
+        actions: <Widget>[
+          BasicDialogAction(
+            title: Text(
+              L.of(context).cancel_button_label,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          BasicDialogAction(
+            title: Text(
+              'Proceed anyway',
+            ),
+            iosIsDefaultAction: true,
+            onPressed: () {
+              podcastBloc.downloadEpisode(episode);
               Navigator.pop(context);
             },
           ),
