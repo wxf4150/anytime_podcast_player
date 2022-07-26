@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dialogs/flutter_dialogs.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:http/http.dart' as http;
 
 /// Handles the state of the episode transport controls. This currently
 /// consists of the [PlayControl] and [DownloadControl] to handle the
@@ -223,8 +224,8 @@ class DownloadControl extends StatelessWidget {
           }
 
           return DownloadButton(
-            onPressed: () {
-              if (episode.contentUrl.startsWith('http:')) {
+            onPressed: () async {
+              if (await _resolveDownloadURL(episode.contentUrl)) {
                 _showWarningDialog(context, podcastBloc);
               } else {
                 podcastBloc.downloadEpisode(episode);
@@ -271,6 +272,14 @@ class DownloadControl extends StatelessWidget {
         ],
       ),
     );
+  }
+  Future<bool> _resolveDownloadURL(String url) async {
+    // Check if redirected url is non-secure
+    http.Request req = http.Request("Get", Uri.parse(url))..followRedirects = false;
+    http.Client baseClient = http.Client();
+    http.StreamedResponse response = await baseClient.send(req);
+    Uri redirectUri = Uri.parse(response.headers['location']);
+    return redirectUri.scheme.compareTo('http') == 0;
   }
 
   Future<void> _showWarningDialog(BuildContext context, PodcastBloc podcastBloc) {
