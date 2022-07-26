@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:io';
+
 import 'package:anytime/bloc/podcast/audio_bloc.dart';
 import 'package:anytime/bloc/podcast/episode_bloc.dart';
 import 'package:anytime/bloc/podcast/podcast_bloc.dart';
@@ -18,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dialogs/flutter_dialogs.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:http/http.dart' as http;
 
 /// Handles the state of the episode transport controls. This currently
 /// consists of the [PlayControl] and [DownloadControl] to handle the
@@ -274,12 +275,24 @@ class DownloadControl extends StatelessWidget {
     );
   }
   Future<bool> _resolveDownloadURL(String url) async {
-    // Check if redirected url is non-secure
-    http.Request req = http.Request("Get", Uri.parse(url))..followRedirects = false;
-    http.Client baseClient = http.Client();
-    http.StreamedResponse response = await baseClient.send(req);
-    Uri redirectUri = Uri.parse(response.headers['location']);
-    return redirectUri.scheme.compareTo('http') == 0;
+    // Check if final redirected url is non-secure
+    final client = HttpClient();
+    var uri = Uri.parse(url);
+    var request = await client.getUrl(uri);
+    request.followRedirects = false;
+    var response = await request.close();
+    while (response.isRedirect) {
+      response.drain(null);
+      final location = response.headers.value(HttpHeaders.locationHeader);
+      if (location != null) {
+        uri = uri.resolve(location);
+        request = await client.getUrl(uri);
+        // Set the body or headers as desired.
+        request.followRedirects = false;
+        response = await request.close();
+      }
+    }
+    return uri.scheme.compareTo('http') == 0;
   }
 
   Future<void> _showWarningDialog(BuildContext context, PodcastBloc podcastBloc) {
