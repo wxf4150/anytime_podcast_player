@@ -126,6 +126,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings_playback_divider_label": MessageLookupByLibrary.simpleMessage("WIEDERGABE"),
         "settings_theme_switch_label": MessageLookupByLibrary.simpleMessage("Dark theme"),
         "show_notes_label": MessageLookupByLibrary.simpleMessage("Notizen anzeigen"),
+        "sleep_episode_function_end_of_episode": MessageLookupByLibrary.simpleMessage("Ende von episode"),
         "sleep_episode_function_5_minutes" : MessageLookupByLibrary.simpleMessage("5 Minuten"),
         "sleep_episode_function_15_minutes" : MessageLookupByLibrary.simpleMessage("15 Minuten"),
         "sleep_episode_function_30_minutes" : MessageLookupByLibrary.simpleMessage("30 Minuten"),

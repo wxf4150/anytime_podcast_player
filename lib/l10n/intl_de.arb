@@ -600,6 +600,7 @@
   "sleep_episode_function_turn_off": "Timer ausschalten",
   "sleep_episode_function_toggled_on": "Dein Sleeptimer ist eingestellt",
   "sleep_episode_function_toggled_off": "Dein Sleeptimer ist ausgeschaltet",
+  "sleep_episode_function_end_of_episode": "Ende von episode",
   "sleep_episode_function_5_minutes": "5 Minuten",
   "sleep_episode_function_15_minutes": "15 Minuten",
   "sleep_episode_function_30_minutes": "30 Minuten",

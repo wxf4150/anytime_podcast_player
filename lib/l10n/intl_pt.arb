@@ -370,6 +370,7 @@
   "sleep_episode_function_turn_off": "Desligar o temporizador",
   "sleep_episode_function_toggled_on": "O temporizador foi definido",
   "sleep_episode_function_toggled_off": "O temporizador está desligado",
+  "sleep_episode_function_end_of_episode": "No fim do episódio",
   "sleep_episode_function_5_minutes": "5 minutos",
   "sleep_episode_function_15_minutes": "15 minutos",
   "sleep_episode_function_30_minutes": "30 minutos",
