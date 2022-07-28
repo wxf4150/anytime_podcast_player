@@ -22,8 +22,6 @@ import 'package:provider/provider.dart';
 ///
 /// TODO: Replace [Opacity] with [Container] with a transparent colour.
 class EpisodeTile extends StatelessWidget {
-  final String podcastTitle;
-  final String podcastURL;
   final Episode episode;
   final bool download;
   final bool play;
@@ -31,8 +29,6 @@ class EpisodeTile extends StatelessWidget {
   final bool queued;
 
   const EpisodeTile({
-    this.podcastTitle,
-    this.podcastURL,
     @required this.episode,
     @required this.download,
     @required this.play,
@@ -248,7 +244,7 @@ class EpisodeTile extends StatelessWidget {
                   ),
                 ),
               ),
-              shareEpisodeButtonBuilder != null ? shareEpisodeButtonBuilder?.builder(podcastTitle, podcastURL, episode.title, episode.guid)(context) : Container(),
+              shareEpisodeButtonBuilder != null ? shareEpisodeButtonBuilder?.builder(episode.podcast, episode.pguid, episode.title, episode.guid)(context) : Container(),
               Expanded(
                 child: TextButton(
                   style: TextButton.styleFrom(
