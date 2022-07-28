@@ -41,6 +41,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
   StreamSubscription<AudioState> playingStateSubscription;
   var textGroup = AutoSizeGroup();
   double opacity, scrollPos = 0.0;
+  static const double baseSize = 24.0;
 
   @override
   void initState() {
@@ -147,7 +148,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
                                   child: NowPlayingTransport(),
                                 ),
                           SizedBox(
-                            height: 40.0,
+                            height: baseSize,
                           ),
                         ],
                       ),
@@ -166,7 +167,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
                       ],
                     ),
                   ),
-                NowPlayingOptionsSelector(scrollPos: scrollPos),
+                NowPlayingOptionsSelector(scrollPos: scrollPos, baseSize: baseSize),
               ],
             ),
           );

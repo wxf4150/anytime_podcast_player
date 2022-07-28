@@ -13,8 +13,9 @@ import 'package:provider/provider.dart';
 
 class NowPlayingOptionsSelector extends StatefulWidget {
   final double scrollPos;
+  final double baseSize;
 
-  NowPlayingOptionsSelector({Key key, this.scrollPos}) : super(key: key);
+  NowPlayingOptionsSelector({Key key, this.scrollPos, this.baseSize}) : super(key: key);
 
   @override
   State<NowPlayingOptionsSelector> createState() => _NowPlayingOptionsSelectorState();
@@ -29,12 +30,11 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
   @override
   Widget build(BuildContext context) {
     final queueBloc = Provider.of<QueueBloc>(context, listen: false);
-    const baseSize = 40;
-    final topMargin = baseSize + MediaQuery.of(context).viewPadding.top;
+    final topMargin = widget.baseSize + MediaQuery.of(context).viewPadding.top;
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final windowHeight = MediaQuery.of(context).size.height;
-    final minSize = baseSize / (windowHeight - baseSize);
+    final minSize = widget.baseSize / (windowHeight - widget.baseSize);
     final maxSize = (windowHeight - topMargin - 16) / windowHeight;
     final l10n = L.of(context);
 
@@ -77,18 +77,28 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  SliderHandle(scrollPos: widget.scrollPos),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 0.0, bottom: 8.0),
-                    child: Text(
-                      l10n.up_next_queue_label.toUpperCase(),
-                      style: textTheme.button.copyWith(
-                        color: labelColor.animate(AlwaysStoppedAnimation(widget.scrollPos)).value,
-                        fontSize: 13,
-                      ),
+                  Container(
+                    height: widget.baseSize,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SliderHandle(scrollPos: widget.scrollPos, padding: EdgeInsets.zero),
+                        Padding(
+                          padding: EdgeInsets.zero,
+                          child: Text(
+                            l10n.up_next_queue_label.toUpperCase(),
+                            style: textTheme.button.copyWith(
+                              color: labelColor.animate(AlwaysStoppedAnimation(widget.scrollPos)).value,
+                              fontSize: 9,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Divider(color: theme.highlightColor),
+                  Divider(color: theme.highlightColor, height: 0),
                   Row(
                     children: [
                       Padding(

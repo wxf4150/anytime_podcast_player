@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 
 class SliderHandle extends StatelessWidget {
   final double scrollPos;
+  final EdgeInsets padding;
 
   const SliderHandle({
     this.scrollPos,
+    this.padding,
     Key key,
   }) : super(key: key);
 
@@ -21,7 +23,7 @@ class SliderHandle extends StatelessWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: padding ?? const EdgeInsets.all(8.0),
       child: Container(
         width: 36,
         height: 4,
