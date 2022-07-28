@@ -134,6 +134,10 @@ class SleepSelector extends StatelessWidget {
           texts.sleep_episode_function_60_minutes,
           sleepPolicyMinutes(60),
         ),
+        SleepOption(
+          texts.sleep_episode_function_end_of_episode,
+          sleepPolicyEndOfEpisode(),
+        ),
       ],
     );
     return options;

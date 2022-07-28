@@ -46,6 +46,23 @@ class SleepPolicyTimer extends SleepPolicy {
   }
 }
 
+class SleepPolicyEndOfEpisode extends SleepPolicy {
+  SleepPolicyEndOfEpisode(
+      bool feedbackGiven,
+      ) : super(feedbackGiven);
+
+  @override
+  bool operator ==(Object other) {
+    return other is SleepPolicyEndOfEpisode;
+  }
+
+  @override
+  int get hashCode => feedbackGiven.hashCode;
+}
+
+SleepPolicy sleepPolicyEndOfEpisode([bool feedbackGiven = false]) =>
+    SleepPolicyEndOfEpisode(feedbackGiven);
+
 SleepPolicy sleepPolicyOff([bool feedbackGiven = false]) =>
     SleepPolicyOff(feedbackGiven);
 

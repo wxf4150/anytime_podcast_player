@@ -147,12 +147,23 @@ class AudioBloc extends Bloc {
   void _handleSleepPolicyChanges() {
     changeSleepPolicy(sleepPolicyOff(true));
     _sleepPolicy.listen((SleepPolicy policy) async {
+      StreamSubscription endOfEpisodeListener;
+      endOfEpisodeListener?.cancel();
       log.fine('Policy changed to $policy');
       if (policy is SleepPolicyTimer) {
         await Future<void>.delayed(policy.duration).then((_) async {
           final current = await _sleepPolicy.first;
           if (policy == current) {
             transitionState(TransitionState.pause);
+          }
+        });
+      } else if (policy is SleepPolicyEndOfEpisode) {
+        endOfEpisodeListener = episodeCompletedEvent.listen((isCompleted) async {
+          if (isCompleted) {
+            final current = await _sleepPolicy.first;
+            if (policy == current) {
+              transitionState(TransitionState.stop);
+            }
           }
         });
       }
@@ -203,6 +214,9 @@ class AudioBloc extends Bloc {
 
   /// Get position and percentage played of playing episode
   Stream<PositionState> get playPosition => audioPlayerService.playPosition;
+
+  /// Listen for end of episode
+  Stream<bool> get episodeCompletedEvent => audioPlayerService.episodeCompletedEvent;
 
   /// Change playback speed
   void Function(double) get playbackSpeed => _playbackSpeedSubject.sink.add;
