@@ -26,7 +26,7 @@ class SliderHandle extends StatelessWidget {
       padding: padding ?? const EdgeInsets.all(8.0),
       child: Container(
         width: 36,
-        height: 4,
+        height: padding != null ? 2 : 4,
         decoration: BoxDecoration(
           color: scrollPos != null ? handleColor.animate(AlwaysStoppedAnimation(scrollPos)).value : Theme.of(context).hintColor,
           borderRadius: BorderRadius.all(Radius.circular(4.0)),

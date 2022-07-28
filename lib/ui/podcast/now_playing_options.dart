@@ -71,7 +71,7 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                 ),
                 color: sheetColor.animate(AlwaysStoppedAnimation(widget.scrollPos)).value,
               ),
-              height: MediaQuery.of(context).size.height - 56 - MediaQuery.of(context).viewPadding.top,
+              height: MediaQuery.of(context).size.height - (16 + widget.baseSize) - MediaQuery.of(context).viewPadding.top,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
