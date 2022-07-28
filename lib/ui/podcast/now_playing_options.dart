@@ -29,7 +29,7 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
   @override
   Widget build(BuildContext context) {
     final queueBloc = Provider.of<QueueBloc>(context, listen: false);
-    const baseSize = 48;
+    const baseSize = 40;
     final topMargin = baseSize + MediaQuery.of(context).viewPadding.top;
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
@@ -71,7 +71,7 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                 ),
                 color: sheetColor.animate(AlwaysStoppedAnimation(widget.scrollPos)).value,
               ),
-              height: MediaQuery.of(context).size.height - 64 - MediaQuery.of(context).viewPadding.top,
+              height: MediaQuery.of(context).size.height - 56 - MediaQuery.of(context).viewPadding.top,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -79,11 +79,12 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                 children: <Widget>[
                   SliderHandle(scrollPos: widget.scrollPos),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                    padding: const EdgeInsets.only(top: 0.0, bottom: 8.0),
                     child: Text(
                       l10n.up_next_queue_label.toUpperCase(),
                       style: textTheme.button.copyWith(
                         color: labelColor.animate(AlwaysStoppedAnimation(widget.scrollPos)).value,
+                        fontSize: 13,
                       ),
                     ),
                   ),
