@@ -179,6 +179,8 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
     if (scaffoldMessenger != null) {
       scaffoldMessenger.showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(bottom: 40.0),
           content: Text(
             policy is SleepPolicyOff
                 ? texts.sleep_episode_function_toggled_off
