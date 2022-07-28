@@ -33,9 +33,10 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
     final topMargin = widget.baseSize + MediaQuery.of(context).viewPadding.top;
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final floatingPlayerHeight = 64.0;
     final windowHeight = MediaQuery.of(context).size.height;
     final minSize = widget.baseSize / (windowHeight - widget.baseSize);
-    final maxSize = (windowHeight - topMargin - 16) / windowHeight;
+    final maxSize = (windowHeight - topMargin - (floatingPlayerHeight - widget.baseSize)) / windowHeight;
     final l10n = L.of(context);
 
     final ColorTween sheetColor = ColorTween(begin: theme.scaffoldBackgroundColor, end: theme.bottomAppBarColor);
@@ -71,7 +72,7 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                 ),
                 color: sheetColor.animate(AlwaysStoppedAnimation(widget.scrollPos)).value,
               ),
-              height: MediaQuery.of(context).size.height - (16 + widget.baseSize) - MediaQuery.of(context).viewPadding.top,
+              height: MediaQuery.of(context).size.height - floatingPlayerHeight - MediaQuery.of(context).viewPadding.top,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
