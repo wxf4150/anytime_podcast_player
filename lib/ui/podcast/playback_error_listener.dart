@@ -13,9 +13,11 @@ import 'package:provider/provider.dart';
 /// map to an error message. This needs to be placed below a [Scaffold].
 class PlaybackErrorListener extends StatefulWidget {
   final Widget child;
+  final double margin;
 
   PlaybackErrorListener({
     @required this.child,
+    @required this.margin,
   });
 
   @override
@@ -36,7 +38,13 @@ class _PlaybackErrorListenerState extends State<PlaybackErrorListener> {
     final audioBloc = Provider.of<AudioBloc>(context, listen: false);
 
     errorSubscription = audioBloc.playbackError.listen((code) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(_codeToMessage(context, code))));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(bottom: widget.margin),
+          content: Text(_codeToMessage(context, code)),
+        ),
+      );
     });
   }
 

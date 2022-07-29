@@ -44,6 +44,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
   double opacity, scrollPos = 0.0;
   double baseSize = 48.0;
   Future<bool> isLoaded;
+  bool isEmbedded = false;
 
   @override
   void initState() {
@@ -98,15 +99,14 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
 
           var duration = snapshot.data == null ? 0 : snapshot.data.duration;
           final transportBuilder = playerBuilder?.builder(duration);
-          final isEmbedded = transportBuilder != null;
-          if (isEmbedded) {
-            baseSize = 24.0;
-          }
+          isEmbedded = transportBuilder != null;
+          baseSize = isEmbedded ? 24.0 : 48.0;
 
           return NotificationListener<DraggableScrollableNotification>(
             onNotification: (notification) {
               setState(() {
-                opacity = scrollPos = (notification.extent - notification.minExtent) / (notification.maxExtent - notification.minExtent);
+                opacity = scrollPos =
+                    (notification.extent - notification.minExtent) / (notification.maxExtent - notification.minExtent);
               });
 
               return true;
@@ -137,6 +137,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
                           },
                         ),
                         flexibleSpace: PlaybackErrorListener(
+                          margin: isEmbedded ? baseSize + 64.0 : baseSize + 4.0,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
@@ -210,11 +211,9 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
       scaffoldMessenger.showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.only(bottom: 40.0),
+          margin: EdgeInsets.only(bottom: baseSize + (isEmbedded ? 64.0 : 4.0)),
           content: Text(
-            policy is SleepPolicyOff
-                ? texts.sleep_episode_function_toggled_off
-                : texts.sleep_episode_function_toggled_on,
+            policy is SleepPolicyOff ? texts.sleep_episode_function_toggled_off : texts.sleep_episode_function_toggled_on,
           ),
         ),
       );
