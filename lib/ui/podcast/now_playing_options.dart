@@ -58,13 +58,13 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
         return SingleChildScrollView(
           controller: scrollController,
           child: Material(
-            color: theme.backgroundColor.withOpacity(widget.scrollPos > 0 ? 0 : 1),
+            color: Colors.transparent,
             child: Container(
               decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
                     color: widget.isEmbedded ? theme.backgroundColor : theme.highlightColor,
-                    width: 1.0,
+                    width: widget.isEmbedded ? 1.5 : 1.0,
                   ),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(18.0),
