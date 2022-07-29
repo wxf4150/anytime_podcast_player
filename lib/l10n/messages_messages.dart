@@ -120,6 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings_playback_divider_label": MessageLookupByLibrary.simpleMessage("PLAYBACK"),
         "settings_theme_switch_label": MessageLookupByLibrary.simpleMessage("Dark theme"),
         "show_notes_label": MessageLookupByLibrary.simpleMessage("Show notes"),
+        "sleep_episode_function_end_of_episode": MessageLookupByLibrary.simpleMessage("End of episode"),
         "stop_download_button_label": MessageLookupByLibrary.simpleMessage("Stop"),
         "stop_download_confirmation":
             MessageLookupByLibrary.simpleMessage("Are you sure you wish to stop this download and delete the episode?"),

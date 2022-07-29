@@ -65,6 +65,9 @@ class DefaultAudioPlayerService extends AudioPlayerService {
   /// Stream for the last audio error as an integer code.
   final PublishSubject<int> _playbackError = PublishSubject<int>();
 
+  /// Stream for end of episode notification as an bool.
+  final PublishSubject<bool> _episodeCompletedEvent = PublishSubject<bool>();
+
   final BehaviorSubject<QueueListState> _queueState = BehaviorSubject<QueueListState>();
 
   DefaultAudioPlayerService({
@@ -466,6 +469,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
 
       _updateQueueState();
     }
+    _episodeCompletedEvent.add(true);
   }
 
   void _onLoadEpisode(PlaybackState state) async {
@@ -606,6 +610,9 @@ class DefaultAudioPlayerService extends AudioPlayerService {
 
   @override
   Stream<QueueListState> get queueState => _queueState.stream;
+
+  @override
+  Stream<bool> get episodeCompletedEvent => _episodeCompletedEvent.stream;
 }
 
 /// This is the default audio handler used by the [DefaultAudioPlayerService] service.

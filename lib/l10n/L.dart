@@ -932,6 +932,17 @@ class L {
         );
   }
 
+  String get sleep_episode_function_end_of_episode {
+    return message('sleep_episode_function_end_of_episode') ??
+        Intl.message(
+          'End of episode',
+          name: 'sleep_episode_function_end_of_episode',
+          desc: '',
+          args: [],
+          locale: localeName,
+        );
+  }
+
   String get sleep_episode_function_5_minutes {
     return message('sleep_episode_function_5_minutes') ??
         Intl.message(

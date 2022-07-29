@@ -87,6 +87,7 @@ abstract class AudioPlayerService {
   /// Event listeners
   Stream<AudioState> playingState;
   Stream<PositionState> playPosition;
+  Stream<bool> episodeCompletedEvent;
   Stream<Episode> episodeEvent;
   Stream<int> playbackError;
   Stream<QueueListState> queueState;
