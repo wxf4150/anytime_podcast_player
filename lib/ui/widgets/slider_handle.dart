@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 
 class SliderHandle extends StatelessWidget {
   final double scrollPos;
-  final EdgeInsets padding;
+  final bool isMinimized;
 
   const SliderHandle({
     this.scrollPos,
-    this.padding,
+    this.isMinimized,
     Key key,
   }) : super(key: key);
 
@@ -23,10 +23,10 @@ class SliderHandle extends StatelessWidget {
     );
 
     return Padding(
-      padding: padding ?? const EdgeInsets.all(8.0),
+      padding: isMinimized ? EdgeInsets.zero : const EdgeInsets.all(8.0),
       child: Container(
         width: 36,
-        height: padding != null ? 2 : 4,
+        height: isMinimized ? 2 : 4,
         decoration: BoxDecoration(
           color: scrollPos != null ? handleColor.animate(AlwaysStoppedAnimation(scrollPos)).value : Theme.of(context).hintColor,
           borderRadius: BorderRadius.all(Radius.circular(4.0)),

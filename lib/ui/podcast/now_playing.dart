@@ -21,6 +21,7 @@ import 'package:anytime/ui/widgets/placeholder_builder.dart';
 import 'package:anytime/ui/widgets/podcast_html.dart';
 import 'package:anytime/ui/widgets/podcast_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,8 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
   StreamSubscription<AudioState> playingStateSubscription;
   var textGroup = AutoSizeGroup();
   double opacity, scrollPos = 0.0;
-  static const double baseSize = 24.0;
+  double baseSize = 48.0;
+  Future<bool> isLoaded;
 
   @override
   void initState() {
@@ -63,6 +65,14 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
     audioBloc.sleepPolicy
         .where((policy) => !policy.feedbackGiven)
         .listen((policy) => _policyChanged(policy));
+  }
+
+  @override
+  void didChangeDependencies() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      isLoaded = Future<bool>.value(true);
+    });
+    super.didChangeDependencies();
   }
 
   @override
@@ -88,6 +98,10 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
 
           var duration = snapshot.data == null ? 0 : snapshot.data.duration;
           final transportBuilder = playerBuilder?.builder(duration);
+          final isEmbedded = transportBuilder != null;
+          if (isEmbedded) {
+            baseSize = 24.0;
+          }
 
           return NotificationListener<DraggableScrollableNotification>(
             onNotification: (notification) {
@@ -141,33 +155,48 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
                               chapters: snapshot.data.hasChapters,
                             ),
                           ),
-                          transportBuilder != null
-                              ? transportBuilder(context)
-                              : SizedBox(
-                                  height: 148.0,
-                                  child: NowPlayingTransport(),
-                                ),
-                          SizedBox(
-                            height: baseSize,
-                          ),
+                          if (isEmbedded) ...[
+                            transportBuilder(context),
+                          ],
+                          if (!isEmbedded) ...[
+                            SizedBox(
+                              height: 148.0,
+                              child: NowPlayingTransport(),
+                            ),
+                            SizedBox(height: baseSize)
+                          ],
                         ],
                       ),
                     )),
                 if (scrollPos > 0)
-                  Opacity(
-                    opacity: opacity,
-                    child: Column(
-                      children: [
-                        FloatingPlayer(),
-                        Expanded(
-                          child: Container(
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                  Padding(
+                    padding: isEmbedded ? EdgeInsets.only(bottom: 64) : EdgeInsets.zero,
+                    child: Opacity(
+                      opacity: opacity,
+                      child: Column(
+                        children: [
+                          FloatingPlayer(),
+                          Expanded(
+                            child: Container(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                NowPlayingOptionsSelector(scrollPos: scrollPos, baseSize: baseSize),
+                FutureBuilder(
+                  future: isLoaded,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Padding(
+                        padding: isEmbedded ? EdgeInsets.only(bottom: 64) : EdgeInsets.zero,
+                        child: NowPlayingOptionsSelector(scrollPos: scrollPos, baseSize: baseSize, isEmbedded: isEmbedded),
+                      );
+                    }
+                    return SizedBox();
+                  },
+                ),
               ],
             ),
           );

@@ -14,8 +14,9 @@ import 'package:provider/provider.dart';
 class NowPlayingOptionsSelector extends StatefulWidget {
   final double scrollPos;
   final double baseSize;
+  final bool isEmbedded;
 
-  NowPlayingOptionsSelector({Key key, this.scrollPos, this.baseSize}) : super(key: key);
+  NowPlayingOptionsSelector({Key key, this.scrollPos, this.baseSize, this.isEmbedded}) : super(key: key);
 
   @override
   State<NowPlayingOptionsSelector> createState() => _NowPlayingOptionsSelectorState();
@@ -62,7 +63,7 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
               decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
-                    color: theme.highlightColor,
+                    color: widget.isEmbedded ? theme.backgroundColor : theme.highlightColor,
                     width: 1.0,
                   ),
                   borderRadius: BorderRadius.only(
@@ -72,7 +73,10 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                 ),
                 color: sheetColor.animate(AlwaysStoppedAnimation(widget.scrollPos)).value,
               ),
-              height: MediaQuery.of(context).size.height - floatingPlayerHeight - MediaQuery.of(context).viewPadding.top,
+              height: MediaQuery.of(context).size.height -
+                  floatingPlayerHeight -
+                  MediaQuery.of(context).viewPadding.top -
+                  (widget.isEmbedded ? 64.0 - 8.0 : 0.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -85,14 +89,14 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        SliderHandle(scrollPos: widget.scrollPos, padding: EdgeInsets.zero),
+                        SliderHandle(scrollPos: widget.scrollPos, isMinimized: widget.isEmbedded),
                         Padding(
-                          padding: EdgeInsets.zero,
+                          padding: widget.isEmbedded ? EdgeInsets.zero : EdgeInsets.only(bottom: 8.0),
                           child: Text(
                             l10n.up_next_queue_label.toUpperCase(),
                             style: textTheme.button.copyWith(
                               color: labelColor.animate(AlwaysStoppedAnimation(widget.scrollPos)).value,
-                              fontSize: 9,
+                              fontSize: widget.isEmbedded ? 9 : textTheme.button.fontSize,
                             ),
                           ),
                         ),
