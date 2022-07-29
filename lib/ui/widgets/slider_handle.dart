@@ -10,7 +10,7 @@ class SliderHandle extends StatelessWidget {
 
   const SliderHandle({
     this.scrollPos,
-    this.isMinimized,
+    this.isMinimized = false,
     Key key,
   }) : super(key: key);
 
