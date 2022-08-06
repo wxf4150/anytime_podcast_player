@@ -320,11 +320,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
         final playbackState = _audioHandler.playbackState.value;
         final basicState = playbackState?.processingState ?? AudioProcessingState.idle;
 
-        // If we have no state we'll have to assume we stopped whilst suspended.
-        if (basicState == AudioProcessingState.idle) {
-          /// We will have to assume we have stopped.
-          _playingState.add(AudioState.stopped);
-        } else if (basicState == AudioProcessingState.ready) {
+        if (basicState == AudioProcessingState.ready) {
           _startTicker();
         }
       }
