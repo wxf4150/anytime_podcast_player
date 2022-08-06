@@ -456,6 +456,7 @@ class DefaultAudioPlayerService extends AudioPlayerService {
       _queue = <Episode>[];
       _episode = null;
       _playingState.add(AudioState.stopped);
+      await PersistentState.clearState();
     } else {
       log.fine('Queue has ${_queue.length} episodes left');
       _episode = null;

@@ -75,7 +75,6 @@ class PersistentState {
     await sink.close();
   }
 
-  // No longer being used due to persisting episode being listened through app sessions
   static Future<void> clearState() async {
     var file = await _getFile();
 
