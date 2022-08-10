@@ -1,5 +1,4 @@
 {
-  "@@last_modified": "2020-02-20T10:40:43.008209",
   "app_title": "Anytime Podcast Player",
   "@app_title": {
     "description": "Full title for the application",
@@ -126,6 +125,7 @@
     "type": "text",
     "placeholders": {}
   },
+  "no_subscriptions_message": "Tap the Discovery button below or use the search bar above to find your first podcast",
   "no_podcast_details_message": "Podcast-Episoden konnten nicht geladen werden. Bitte überprüfen Sie Ihre Verbindung.",
   "@no_podcast_details_message": {
     "description": "Displayed on the podcast details page when the details could not be loaded",
@@ -609,4 +609,5 @@
   "proceed_button_label": "Trotzdem fortfahren",
   "non_secure_connection_dialog_header": "Ihre Verbindung ist nicht privat",
   "non_secure_connection_message": "Die Website nutzt keine private Verbindung. Es ist möglich, dass eine unbefugte Person Zugriff auf Informationen erhält, die Sie an die Website gesendet haben oder die Ihnen von der Website übermittelt wurden, und diese ändern kann. Wenden Sie sich an den Inhaber der Website und bitten Sie ihn, die Website und Ihre Daten mit HTTPS zu sichern.",
+  "new_podcasts": "New"
 }

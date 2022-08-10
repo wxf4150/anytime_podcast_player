@@ -1,5 +1,4 @@
 {
-  "@@last_modified": "2020-02-20T12:15:52.645497",
   "app_title": "Anytime Podcast Player",
   "@app_title": {
     "description": "Full title for the application",
@@ -313,7 +312,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "consent_message": "This funding link will take you to an external site where you will be able to directly support the show. Links are provided by the podcast authors and is not controlled by Anytime.",
+  "consent_message": "This funding link will take you to an external site where you will be able to directly support the show. Links are provided by the podcast authors and is not controlled by Breez.",
   "@consent_message": {
     "description": "Display when first accessing external funding link",
     "type": "text",
@@ -373,7 +372,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "settings_export_opml": "Import OPML",
+  "settings_export_opml": "Export OPML",
   "@settings_export_opml": {
     "description": "Option label exporting OPML file",
     "type": "text",
@@ -610,4 +609,5 @@
   "proceed_button_label": "Proceed anyway",
   "non_secure_connection_dialog_header": "Your connection is not private",
   "non_secure_connection_message": "The site isn't using a private connection. Someone might be able to see or change the information you send or get through this site. Contact the site owner to ask that they secure the site and your data with HTTPS.",
+  "new_podcasts": "New"
 }

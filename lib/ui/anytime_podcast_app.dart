@@ -21,6 +21,7 @@ import 'package:anytime/entities/app_settings.dart';
 import 'package:anytime/entities/feed.dart';
 import 'package:anytime/entities/podcast.dart';
 import 'package:anytime/l10n/L.dart';
+import 'package:anytime/l10n/generated/anytime_texts.dart';
 import 'package:anytime/navigation/navigation_route_observer.dart';
 import 'package:anytime/repository/repository.dart';
 import 'package:anytime/repository/sembast/sembast_repository.dart';
@@ -242,11 +243,7 @@ class AnytimePodcastAppState extends State<AnytimePodcastApp> with WidgetsBindin
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [
-          const Locale('en', ''),
-          const Locale('de', ''),
-          const Locale('pt', ''),
-        ],
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: theme,
         home: AnytimeHomePage(title: 'Anytime Podcast Player'),
       ),

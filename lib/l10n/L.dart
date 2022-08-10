@@ -3,28 +3,40 @@
 // found in the LICENSE file.
 import 'dart:ui';
 
+import 'package:anytime/l10n/generated/anytime_texts.dart';
+import 'package:anytime/l10n/generated/anytime_texts_de.dart';
+import 'package:anytime/l10n/generated/anytime_texts_en.dart';
+import 'package:anytime/l10n/generated/anytime_texts_es.dart';
+import 'package:anytime/l10n/generated/anytime_texts_fi.dart';
+import 'package:anytime/l10n/generated/anytime_texts_fr.dart';
+import 'package:anytime/l10n/generated/anytime_texts_it.dart';
+import 'package:anytime/l10n/generated/anytime_texts_pt.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
-
-import 'messages_all.dart';
 
 class L {
-  L(this.localeName, this.overrides);
+  L(this.localizations, this.overrides);
 
-  static Future<L> load(Locale locale, Map<String, Map<String, String>> overrides) {
-    final name = locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
-
-    return initializeMessages(localeName).then((_) {
-      return L(localeName, overrides);
-    });
+  static L load(Locale locale, Map<String, Map<String, String>> overrides) {
+    final localization = localeMap[locale.languageCode] ?? AppLocalizationsEn();
+    return L(localization, overrides);
   }
 
   static L of(BuildContext context) {
-    return Localizations.of<L>(context, L);
+    return Localizations.of<L>(context, L) ?? L(AppLocalizationsEn(), {});
   }
 
-  final String localeName;
+  static get localeMap => {
+        'de': AppLocalizationsDe(),
+        'en': AppLocalizationsEn(),
+        'es': AppLocalizationsEs(),
+        'fi': AppLocalizationsFi(),
+        'fr': AppLocalizationsFr(),
+        'it': AppLocalizationsIt(),
+        'pt': AppLocalizationsPt(),
+      };
+
+  final AppLocalizations localizations;
   Map<String, Map<String, String>> overrides;
 
   /// Message definitions start here
@@ -32,1151 +44,294 @@ class L {
     if (overrides == null || overrides.isEmpty || !overrides.containsKey(name)) {
       return null;
     } else {
-      return overrides[name][localeName] ?? 'Missing translation for $name and locale $localeName';
+      return overrides[name][localizations.localeName] ?? 'Missing translation for $name and locale $localizations';
     }
   }
 
-  /// General
-  String get app_title {
-    return message('app_title') ??
-        Intl.message(
-          'Anytime Podcast Player',
-          name: 'app_title',
-          desc: 'Full title for the application',
-          locale: localeName,
-        );
-  }
-
-  String get app_title_short {
-    return message('app_title_short') ??
-        Intl.message(
-          'Anytime Player',
-          name: 'app_title_short',
-          desc: 'Title for the application',
-          locale: localeName,
-        );
-  }
-
-  String get library {
-    return message('library') ??
-        Intl.message(
-          'Library',
-          name: 'library',
-          desc: 'Library tab label',
-          locale: localeName,
-        );
-  }
-
-  String get discover {
-    return message('discover') ??
-        Intl.message(
-          'Discover',
-          name: 'discover',
-          desc: 'Discover tab label',
-          locale: localeName,
-        );
-  }
-
-  String get new_podcasts {
-    return message('new_podcasts') ??
-        Intl.message(
-          'New',
-          name: 'new_podcasts',
-          desc: 'New Podcasts tab label',
-          locale: localeName,
-        );
-  }
-
-  String get downloads {
-    return message('downloads') ??
-        Intl.message(
-          'Downloads',
-          name: 'downloads',
-          desc: 'Downloads tab label',
-          locale: localeName,
-        );
-  }
-
-  /// Podcasts
-  String get subscribe_button_label {
-    return message('subscribe_button_label') ??
-        Intl.message(
-          'Follow',
-          name: 'subscribe_button_label',
-          desc: 'Subscribe button label',
-          locale: localeName,
-        );
-  }
-
-  String get unsubscribe_button_label {
-    return message('unsubscribe_button_label') ??
-        Intl.message(
-          'Unfollow',
-          name: 'unsubscribe_button_label',
-          desc: 'Unsubscribe button label',
-          locale: localeName,
-        );
-  }
-
-  String get cancel_button_label {
-    return message('cancel_button_label') ??
-        Intl.message(
-          'Cancel',
-          name: 'cancel_button_label',
-          desc: 'Cancel button label',
-          locale: localeName,
-        );
-  }
-
-  String get ok_button_label {
-    return message('ok_button_label') ??
-        Intl.message(
-          'OK',
-          name: 'ok_button_label',
-          desc: 'OK button label',
-          locale: localeName,
-        );
-  }
-
-  String get subscribe_label {
-    return message('subscribe_label') ??
-        Intl.message(
-          'Subscribe',
-          name: 'subscribe_label',
-          desc: 'Subscribe label',
-          locale: localeName,
-        );
-  }
-
-  String get unsubscribe_label {
-    return message('unsubscribe_label') ??
-        Intl.message(
-          'Unsubscribe',
-          name: 'unsubscribe_label',
-          desc: 'Unsubscribe label',
-          locale: localeName,
-        );
-  }
-
-  String get unsubscribe_message {
-    return message('unsubscribe_message') ??
-        Intl.message(
-          'Unsubscribing will delete all downloaded episodes of this podcast.',
-          name: 'unsubscribe_message',
-          desc: 'Displayed when the user unsubscribes from a podcast.',
-          locale: localeName,
-        );
-  }
-
-  String get search_for_podcasts_hint {
-    return message('search_for_podcasts_hint') ??
-        Intl.message(
-          'Search for podcasts',
-          name: 'search_for_podcasts_hint',
-          desc: 'Hint displayed on search bar when the user clicks the search icon.',
-          locale: localeName,
-        );
-  }
-
-  String get no_subscriptions_message {
-    return message('no_subscriptions_message') ??
-        Intl.message(
-          'Tap the Discovery button below or use the search bar above to find your first podcast',
-          name: 'no_subscriptions_message',
-          desc: 'Displayed on the library tab when the user has no subscriptions',
-          locale: localeName,
-        );
-  }
-
-  String get delete_label {
-    return message('delete_label') ??
-        Intl.message(
-          'Delete',
-          name: 'delete_label',
-          desc: 'Delete label',
-          locale: localeName,
-        );
-  }
-
-  String get delete_button_label {
-    return message('delete_button_label') ??
-        Intl.message(
-          'Delete',
-          name: 'delete_button_label',
-          desc: 'Delete label',
-          locale: localeName,
-        );
-  }
-
-  String get mark_played_label {
-    return message('mark_played_label') ??
-        Intl.message(
-          'Mark As Played',
-          name: 'mark_played_label',
-          desc: 'Mark as played',
-          locale: localeName,
-        );
-  }
-
-  String get mark_unplayed_label {
-    return message('mark_unplayed_label') ??
-        Intl.message(
-          'Mark As Unplayed',
-          name: 'mark_unplayed_label',
-          desc: 'Mark as unplayed',
-          locale: localeName,
-        );
-  }
-
-  String get delete_episode_confirmation {
-    return message('delete_episode_confirmation') ??
-        Intl.message(
-          'Are you sure you wish to delete this episode?',
-          name: 'delete_episode_confirmation',
-          desc: 'User is asked to confirm when they attempt to delete an episode',
-          locale: localeName,
-        );
-  }
-
-  String get delete_episode_title {
-    return message('delete_episode_title') ??
-        Intl.message(
-          'Delete Episode',
-          name: 'delete_episode_title',
-          desc: 'Delete label',
-          locale: localeName,
-        );
-  }
-
-  String get no_downloads_message {
-    return message('no_downloads_message') ??
-        Intl.message(
-          'You do not have any downloaded episodes',
-          name: 'no_downloads_message',
-          desc: 'Displayed on the library tab when the user has no subscriptions',
-          locale: localeName,
-        );
-  }
-
-  String get no_search_results_message {
-    return message('no_search_results_message') ??
-        Intl.message(
-          'No podcasts found',
-          name: 'no_search_results_message',
-          desc: 'Displayed on the library tab when the user has no subscriptions',
-          locale: localeName,
-        );
-  }
-
-  String get no_podcast_details_message {
-    return message('no_podcast_details_message') ??
-        Intl.message(
-          'Could not load podcast episodes. Please check your connection.',
-          name: 'no_podcast_details_message',
-          desc: 'Displayed on the podcast details page when the details could not be loaded',
-          locale: localeName,
-        );
-  }
-
-  String get play_button_label {
-    return message('play_button_label') ??
-        Intl.message(
-          'Play epsiode',
-          name: 'play_button_label',
-          desc: 'Semantic label for the play button',
-          locale: localeName,
-        );
-  }
-
-  String get pause_button_label {
-    return message('pause_button_label') ??
-        Intl.message(
-          'Pause episode',
-          name: 'pause_button_label',
-          desc: 'Semantic label for the pause button',
-          locale: localeName,
-        );
-  }
-
-  String get download_episode_button_label {
-    return message('download_episode_button_label') ??
-        Intl.message(
-          'Download episode',
-          name: 'download_episode_button_label',
-          desc: 'Semantic label for the download episode button',
-          locale: localeName,
-        );
-  }
-
-  String get delete_episode_button_label {
-    return message('delete_episode_button_label') ??
-        Intl.message(
-          'Delete episode',
-          name: 'delete_episode_button_label',
-          desc: 'Semantic label for the delete episode',
-          locale: localeName,
-        );
-  }
-
-  String get close_button_label {
-    return message('close_button_label') ??
-        Intl.message(
-          'Close',
-          name: 'close_button_label',
-          desc: 'Close button label',
-          locale: localeName,
-        );
-  }
-
-  String get search_button_label {
-    return message('search_button_label') ??
-        Intl.message(
-          'Search',
-          name: 'search_button_label',
-          desc: 'Search button label',
-          locale: localeName,
-        );
-  }
-
-  String get clear_search_button_label {
-    return message('clear_search_button_label') ??
-        Intl.message(
-          'Clear search text',
-          name: 'clear_search_button_label',
-          desc: 'Search button label',
-          locale: localeName,
-        );
-  }
-
-  String get search_back_button_label {
-    return message('search_back_button_label') ??
-        Intl.message(
-          'Back',
-          name: 'search_back_button_label',
-          desc: 'Search button label',
-          locale: localeName,
-        );
-  }
-
-  String get minimise_player_window_button_label {
-    return message('minimise_player_window_button_label') ??
-        Intl.message(
-          'Minimise player window',
-          name: 'minimise_player_window_button_label',
-          desc: 'Search button label',
-          locale: localeName,
-        );
-  }
-
-  String get rewind_button_label {
-    return message('rewind_button_label') ??
-        Intl.message(
-          'Rewind episode 10 seconds',
-          name: 'rewind_button_label',
-          desc: 'Rewind button tooltip',
-          locale: localeName,
-        );
-  }
-
-  String get fast_forward_button_label {
-    return message('fast_forward_button_label') ??
-        Intl.message(
-          'Fast-forward episode 30 seconds',
-          name: 'fast_forward_button_label',
-          desc: 'Fast forward tooltip',
-          locale: localeName,
-        );
-  }
-
-  String get about_label {
-    return message('about_label') ??
-        Intl.message(
-          'About',
-          name: 'about_label',
-          desc: 'About menu item',
-          locale: localeName,
-        );
-  }
-
-  String get mark_episodes_played_label {
-    return message('mark_episodes_played_label') ??
-        Intl.message(
-          'Mark all episodes as played',
-          name: 'mark_episodes_played_label',
-          desc: 'Mark all episodes played menu item',
-          locale: localeName,
-        );
-  }
-
-  String get mark_episodes_not_played_label {
-    return message('mark_episodes_not_played_label') ??
-        Intl.message(
-          'Mark all episodes as not-played',
-          name: 'mark_episodes_not_played_label',
-          desc: 'Mark all episodes not played menu item',
-          locale: localeName,
-        );
-  }
-
-  String get stop_download_confirmation {
-    return message('stop_download_confirmation') ??
-        Intl.message(
-          'Are you sure you wish to stop this download and delete the episode?',
-          name: 'stop_download_confirmation',
-          desc: 'User is asked to confirm when they wish to stop the active download.',
-          locale: localeName,
-        );
-  }
-
-  String get stop_download_button_label {
-    return message('stop_download_button_label') ??
-        Intl.message(
-          'Stop',
-          name: 'stop_download_button_label',
-          desc: 'Stop label',
-          locale: localeName,
-        );
-  }
-
-  String get stop_download_title {
-    return message('stop_download_title') ??
-        Intl.message(
-          'Stop Download',
-          name: 'stop_download_title',
-          desc: 'Stop download label',
-          locale: localeName,
-        );
-  }
-
-  String get settings_mark_deleted_played_label {
-    return message('settings_mark_deleted_played_label') ??
-        Intl.message(
-          'Mark deleted episodes as played',
-          name: 'settings_mark_deleted_played_label',
-          desc: 'Mark deleted episodes as played setting',
-          locale: localeName,
-        );
-  }
-
-  String get settings_download_sd_card_label {
-    return message('settings_download_sd_card_label') ??
-        Intl.message(
-          'Download episodes to SD card',
-          name: 'settings_download_sd_card_label',
-          desc: 'Download episodes to SD card setting',
-          locale: localeName,
-        );
-  }
-
-  String get settings_download_switch_card {
-    return message('settings_download_switch_card') ??
-        Intl.message(
-          'New downloads will be saved to the SD card. Existing downloads will remain on internal storage.',
-          name: 'settings_download_switch_card',
-          desc: 'Displayed when user switches from internal storage to SD card',
-          locale: localeName,
-        );
-  }
-
-  String get settings_download_switch_internal {
-    return message('settings_download_switch_internal') ??
-        Intl.message(
-          'New downloads will be saved to internal storage. Existing downloads will remain on the SD card.',
-          name: 'settings_download_switch_internal',
-          desc: 'Displayed when user switches from internal SD card to internal storage',
-          locale: localeName,
-        );
-  }
-
-  String get settings_download_switch_label {
-    return message('settings_download_switch_label') ??
-        Intl.message(
-          'Change storage location',
-          name: 'settings_download_switch_label',
-          desc: 'Dialog label for storage switch',
-          locale: localeName,
-        );
-  }
-
-  String get cancel_option_label {
-    return message('cancel_option_label') ??
-        Intl.message(
-          'Cancel',
-          name: 'cancel_option_label',
-          desc: 'Cancel option label',
-          locale: localeName,
-        );
-  }
-
-  String get settings_theme_switch_label {
-    return message('settings_theme_switch_label') ??
-        Intl.message(
-          'Dark theme',
-          name: 'settings_theme_switch_label',
-          desc: 'Dark theme',
-          locale: localeName,
-        );
-  }
-
-  String get playback_speed_label {
-    return message('playback_speed_label') ??
-        Intl.message(
-          'Playback speed',
-          name: 'playback_speed_label',
-          desc: 'Set playback speed icon label',
-          locale: localeName,
-        );
-  }
-
-  String get show_notes_label {
-    return message('show_notes_label') ??
-        Intl.message(
-          'Show notes',
-          name: 'show_notes_label',
-          desc: 'Set show notes icon label',
-          locale: localeName,
-        );
-  }
-
-  String get search_provider_label {
-    return message('search_provider_label') ??
-        Intl.message(
-          'Search provider',
-          name: 'search_provider_label',
-          desc: 'Set search provider label',
-          locale: localeName,
-        );
-  }
-
-  String get settings_label {
-    return message('settings_label') ??
-        Intl.message(
-          'Settings',
-          name: 'settings_label',
-          desc: 'Settings label',
-          locale: localeName,
-        );
-  }
-
-  String get go_back_button_label {
-    return message('go_back_button_label') ??
-        Intl.message(
-          'Go Back',
-          name: 'go_back_button_label',
-          desc: 'Go-back button label',
-          locale: localeName,
-        );
-  }
-
-  String get continue_button_label {
-    return message('continue_button_label') ??
-        Intl.message(
-          'Continue',
-          name: 'continue_button_label',
-          desc: 'Continue button label',
-          locale: localeName,
-        );
-  }
-
-  String get consent_message {
-    return message('consent_message') ??
-        Intl.message(
-          'The funding icon appears for Podcasts that support funding or donations. Clicking the icon will open a page to an external site that is provided by the Podcast owner and is not controlled by AnyTime',
-          name: 'consent_message',
-          desc: 'Display when first accessing external funding link',
-          locale: localeName,
-        );
-  }
-
-  String get episode_label {
-    return message('episode_label') ??
-        Intl.message(
-          'Episode',
-          name: 'episode_label',
-          desc: 'Tab label on now playing screen.',
-          locale: localeName,
-        );
-  }
-
-  String get chapters_label {
-    return message('chapters_label') ??
-        Intl.message(
-          'Chapters',
-          name: 'chapters_label',
-          desc: 'Tab label on now playing screen.',
-          locale: localeName,
-        );
-  }
-
-  String get notes_label {
-    return message('notes_label') ??
-        Intl.message(
-          'Notes',
-          name: 'notes_label',
-          desc: 'Tab label on now playing screen.',
-          locale: localeName,
-        );
-  }
-
-  String get podcast_funding_dialog_header {
-    return message('podcast_funding_dialog_header') ??
-        Intl.message(
-          'Podcast Funding',
-          name: 'podcast_funding_dialog_header',
-          desc: 'Header on podcast funding consent dialog',
-          locale: localeName,
-        );
-  }
-
-  String get settings_auto_open_now_playing {
-    return message('settings_auto_open_now_playing') ??
-        Intl.message(
-          'Full screen player mode on episode start',
-          name: 'settings_auto_open_now_playing',
-          desc: 'Displayed when user switches to use full screen player automatically',
-          locale: localeName,
-        );
-  }
-
-  String get error_no_connection {
-    return message('error_no_connection') ??
-        Intl.message(
-          'Unable to play episode. Please check your connection and try again',
-          name: 'error_no_connection',
-          desc: 'Displayed when attempting to start streaming an episode with no data connection',
-          locale: localeName,
-        );
-  }
-
-  String get error_playback_fail {
-    return message('error_playback_fail') ??
-        Intl.message(
-          'An unexpected error occurred during playback. Please check your connection and try again',
-          name: 'error_playback_fail',
-          desc: 'Displayed when attempting to start streaming an episode with no data connection',
-          locale: localeName,
-        );
-  }
-
-  String get add_rss_feed_option {
-    return message('add_rss_feed_option') ??
-        Intl.message(
-          'Add RSS Feed',
-          name: 'add_rss_feed_option',
-          desc: 'Option label for adding manual RSS feed url',
-          locale: localeName,
-        );
-  }
-
-  String get settings_import_opml {
-    return message('settings_import_opml') ??
-        Intl.message(
-          'Import OPML',
-          name: 'settings_import_opml',
-          desc: 'Option label importing OPML file',
-          locale: localeName,
-        );
-  }
-
-  String get settings_export_opml {
-    return message('settings_export_opml') ??
-        Intl.message(
-          'Export OPML',
-          name: 'settings_export_opml',
-          desc: 'Option label exporting OPML file',
-          locale: localeName,
-        );
-  }
-
-  String get label_opml_importing {
-    return message('label_opml_importing') ??
-        Intl.message(
-          'Importing',
-          name: 'label_opml_importing',
-          desc: 'Label for importing OPML dialog',
-          locale: localeName,
-        );
-  }
-
-  String get settings_auto_update_episodes {
-    return message('settings_auto_update_episodes') ??
-        Intl.message(
-          'Auto update episodes',
-          name: 'settings_auto_update_episodes',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get settings_auto_update_episodes_never {
-    return message('settings_auto_update_episodes_never') ??
-        Intl.message(
-          'Never',
-          name: 'settings_auto_update_episodes_never',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get settings_auto_update_episodes_heading {
-    return message('settings_auto_update_episodes_heading') ??
-        Intl.message(
-          'Refresh episodes on details screen after',
-          name: 'settings_auto_update_episodes_heading',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get settings_auto_update_episodes_always {
-    return message('settings_auto_update_episodes_always') ??
-        Intl.message(
-          'Always',
-          name: 'settings_auto_update_episodes_always',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get settings_auto_update_episodes_10min {
-    return message('settings_auto_update_episodes_10min') ??
-        Intl.message(
-          '10 minutes since last update',
-          name: 'settings_auto_update_episodes_10min',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get settings_auto_update_episodes_30min {
-    return message('settings_auto_update_episodes_30min') ??
-        Intl.message(
-          '30 minutes since last update',
-          name: 'settings_auto_update_episodes_30min',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get settings_auto_update_episodes_1hour {
-    return message('settings_auto_update_episodes_1hour') ??
-        Intl.message(
-          '1 hour since last update',
-          name: 'settings_auto_update_episodes_1hour',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get settings_auto_update_episodes_3hour {
-    return message('settings_auto_update_episodes_3hour') ??
-        Intl.message(
-          '3 hours since last update',
-          name: 'settings_auto_update_episodes_3hour',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get settings_auto_update_episodes_6hour {
-    return message('settings_auto_update_episodes_6hour') ??
-        Intl.message(
-          '6 hours since last update',
-          name: 'settings_auto_update_episodes_6hour',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get settings_auto_update_episodes_12hour {
-    return message('settings_auto_update_episodes_12hour') ??
-        Intl.message(
-          '12 hours since last update',
-          name: 'settings_auto_update_episodes_12hour',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get new_episodes_label {
-    return message('new_episodes_label') ??
-        Intl.message(
-          'New episodes are available',
-          name: 'new_episodes_label',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get new_episodes_view_now_label {
-    return message('new_episodes_view_now_label') ??
-        Intl.message(
-          'VIEW NOW',
-          name: 'new_episodes_view_now_label',
-          desc: 'Option label for auto updating of episodes',
-          locale: localeName,
-        );
-  }
-
-  String get settings_personalisation_divider_label {
-    return message('settings_personalisation_divider_label') ??
-        Intl.message(
-          'PERSONALISATION',
-          name: 'settings_personalisation_divider_label',
-          desc: 'Settings divider label for personalisation',
-          locale: localeName,
-        );
-  }
-
-  String get settings_episodes_divider_label {
-    return message('settings_episodes_divider_label') ??
-        Intl.message(
-          'EPISODES',
-          name: 'settings_episodes_divider_label',
-          desc: 'Settings divider label for episodes',
-          locale: localeName,
-        );
-  }
-
-  String get settings_playback_divider_label {
-    return message('settings_playback_divider_label') ??
-        Intl.message(
-          'PLAYBACK',
-          name: 'settings_playback_divider_label',
-          desc: 'Settings divider label for playback',
-          locale: localeName,
-        );
-  }
-
-  String get settings_data_divider_label {
-    return message('settings_data_divider_label') ??
-        Intl.message(
-          'DATA',
-          name: 'settings_data_divider_label',
-          desc: 'Settings divider label for data',
-          locale: localeName,
-        );
-  }
-
-  String get audio_effect_trim_silence_label {
-    return message('audio_effect_trim_silence_label') ??
-        Intl.message(
-          'Trim Silence',
-          name: 'audio_effect_trim_silence_label',
-          desc: 'Label for trim silence toggle',
-          locale: localeName,
-        );
-  }
-
-  String get audio_effect_volume_boost_label {
-    return message('audio_effect_volume_boost_label') ??
-        Intl.message(
-          'Volume Boost',
-          name: 'audio_effect_volume_boost_label',
-          desc: 'Label for volume boost toggle',
-          locale: localeName,
-        );
-  }
-
-  String get audio_settings_playback_speed_label {
-    return message('audio_settings_playback_speed_label') ??
-        Intl.message(
-          'Playback Speed',
-          name: 'audio_settings_playback_speed_label',
-          desc: 'Label for playback settings widget',
-          locale: localeName,
-        );
-  }
-
-  String get sleep_episode_function_header {
-    return message('sleep_episode_function_header') ??
-        Intl.message(
-          'Stop audio in',
-          name: 'sleep_episode_function_header',
-          desc: 'Title for Sleep Selector',
-          args: [],
-          locale: localeName,
-        );
-  }
-
-  String get sleep_episode_function_turn_off {
-    return message('sleep_episode_function_turn_off') ??
-        Intl.message(
-          'Turn off timer',
-          name: 'sleep_episode_function_turn_off',
-          desc: 'Label for turning off sleep timer',
-          args: [],
-          locale: localeName,
-        );
-  }
-
-  String get sleep_episode_function_toggled_on {
-    return message('sleep_episode_function_toggled_on') ??
-        Intl.message(
-          'Your sleep timer is set',
-          name: 'sleep_episode_function_toggled_on',
-          desc: 'Label for toggling on sleep timer',
-          args: [],
-          locale: localeName,
-        );
-  }
-
-  String get sleep_episode_function_toggled_off {
-    return message('sleep_episode_function_toggled_off') ??
-        Intl.message(
-          'Your sleep timer is turned off',
-          name: 'sleep_episode_function_toggled_off',
-          desc: 'Label for toggling off sleep timer',
-          args: [],
-          locale: localeName,
-        );
-  }
-
-  String get sleep_episode_function_end_of_episode {
-    return message('sleep_episode_function_end_of_episode') ??
-        Intl.message(
-          'End of episode',
-          name: 'sleep_episode_function_end_of_episode',
-          desc: '',
-          args: [],
-          locale: localeName,
-        );
-  }
-
-  String get sleep_episode_function_5_minutes {
-    return message('sleep_episode_function_5_minutes') ??
-        Intl.message(
-          '5 minutes',
-          name: 'sleep_episode_function_5_minutes',
-          desc: '',
-          args: [],
-          locale: localeName,
-        );
-  }
-
-  String get sleep_episode_function_15_minutes {
-    return message('sleep_episode_function_15_minutes') ??
-        Intl.message(
-          '15 minutes',
-          name: 'sleep_episode_function_15_minutes',
-          desc: '',
-          args: [],
-          locale: localeName,
-        );
-  }
-
-  String get sleep_episode_function_30_minutes {
-    return message('sleep_episode_function_30_minutes') ??
-        Intl.message(
-          '30 minutes',
-          name: 'sleep_episode_function_30_minutes',
-          desc: '',
-          args: [],
-          locale: localeName,
-        );
-  }
-
-  String get sleep_episode_function_45_minutes {
-    return message('sleep_episode_function_45_minutes') ??
-        Intl.message(
-          '45 minutes',
-          name: 'sleep_episode_function_45_minutes',
-          desc: '',
-          args: [],
-          locale: localeName,
-        );
-  }
-
-  String get sleep_episode_function_60_minutes {
-    return message('sleep_episode_function_60_minutes') ??
-        Intl.message(
-          '1 hour',
-          name: 'sleep_episode_function_60_minutes',
-          desc: '',
-          args: [],
-          locale: localeName,
-        );
-  }
-
-  String get empty_queue_message {
-    return message('empty_queue_message') ??
-        Intl.message(
-          'Your queue is empty',
-          name: 'empty_queue_message',
-          desc: 'Displayed when there are no items left in the queue',
-          locale: localeName,
-        );
-  }
-
-  String get clear_queue_button_label {
-    return message('clear_queue_button_label') ??
-        Intl.message(
-          'CLEAR QUEUE',
-          name: 'clear_queue_button_label',
-          desc: 'Clear queue button label',
-          locale: localeName,
-        );
-  }
-
-  String get now_playing_queue_label {
-    return message('now_playing_queue_label') ??
-        Intl.message(
-          'Now Playing',
-          name: 'now_playing_queue_label',
-          desc: 'Now playing label on queue',
-          locale: localeName,
-        );
-  }
-
-  String get up_next_queue_label {
-    return message('up_next_queue_label') ??
-        Intl.message(
-          'Up Next',
-          name: 'up_next_queue_label',
-          desc: 'Up next label on queue',
-          locale: localeName,
-        );
-  }
-
-  String get more_label {
-    return message('more_label') ??
-        Intl.message(
-          'More',
-          name: 'more_label',
-          desc: 'More label',
-          locale: localeName,
-        );
-  }
-
-  String get queue_add_label {
-    return message('queue_add_label') ??
-        Intl.message(
-          'Add',
-          name: 'queue_add_label',
-          desc: 'Queue add label',
-          locale: localeName,
-        );
-  }
-
-  String get queue_remove_label {
-    return message('queue_remove_label') ??
-        Intl.message(
-          'Remove',
-          name: 'queue_remove_label',
-          desc: 'Queue remove label',
-          locale: localeName,
-        );
-  }
-
-  String get opml_import_button_label {
-    return message('opml_import_button_label') ??
-        Intl.message(
-          'Import',
-          name: 'opml_import_button_label',
-          desc: 'OPML Import button label',
-          locale: localeName,
-        );
-  }
-
-  String get opml_export_button_label {
-    return message('opml_export_button_label') ??
-        Intl.message(
-          'Export',
-          name: 'opml_export_button_label',
-          desc: 'OPML Export button label',
-          locale: localeName,
-        );
-  }
-
-  String get opml_import_export_label {
-    return message('opml_import_export_label') ??
-        Intl.message(
-          'OPML Import/Export',
-          name: 'opml_import_export_label',
-          desc: 'OPML Import/Export label',
-          locale: localeName,
-        );
-  }
-
-  String get queue_clear_label {
-    return message('queue_clear_label') ??
-        Intl.message(
-          'Are you sure you wish to clear the queue?',
-          name: 'queue_clear_label',
-          desc: 'Shown on dialog box when clearing queue',
-          locale: localeName,
-        );
-  }
-
-  String get queue_clear_button_label {
-    return message('queue_clear_button_label') ??
-        Intl.message(
-          'Clear',
-          name: 'queue_clear_button_label',
-          desc: 'Shown on dialog box when clearing queue',
-          locale: localeName,
-        );
-  }
-
-  String get queue_clear_label_title {
-    return message('queue_clear_label_title') ??
-        Intl.message(
-          'Clear Queue',
-          name: 'queue_clear_label_title',
-          desc: 'Shown on dialog box when clearing queue',
-          locale: localeName,
-        );
-  }
-
-  String get layout_label {
-    return message('layout_label') ??
-        Intl.message(
-          'Layout',
-          name: 'layout_label',
-          desc: 'Layout menu label',
-          locale: localeName,
-        );
-  }
-
-  String get proceed_button_label {
-    return message('proceed_button_label') ??
-        Intl.message(
-          'Proceed anyway',
-          name: 'proceed_button_label',
-          desc: 'Shown on dialog box when accepting non-secure connection download',
-          locale: localeName,
-        );
-  }
-
-  String get non_secure_connection_dialog_header {
-    return message('non_secure_connection_dialog_header') ??
-        Intl.message(
-          'Your connection is not private',
-          name: 'non_secure_connection_dialog_header',
-          desc: 'Header on non-secure connection warning dialog',
-          locale: localeName,
-        );
-  }
-
-  String get non_secure_connection_message {
-    return message('non_secure_connection_message') ??
-        Intl.message(
-          "The site isn't using a private connection. Someone might be able to see or change the information you send or get through this site. Contact the site owner to ask that they secure the site and your data with HTTPS.",
-          name: 'non_secure_connection_message',
-          desc: 'Displayed on non-secure connection warning dialog',
-          locale: localeName,
-        );
-  }
+  String get app_title => message('app_title') ?? localizations.app_title;
+
+  String get app_title_short => message('app_title_short') ?? localizations.app_title_short;
+
+  String get library => message('library') ?? localizations.library;
+
+  String get discover => message('discover') ?? localizations.discover;
+
+  String get new_podcasts => message('new_podcasts') ?? localizations.new_podcasts;
+
+  String get downloads => message('downloads') ?? localizations.downloads;
+
+  String get subscribe_button_label => message('subscribe_button_label') ?? localizations.subscribe_button_label;
+
+  String get unsubscribe_button_label => message('unsubscribe_button_label') ?? localizations.unsubscribe_button_label;
+
+  String get cancel_button_label => message('cancel_button_label') ?? localizations.cancel_button_label;
+
+  String get ok_button_label => message('ok_button_label') ?? localizations.ok_button_label;
+
+  String get subscribe_label => message('subscribe_label') ?? localizations.subscribe_label;
+
+  String get unsubscribe_label => message('unsubscribe_label') ?? localizations.unsubscribe_label;
+
+  String get unsubscribe_message => message('unsubscribe_message') ?? localizations.unsubscribe_message;
+
+  String get search_for_podcasts_hint => message('search_for_podcasts_hint') ?? localizations.search_for_podcasts_hint;
+
+  String get no_subscriptions_message => message('no_subscriptions_message') ?? localizations.no_subscriptions_message;
+
+  String get delete_label => message('delete_label') ?? localizations.delete_label;
+
+  String get delete_button_label => message('delete_button_label') ?? localizations.delete_button_label;
+
+  String get mark_played_label => message('mark_played_label') ?? localizations.mark_played_label;
+
+  String get mark_unplayed_label => message('mark_unplayed_label') ?? localizations.mark_unplayed_label;
+
+  String get delete_episode_confirmation =>
+      message('delete_episode_confirmation') ?? localizations.delete_episode_confirmation;
+
+  String get delete_episode_title => message('delete_episode_title') ?? localizations.delete_episode_title;
+
+  String get no_downloads_message => message('no_downloads_message') ?? localizations.no_downloads_message;
+
+  String get no_search_results_message =>
+      message('no_search_results_message') ?? localizations.no_search_results_message;
+
+  String get no_podcast_details_message =>
+      message('no_podcast_details_message') ?? localizations.no_podcast_details_message;
+
+  String get play_button_label => message('play_button_label') ?? localizations.play_button_label;
+
+  String get pause_button_label => message('pause_button_label') ?? localizations.pause_button_label;
+
+  String get download_episode_button_label =>
+      message('download_episode_button_label') ?? localizations.download_episode_button_label;
+
+  String get delete_episode_button_label =>
+      message('delete_episode_button_label') ?? localizations.delete_episode_button_label;
+
+  String get close_button_label => message('close_button_label') ?? localizations.close_button_label;
+
+  String get search_button_label => message('search_button_label') ?? localizations.search_button_label;
+
+  String get clear_search_button_label =>
+      message('clear_search_button_label') ?? localizations.clear_search_button_label;
+
+  String get search_back_button_label => message('search_back_button_label') ?? localizations.search_back_button_label;
+
+  String get minimise_player_window_button_label =>
+      message('minimise_player_window_button_label') ?? localizations.minimise_player_window_button_label;
+
+  String get rewind_button_label => message('rewind_button_label') ?? localizations.rewind_button_label;
+
+  String get fast_forward_button_label =>
+      message('fast_forward_button_label') ?? localizations.fast_forward_button_label;
+
+  String get about_label => message('about_label') ?? localizations.about_label;
+
+  String get mark_episodes_played_label =>
+      message('mark_episodes_played_label') ?? localizations.mark_episodes_played_label;
+
+  String get mark_episodes_not_played_label =>
+      message('mark_episodes_not_played_label') ?? localizations.mark_episodes_not_played_label;
+
+  String get stop_download_confirmation =>
+      message('stop_download_confirmation') ?? localizations.stop_download_confirmation;
+
+  String get stop_download_button_label =>
+      message('stop_download_button_label') ?? localizations.stop_download_button_label;
+
+  String get stop_download_title => message('stop_download_title') ?? localizations.stop_download_title;
+
+  String get settings_mark_deleted_played_label =>
+      message('settings_mark_deleted_played_label') ?? localizations.settings_mark_deleted_played_label;
+
+  String get settings_download_sd_card_label =>
+      message('settings_download_sd_card_label') ?? localizations.settings_download_sd_card_label;
+
+  String get settings_download_switch_card =>
+      message('settings_download_switch_card') ?? localizations.settings_download_switch_card;
+
+  String get settings_download_switch_internal =>
+      message('settings_download_switch_internal') ?? localizations.settings_download_switch_internal;
+
+  String get settings_download_switch_label =>
+      message('settings_download_switch_label') ?? localizations.settings_download_switch_label;
+
+  String get cancel_option_label => message('cancel_option_label') ?? localizations.cancel_option_label;
+
+  String get settings_theme_switch_label =>
+      message('settings_theme_switch_label') ?? localizations.settings_theme_switch_label;
+
+  String get playback_speed_label => message('playback_speed_label') ?? localizations.playback_speed_label;
+
+  String get show_notes_label => message('show_notes_label') ?? localizations.show_notes_label;
+
+  String get search_provider_label => message('search_provider_label') ?? localizations.search_provider_label;
+
+  String get settings_label => message('settings_label') ?? localizations.settings_label;
+
+  String get go_back_button_label => message('go_back_button_label') ?? localizations.go_back_button_label;
+
+  String get continue_button_label => message('continue_button_label') ?? localizations.continue_button_label;
+
+  String get consent_message => message('consent_message') ?? localizations.consent_message;
+
+  String get episode_label => message('episode_label') ?? localizations.episode_label;
+
+  String get chapters_label => message('chapters_label') ?? localizations.chapters_label;
+
+  String get notes_label => message('notes_label') ?? localizations.notes_label;
+
+  String get podcast_funding_dialog_header =>
+      message('podcast_funding_dialog_header') ?? localizations.podcast_funding_dialog_header;
+
+  String get settings_auto_open_now_playing =>
+      message('settings_auto_open_now_playing') ?? localizations.settings_auto_open_now_playing;
+
+  String get error_no_connection => message('error_no_connection') ?? localizations.error_no_connection;
+
+  String get error_playback_fail => message('error_playback_fail') ?? localizations.error_playback_fail;
+
+  String get add_rss_feed_option => message('add_rss_feed_option') ?? localizations.add_rss_feed_option;
+
+  String get settings_import_opml => message('settings_import_opml') ?? localizations.settings_import_opml;
+
+  String get settings_export_opml => message('settings_export_opml') ?? localizations.settings_export_opml;
+
+  String get label_opml_importing => message('label_opml_importing') ?? localizations.label_opml_importing;
+
+  String get settings_auto_update_episodes =>
+      message('settings_auto_update_episodes') ?? localizations.settings_auto_update_episodes;
+
+  String get settings_auto_update_episodes_never =>
+      message('settings_auto_update_episodes_never') ?? localizations.settings_auto_update_episodes_never;
+
+  String get settings_auto_update_episodes_heading =>
+      message('settings_auto_update_episodes_heading') ?? localizations.settings_auto_update_episodes_heading;
+
+  String get settings_auto_update_episodes_always =>
+      message('settings_auto_update_episodes_always') ?? localizations.settings_auto_update_episodes_always;
+
+  String get settings_auto_update_episodes_10min =>
+      message('settings_auto_update_episodes_10min') ?? localizations.settings_auto_update_episodes_10min;
+
+  String get settings_auto_update_episodes_30min =>
+      message('settings_auto_update_episodes_30min') ?? localizations.settings_auto_update_episodes_30min;
+
+  String get settings_auto_update_episodes_1hour =>
+      message('settings_auto_update_episodes_1hour') ?? localizations.settings_auto_update_episodes_1hour;
+
+  String get settings_auto_update_episodes_3hour =>
+      message('settings_auto_update_episodes_3hour') ?? localizations.settings_auto_update_episodes_3hour;
+
+  String get settings_auto_update_episodes_6hour =>
+      message('settings_auto_update_episodes_6hour') ?? localizations.settings_auto_update_episodes_6hour;
+
+  String get settings_auto_update_episodes_12hour =>
+      message('settings_auto_update_episodes_12hour') ?? localizations.settings_auto_update_episodes_12hour;
+
+  String get new_episodes_label => message('new_episodes_label') ?? localizations.new_episodes_label;
+
+  String get new_episodes_view_now_label =>
+      message('new_episodes_view_now_label') ?? localizations.new_episodes_view_now_label;
+
+  String get settings_personalisation_divider_label =>
+      message('settings_personalisation_divider_label') ?? localizations.settings_personalisation_divider_label;
+
+  String get settings_episodes_divider_label =>
+      message('settings_episodes_divider_label') ?? localizations.settings_episodes_divider_label;
+
+  String get settings_playback_divider_label =>
+      message('settings_playback_divider_label') ?? localizations.settings_playback_divider_label;
+
+  String get settings_data_divider_label =>
+      message('settings_data_divider_label') ?? localizations.settings_data_divider_label;
+
+  String get audio_effect_trim_silence_label =>
+      message('audio_effect_trim_silence_label') ?? localizations.audio_effect_trim_silence_label;
+
+  String get audio_effect_volume_boost_label =>
+      message('audio_effect_volume_boost_label') ?? localizations.audio_effect_volume_boost_label;
+
+  String get audio_settings_playback_speed_label =>
+      message('audio_settings_playback_speed_label') ?? localizations.audio_settings_playback_speed_label;
+
+  String get sleep_episode_function_header =>
+      message('sleep_episode_function_header') ?? localizations.sleep_episode_function_header;
+
+  String get sleep_episode_function_turn_off =>
+      message('sleep_episode_function_turn_off') ?? localizations.sleep_episode_function_turn_off;
+
+  String get sleep_episode_function_toggled_on =>
+      message('sleep_episode_function_toggled_on') ?? localizations.sleep_episode_function_toggled_on;
+
+  String get sleep_episode_function_toggled_off =>
+      message('sleep_episode_function_toggled_off') ?? localizations.sleep_episode_function_toggled_off;
+
+  String get sleep_episode_function_end_of_episode =>
+      message('sleep_episode_function_end_of_episode') ?? localizations.sleep_episode_function_end_of_episode;
+
+  String get sleep_episode_function_5_minutes =>
+      message('sleep_episode_function_5_minutes') ?? localizations.sleep_episode_function_5_minutes;
+
+  String get sleep_episode_function_15_minutes =>
+      message('sleep_episode_function_15_minutes') ?? localizations.sleep_episode_function_15_minutes;
+
+  String get sleep_episode_function_30_minutes =>
+      message('sleep_episode_function_30_minutes') ?? localizations.sleep_episode_function_30_minutes;
+
+  String get sleep_episode_function_45_minutes =>
+      message('sleep_episode_function_45_minutes') ?? localizations.sleep_episode_function_45_minutes;
+
+  String get sleep_episode_function_60_minutes =>
+      message('sleep_episode_function_60_minutes') ?? localizations.sleep_episode_function_60_minutes;
+
+  String get empty_queue_message => message('empty_queue_message') ?? localizations.empty_queue_message;
+
+  String get clear_queue_button_label => message('clear_queue_button_label') ?? localizations.clear_queue_button_label;
+
+  String get now_playing_queue_label => message('now_playing_queue_label') ?? localizations.now_playing_queue_label;
+
+  String get up_next_queue_label => message('up_next_queue_label') ?? localizations.up_next_queue_label;
+
+  String get more_label => message('more_label') ?? localizations.more_label;
+
+  String get queue_add_label => message('queue_add_label') ?? localizations.queue_add_label;
+
+  String get queue_remove_label => message('queue_remove_label') ?? localizations.queue_remove_label;
+
+  String get opml_import_button_label => message('opml_import_button_label') ?? localizations.opml_import_button_label;
+
+  String get opml_export_button_label => message('opml_export_button_label') ?? localizations.opml_export_button_label;
+
+  String get opml_import_export_label => message('opml_import_export_label') ?? localizations.opml_import_export_label;
+
+  String get queue_clear_label => message('queue_clear_label') ?? localizations.queue_clear_label;
+
+  String get queue_clear_button_label => message('queue_clear_button_label') ?? localizations.queue_clear_button_label;
+
+  String get queue_clear_label_title => message('queue_clear_label_title') ?? localizations.queue_clear_label_title;
+
+  String get layout_label => message('layout_label') ?? localizations.layout_label;
+
+  String get proceed_button_label => message('proceed_button_label') ?? localizations.proceed_button_label;
+
+  String get non_secure_connection_dialog_header =>
+      message('non_secure_connection_dialog_header') ?? localizations.non_secure_connection_dialog_header;
+
+  String get non_secure_connection_message =>
+      message('non_secure_connection_message') ?? localizations.non_secure_connection_message;
 }
 
 class LocalisationsDelegate extends LocalizationsDelegate<L> {
   const LocalisationsDelegate();
 
   @override
-  bool isSupported(Locale locale) => ['en', 'de', 'pt'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      AppLocalizations.supportedLocales.any((l) => l.languageCode == locale.languageCode);
 
   @override
-  Future<L> load(Locale locale) => L.load(locale, null);
+  Future<L> load(Locale locale) => SynchronousFuture<L>(L.load(locale, null));
 
   @override
   bool shouldReload(LocalisationsDelegate old) => false;
@@ -1188,10 +343,11 @@ class EmbeddedLocalisationsDelegate extends LocalizationsDelegate<L> {
   EmbeddedLocalisationsDelegate({@required this.messages});
 
   @override
-  bool isSupported(Locale locale) => ['en', 'de', 'pt'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      AppLocalizations.supportedLocales.any((l) => l.languageCode == locale.languageCode);
 
   @override
-  Future<L> load(Locale locale) => L.load(locale, messages);
+  Future<L> load(Locale locale) => SynchronousFuture<L>(L.load(locale, messages));
 
   @override
   bool shouldReload(EmbeddedLocalisationsDelegate old) => false;
