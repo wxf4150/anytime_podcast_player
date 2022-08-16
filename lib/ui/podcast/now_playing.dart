@@ -89,6 +89,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
     final audioBloc = Provider.of<AudioBloc>(context, listen: false);
     final playerBuilder = PlayerControlsBuilder.of(context);
     final isLight = Theme.of(context).brightness == Brightness.light;
+    final double bottomPadding = MediaQuery.of(context).viewPadding.bottom;
 
     return StreamBuilder<Episode>(
         stream: audioBloc.nowPlaying,
@@ -171,7 +172,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
                     )),
                 if (scrollPos > 0)
                   Padding(
-                    padding: isEmbedded ? EdgeInsets.only(bottom: 64) : EdgeInsets.zero,
+                    padding: isEmbedded ? EdgeInsets.only(bottom: bottomPadding + 64) : EdgeInsets.zero,
                     child: Opacity(
                       opacity: opacity,
                       child: Column(
@@ -191,7 +192,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Padding(
-                        padding: isEmbedded ? EdgeInsets.only(bottom: 64) : EdgeInsets.zero,
+                        padding: isEmbedded ? EdgeInsets.only(bottom: bottomPadding + 64) : EdgeInsets.zero,
                         child: NowPlayingOptionsSelector(scrollPos: scrollPos, baseSize: baseSize, isEmbedded: isEmbedded),
                       );
                     }
@@ -207,11 +208,13 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
   void _policyChanged(SleepPolicy policy) {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     final texts = L.of(context);
+    final double bottomPadding = MediaQuery.of(context).viewPadding.bottom;
+
     if (scaffoldMessenger != null) {
       scaffoldMessenger.showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.only(bottom: baseSize + (isEmbedded ? 64.0 : 4.0)),
+          margin: EdgeInsets.only(bottom: baseSize + (isEmbedded ? bottomPadding + 64.0 : 4.0)),
           content: Text(
             policy is SleepPolicyOff ? texts.sleep_episode_function_toggled_off : texts.sleep_episode_function_toggled_on,
           ),
