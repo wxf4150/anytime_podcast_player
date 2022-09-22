@@ -1,613 +1,613 @@
 {
   "app_title": "Anytime Podcast Player",
   "@app_title": {
-    "description": "Full title for the application",
+    "description": "Sovelluksen pitkä otsikko",
     "type": "text",
     "placeholders": {}
   },
   "app_title_short": "Anytime Player",
   "@app_title_short": {
-    "description": "Title for the application",
+    "description": "Sovelluksen otsikko",
     "type": "text",
     "placeholders": {}
   },
-  "library": "Library",
+  "library": "Kirjasto",
   "@library": {
-    "description": "Library tab label",
+    "description": "Kirjasto-välilehden otsikko",
     "type": "text",
     "placeholders": {}
   },
-  "discover": "Discover",
+  "discover": "Hae",
   "@discover": {
-    "description": "Discover tab label",
+    "description": "Hae-välilehden otsikko",
     "type": "text",
     "placeholders": {}
   },
-  "downloads": "Downloads",
+  "downloads": "Lataukset",
   "@downloads": {
-    "description": "Downloads tab label",
+    "description": "Lataukset-välilehden otsikko",
     "type": "text",
     "placeholders": {}
   },
-  "subscribe_button_label": "FOLLOW",
+  "subscribe_button_label": "Tilaa",
   "@subscribe_button_label": {
-    "description": "Subscribe button label",
+    "description": "Tilaus-napin teksti",
     "type": "text",
     "placeholders": {}
   },
-  "unsubscribe_button_label": "Unfollow",
+  "unsubscribe_button_label": "Peru tilaus",
   "@unsubscribe_button_label": {
-    "description": "Unsubscribe button label",
+    "description": "Peru tilaus -napin teksti",
     "type": "text",
     "placeholders": {}
   },
-  "cancel_button_label": "Cancel",
+  "cancel_button_label": "Peruuta",
   "@cancel_button_label": {
-    "description": "Cancel button label",
+    "description": "Peruuta-napin teksti",
     "type": "text",
     "placeholders": {}
   },
   "ok_button_label": "OK",
   "@ok_button_label": {
-    "description": "OK button label",
+    "description": "OK-napin teksti",
     "type": "text",
     "placeholders": {}
   },
-  "subscribe_label": "Follow",
+  "subscribe_label": "Tilaa",
   "@subscribe_label": {
-    "description": "Subscribe label",
+    "description": "Tilaa-teksti",
     "type": "text",
     "placeholders": {}
   },
-  "unsubscribe_label": "Unfollow",
+  "unsubscribe_label": "Peru tilaus",
   "@unsubscribe_label": {
-    "description": "Unsubscribe label",
+    "description": "Peru tilaus -teksti",
     "type": "text",
     "placeholders": {}
   },
-  "unsubscribe_message": "Unfollowing will delete all downloaded episodes of this podcast.",
+  "unsubscribe_message": "Kun perut tilauksen, tämän podcastin kaikki ladatut jaksot poistetaan.",
   "@unsubscribe_message": {
-    "description": "Displayed when the user unsubscribes from a podcast.",
+    "description": "Näytetään kun käyttäjä peruuttaa podcastin tilauksen.",
     "type": "text",
     "placeholders": {}
   },
-  "search_for_podcasts_hint": "Search for podcasts",
+  "search_for_podcasts_hint": "Podcastien haku",
   "@search_for_podcasts_hint": {
-    "description": "Hint displayed on search bar when the user clicks the search icon.",
+    "description": "Näytettävä vihje kun käyttäjä klikkaa haku-kuvaketta.",
     "type": "text",
     "placeholders": {}
   },
-  "delete_label": "Delete",
+  "delete_label": "Poista",
   "@delete_label": {
-    "description": "Delete label",
+    "description": "Poista-teksti",
     "type": "text",
     "placeholders": {}
   },
-  "delete_button_label": "DELETE",
+  "delete_button_label": "POISTA",
   "@delete_button_label": {
-    "description": "Delete label",
+    "description": "POISTA-teksti",
     "type": "text",
     "placeholders": {}
   },
-  "mark_played_label": "Mark Played",
+  "mark_played_label": "Merkitse soitetuksi",
   "@mark_played_label": {
-    "description": "Mark as played",
+    "description": "Lisää Soitettu-merkintä",
     "type": "text",
     "placeholders": {}
   },
-  "mark_unplayed_label": "Mark Unplayed",
+  "mark_unplayed_label": "Merkitse soittamattomaksi",
   "@mark_unplayed_label": {
-    "description": "Mark as unplayed",
+    "description": "Lisää Ei soitettu -merkintä",
     "type": "text",
     "placeholders": {}
   },
-  "delete_episode_confirmation": "Are you sure you wish to delete this episode?",
+  "delete_episode_confirmation": "Oletko varma että haluat poistaa tämän jakson?",
   "@delete_episode_confirmation": {
-    "description": "User is asked to confirm when they attempt to delete an episode",
+    "description": "Käyttäjältä pyydetään varmistus, kun hän haluaa postaa jakson",
     "type": "text",
     "placeholders": {}
   },
-  "delete_episode_title": "Delete Episode",
+  "delete_episode_title": "Poista jakso",
   "@delete_episode_title": {
-    "description": "Delete label",
+    "description": "Poista jakso -teksti",
     "type": "text",
     "placeholders": {}
   },
-  "no_downloads_message": "You do not have any downloaded episodes",
+  "no_downloads_message": "Sinulla ei ole yhtään ladattua jaksoa",
   "@no_downloads_message": {
-    "description": "Displayed on the library tab when the user has no subscriptions",
+    "description": "Näytetään kirjasto-näkymässä, jos käyttäjällä ei ole yhtään tilausta",
     "type": "text",
     "placeholders": {}
   },
-  "no_search_results_message": "No podcasts found",
+  "no_search_results_message": "Yhtään podcastia ei löydy",
   "@no_search_results_message": {
-    "description": "Displayed on the library tab when the user has no subscriptions",
+    "description": "Näytetään kirjasto-näkymässä, jos käyttäjällä ei ole yhtään tilausta",
     "type": "text",
     "placeholders": {}
   },
-  "no_subscriptions_message": "Tap the Discovery button below or use the search bar above to find your first podcast",
-  "no_podcast_details_message": "Could not load podcast episodes. Please check your connection.",
+  "no_subscriptions_message": "Lisää ensimmäinen podcast-tilaus painamalla alempaa löytyvää Hae -nappia tai ylempää löytyvää Haku -riviä käyttäen",
+  "no_podcast_details_message": "Podcastin jaksojen lataus ei onnistunut. Tarkista verkkoyhteys.",
   "@no_podcast_details_message": {
-    "description": "Displayed on the podcast details page when the details could not be loaded",
+    "description": "Näytetään podcastin lisätietoja sivulla, jos lisätietojen lataus epäonnistuu",
     "type": "text",
     "placeholders": {}
   },
-  "play_button_label": "Play episode",
+  "play_button_label": "Toista",
   "@play_button_label": {
-    "description": "Semantic label for the play button",
+    "description": "Kuvaava teksti Play-napille",
     "type": "text",
     "placeholders": {}
   },
-  "pause_button_label": "Pause episode",
+  "pause_button_label": "Keskeytä",
   "@pause_button_label": {
-    "description": "Semantic label for the pause button",
+    "description": "Kuvaava teksti Pause-napille",
     "type": "text",
     "placeholders": {}
   },
-  "download_episode_button_label": "Download episode",
+  "download_episode_button_label": "Lataa",
   "@download_episode_button_label": {
-    "description": "Semantic label for the download episode button",
+    "description": "Kuvaava teksti Download-napille",
     "type": "text",
     "placeholders": {}
   },
-  "delete_episode_button_label": "Delete episode",
+  "delete_episode_button_label": "Poista",
   "@delete_episode_button_label": {
-    "description": "Semantic label for the delete episode",
+    "description": "Kuvaava teksti Delete-napille",
     "type": "text",
     "placeholders": {}
   },
-  "close_button_label": "Close",
+  "close_button_label": "SULJE",
   "@close_button_label": {
-    "description": "Close button label",
+    "description": "Kuvaava teksti Sulje-napille",
     "type": "text",
     "placeholders": {}
   },
-  "search_button_label": "Search",
+  "search_button_label": "Etsi",
   "@search_button_label": {
-    "description": "Search button label",
+    "description": "Etsi-napin teksti",
     "type": "text",
     "placeholders": {}
   },
-  "clear_search_button_label": "Clear search text",
+  "clear_search_button_label": "Tyhjennä etsittävä rivi",
   "@clear_search_button_label": {
-    "description": "Search button label",
+    "description": "Tyhjennä-napin teksti",
     "type": "text",
     "placeholders": {}
   },
-  "search_back_button_label": "Back",
+  "search_back_button_label": "Palaa",
   "@search_back_button_label": {
-    "description": "Search button label",
+    "description": "Palaa-napin teksti",
     "type": "text",
     "placeholders": {}
   },
-  "minimise_player_window_button_label": "Minimise player window",
+  "minimise_player_window_button_label": "Pienennä soittimen ikkuna",
   "@minimise_player_window_button_label": {
-    "description": "Search button label",
+    "description": "Pienennä-napin teksti",
     "type": "text",
     "placeholders": {}
   },
-  "rewind_button_label": "Rewind episode 30 seconds",
+  "rewind_button_label": "Kelaa jaksoa 30 sekuntia taaksepäin",
   "@rewind_button_label": {
-    "description": "Rewind button tooltip",
+    "description": "Taaksekelaus-napin vinkkiohje",
     "type": "text",
     "placeholders": {}
   },
-  "fast_forward_button_label": "Fast-forward episode 30 seconds",
+  "fast_forward_button_label": "Kelaa jaksoa 30 sekuntia eteenpäin",
   "@fast_forward_button_label": {
-    "description": "Fast forward tooltip",
+    "description": "Eteenkelaus-napin vinkkiohje",
     "type": "text",
     "placeholders": {}
   },
-  "about_label": "About",
+  "about_label": "Tiedot",
   "@about_label": {
-    "description": "About menu item",
+    "description": "Valikon Tiedot-kohde",
     "type": "text",
     "placeholders": {}
   },
-  "mark_episodes_played_label": "Mark all episodes as played",
+  "mark_episodes_played_label": "Merkitse kaikki jaksot toistetuiksi",
   "@mark_episodes_played_label": {
-    "description": "Mark all episodes played menu item",
+    "description": "Valikon Merkitse kaikki jaksot toistetuiksi -kohde",
     "type": "text",
     "placeholders": {}
   },
-  "mark_episodes_not_played_label": "Mark all episodes as not played",
+  "mark_episodes_not_played_label": "Merkitse kaikki jaksot uusiksi",
   "@mark_episodes_not_played_label": {
-    "description": "Mark all episodes not-played menu item",
+    "description": "Valikon Merkitse kaikki jaksot uusiksi -kohde",
     "type": "text",
     "placeholders": {}
   },
-  "stop_download_confirmation": "Are you sure you wish to stop this download and delete the episode?",
+  "stop_download_confirmation": "Haluatko varmasti keskeyttää jakson lataamisen ja poistaa sen?",
   "@stop_download_confirmation": {
-    "description": "User is asked to confirm when they wish to stop the active download.",
+    "description": "Varmistetaan käyttäjältä latauksen keskeyttäminen.",
     "type": "text",
     "placeholders": {}
   },
-  "stop_download_button_label": "Stop",
+  "stop_download_button_label": "Pysäytä",
   "@stop_download_button_label": {
-    "description": "Stop label",
+    "description": "Pysäytä-napin teksti",
     "type": "text",
     "placeholders": {}
   },
-  "stop_download_title": "Stop Download",
+  "stop_download_title": "Pysäytä lataaminen",
   "@stop_download_title": {
-    "description": "Stop download label",
+    "description": "Pysäytä lataaminen -teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_mark_deleted_played_label": "Mark deleted episodes as played",
+  "settings_mark_deleted_played_label": "Lisää poistetuille jaksoille toistettu-merkintä",
   "@settings_mark_deleted_played_label": {
-    "description": "Mark deleted episodes as played setting",
+    "description": "Poistettujen jaksojen toistettu -merkinnän asetus",
     "type": "text",
     "placeholders": {}
   },
-  "settings_download_sd_card_label": "Download episodes to SD card",
+  "settings_download_sd_card_label": "Lataa jaksot SD-kortille",
   "@settings_download_sd_card_label": {
-    "description": "Download episodes to SD card setting",
+    "description": "Lataa jaksot SD-kortille -asetus",
     "type": "text",
     "placeholders": {}
   },
-  "settings_download_switch_card": "New downloads will be saved to the SD card. Existing downloads will remain on internal storage.",
+  "settings_download_switch_card": "Uudet lataukset tallennetaan SD-kortille. Aiemmat lataukset säilyvät tallessa sisäisessä muistissa.",
   "@settings_download_switch_card": {
-    "description": "Displayed when user switches from internal storage to SD card",
+    "description": "Tämä näytetään kun käyttäjä vaihtaa sisäisen muistin sijaan käyttöön SD-korttimuistin",
     "type": "text",
     "placeholders": {}
   },
-  "settings_download_switch_internal": "New downloads will be saved to internal storage. Existing downloads will remain on the SD card.",
+  "settings_download_switch_internal": "Uudet lataukset tallennetaan sisäiseen muistiin. Aiemmat lataukset säilyvät tallessa SD-kortilla.",
   "@settings_download_switch_internal": {
-    "description": "Displayed when user switches from internal SD card to internal storage",
+    "description": "Tämä näytetään kun käyttäjä vaihtaa SD-kortin sijaan käyttöön sisäisen muistin",
     "type": "text",
     "placeholders": {}
   },
-  "settings_download_switch_label": "Change storage location",
+  "settings_download_switch_label": "Vaihda tallennusten sijaintia",
   "@settings_download_switch_label": {
-    "description": "Dialog label for storage switch",
+    "description": "Tallennus sijainnin vaihtamisen -kyselyikkuna",
     "type": "text",
     "placeholders": {}
   },
-  "cancel_option_label": "Cancel",
+  "cancel_option_label": "Peruuta",
   "@cancel_option_label": {
-    "description": "Cancel option label",
+    "description": "Peruuta-valinnan teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_theme_switch_label": "Dark theme",
+  "settings_theme_switch_label": "Tumma väriteema",
   "@settings_theme_switch_label": {
-    "description": "Dark theme",
+    "description": "Tumma väriteema",
     "type": "text",
     "placeholders": {}
   },
-  "playback_speed_label": "Playback speed",
+  "playback_speed_label": "Toistonopeus",
   "@playback_speed_label": {
-    "description": "Set playback speed icon label",
+    "description": "Aseta toistonopeus -kuvakkeen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "show_notes_label": "Show notes",
+  "show_notes_label": "Näytä muistiinpanot",
   "@show_notes_label": {
-    "description": "Set show notes icon label",
+    "description": "Näytä muistiinpanot -kuvakkeen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "search_provider_label": "Search provider",
+  "search_provider_label": "Etsi-toiminnon toteuttaja",
   "@search_provider_label": {
-    "description": "Set search provider label",
+    "description": "Aseta Etsi-toiminnon toteuttaja -teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_label": "Settings",
+  "settings_label": "Asetukset",
   "@settings_label": {
-    "description": "Settings label",
+    "description": "Asetukset-teksti",
     "type": "text",
     "placeholders": {}
   },
-  "go_back_button_label": "Go Back",
+  "go_back_button_label": "Palaa takaisin",
   "@go_back_button_label": {
-    "description": "Go-back button label",
+    "description": "Palaa takaisin -napin teksti",
     "type": "text",
     "placeholders": {}
   },
-  "continue_button_label": "Continue",
+  "continue_button_label": "Jatka",
   "@continue_button_label": {
-    "description": "Continue button label",
+    "description": "Jatka-napin teksti",
     "type": "text",
     "placeholders": {}
   },
-  "consent_message": "This funding link will take you to an external site where you will be able to directly support the show. Links are provided by the podcast authors and is not controlled by Anytime.",
+  "consent_message": "Seuraava lahjoituslinkki vie sinut kolmannen osapuolen verkkosivulle, jossa voit suoraan antaa tukea podcastin tekijälle. Podcastien tekijät toimittavat linkit ja Anytime tai tämä sovellus ei vastaa hallinnasta.",
   "@consent_message": {
-    "description": "Display when first accessing external funding link",
+    "description": "Näytetään käyttäjän käyttäessä ensimmäisen kerran lahjoituslinkkiä",
     "type": "text",
     "placeholders": {}
   },
-  "episode_label": "Episode",
+  "episode_label": "Jakso",
   "@episode_label": {
-    "description": "Tab label on now playing screen.",
+    "description": "Parhaillaan toistetaan -näkymän teksti.",
     "type": "text",
     "placeholders": {}
   },
-  "chapters_label": "Chapters",
+  "chapters_label": "Kappaleet",
   "@chapters_label": {
-    "description": "Tab label on now playing screen.",
+    "description": "Parhaillaan toistetaan -näkymän teksti.",
     "type": "text",
     "placeholders": {}
   },
-  "notes_label": "Notes",
+  "notes_label": "Muistiinpanot",
   "@notes_label": {
-    "description": "Tab label on now playing screen.",
+    "description": "Parhaillaan toistetaan -näkymän teksti.",
     "type": "text",
     "placeholders": {}
   },
-  "podcast_funding_dialog_header": "Podcast Funding",
+  "podcast_funding_dialog_header": "Podcast tukeminen",
   "@podcast_funding_dialog_header": {
-    "description": "Header on podcast funding consent dialog",
+    "description": "Podcast tukeminen lupapyyntonäkymän otsikko",
     "type": "text",
     "placeholders": {}
   },
-  "settings_auto_open_now_playing": "Full screen player mode on episode start",
+  "settings_auto_open_now_playing": "Jakson alussa käynnistä toisto kokoruudulla",
   "@settings_auto_open_now_playing": {
-    "description": "Displayed when user switches to use full screen player automatically",
+    "description": "Tämä näytetään kun käyttäjä vaihtaa käyttöön automaattisen näytön kokoruudun asetuksen",
     "type": "text",
     "placeholders": {}
   },
-  "error_no_connection": "Unable to play episode. Please check your connection and try again.",
+  "error_no_connection": "Jakson toistaminen ei onnistu. Tarkista verkkoyhteys ja yritä uudelleen.",
   "@error_no_connection": {
-    "description": "Displayed when attempting to start streaming an episode with no data connection",
+    "description": "Tämä näytetään kun käyttäjä aloittaa jakson toistamisen ilman toimivaa tietoliikenne yhteyttä",
     "type": "text",
     "placeholders": {}
   },
-  "error_playback_fail": "An unexpected error occurred during playback. Please check your connection and try again.",
+  "error_playback_fail": "Toiston aikana tapahtui odottamaton virhe. Tarkista verkkoyhteys ja yritä uudelleen.",
   "@error_playback_fail": {
-    "description": "Displayed when attempting to start streaming an episode with no data connection",
+    "description": "Tämä näytetään kun jakson toistamisen aikana tietoliikenne yhteydessa ilmenee toimintahäiriö",
     "type": "text",
     "placeholders": {}
   },
-  "add_rss_feed_option": "Add RSS Feed",
+  "add_rss_feed_option": "Lisää RSS-syöte",
   "@add_rss_feed_option": {
-    "description": "Option label for adding manual RSS feed url",
+    "description": "Manuaalisesti annettavan RSS-syötteen URL-osoitteen syöttämisen tunnus",
     "type": "text",
     "placeholders": {}
   },
-  "settings_import_opml": "Import OPML",
+  "settings_import_opml": "Tuo OPML",
   "@settings_import_opml": {
-    "description": "Option label importing OPML file",
+    "description": "OPML tiedoston tuontivalinnan teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_export_opml": "Export OPML",
+  "settings_export_opml": "Vie OPML",
   "@settings_export_opml": {
-    "description": "Option label exporting OPML file",
+    "description": "OPML tiedoston vientivalinnan teksti",
     "type": "text",
     "placeholders": {}
   },
-  "label_opml_importing": "Importing",
+  "label_opml_importing": "Tuodaan",
   "@label_opml_importing": {
-    "description": "Label for importing OPML dialog",
+    "description": "OPML tiedoston tuomisen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_auto_update_episodes_heading": "Refresh episodes on details screen after",
+  "settings_auto_update_episodes_heading": "Virkistä jaksot Yksityiskohdat -näkymässä kun",
   "@settings_auto_update_episodes_heading": {
-    "description": "Option label for auto updating of episodes",
+    "description": "Jaksojen automaattisen päivitysasetuksen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_auto_update_episodes": "Auto update episodes",
+  "settings_auto_update_episodes": "Päivitä jaksot automaattisesti",
   "@settings_auto_update_episodes": {
-    "description": "Option label for auto updating of episodes",
+    "description": "Jaksojen automaattisen päivitysasetuksen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_auto_update_episodes_never": "Never",
+  "settings_auto_update_episodes_never": "Ei koskaan",
   "@settings_auto_update_episodes_never": {
-    "description": "Option label for auto updating of episodes",
+    "description": "Jaksojen automaattisen päivitysasetuksen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_auto_update_episodes_always": "Always",
+  "settings_auto_update_episodes_always": "Aina",
   "@settings_auto_update_episodes_always": {
-    "description": "Option label for auto updating of episodes",
+    "description": "Jaksojen automaattisen päivitysasetuksen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_auto_update_episodes_10min": "10 minutes since last update",
+  "settings_auto_update_episodes_10min": "10 minuuttia edellisen päivityksen jälkeen",
   "@settings_auto_update_episodes_10min": {
-    "description": "Option label for auto updating of episodes",
+    "description": "Jaksojen automaattisen päivitysasetuksen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_auto_update_episodes_30min": "30 minutes since last update",
+  "settings_auto_update_episodes_30min": "30 minuuttia edellisen päivityksen jälkeen",
   "@settings_auto_update_episodes_30min": {
-    "description": "Option label for auto updating of episodes",
+    "description": "Jaksojen automaattisen päivitysasetuksen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_auto_update_episodes_1hour": "1 hour since last update",
+  "settings_auto_update_episodes_1hour": "60 minuuttia edellisen päivityksen jälkeen",
   "@settings_auto_update_episodes_1hour": {
-    "description": "Option label for auto updating of episodes",
+    "description": "Jaksojen automaattisen päivitysasetuksen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_auto_update_episodes_3hour": "3 hours since last update",
+  "settings_auto_update_episodes_3hour": "3 tuntia edellisen päivityksen jälkeen",
   "@settings_auto_update_episodes_3hour": {
-    "description": "Option label for auto updating of episodes",
+    "description": "Jaksojen automaattisen päivitysasetuksen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_auto_update_episodes_6hour": "6 hours since last update",
+  "settings_auto_update_episodes_6hour": "6 tuntia edellisen päivityksen jälkeen",
   "@settings_auto_update_episodes_6hour": {
-    "description": "Option label for auto updating of episodes",
+    "description": "Jaksojen automaattisen päivitysasetuksen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_auto_update_episodes_12hour": "12 hours since last update",
+  "settings_auto_update_episodes_12hour": "12 tuntia edellisen päivityksen jälkeen",
   "@settings_auto_update_episodes_12hour": {
-    "description": "Option label for auto updating of episodes",
+    "description": "Jaksojen automaattisen päivitysasetuksen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "new_episodes_label": "New episodes are available",
+  "new_episodes_label": "Uusia jaksoja on saatavilla",
   "@new_episodes_label": {
-    "description": "Option label for new episodes snackbar",
+    "description": "Uusia jaksoja saatavilla snackbar -teksti",
     "type": "text",
     "placeholders": {}
   },
-  "new_episodes_view_now_label": "VIEW NOW",
+  "new_episodes_view_now_label": "NÄYTÄ NYT",
   "@new_episodes_view_now_label": {
-    "description": "Option action label for new episodes snackbar",
+    "description": "Uusia jaksoja saatavilla snackbar -teksti",
     "type": "text",
     "placeholders": {}
   },
-  "settings_personalisation_divider_label": "PERSONALISATION",
+  "settings_personalisation_divider_label": "PERSONOINTI",
   "@settings_personalisation_divider_label": {
-    "description": "Settings divider label for personalisation",
+    "description": "Personointiasetusten jakajan otsikko",
     "type": "text",
     "placeholders": {}
   },
-  "settings_episodes_divider_label": "EPISODES",
+  "settings_episodes_divider_label": "JAKSOT",
   "@settings_episodes_divider_label": {
-    "description": "Settings divider label for episodes",
+    "description": "Jaksojen erottamisen asetus",
     "type": "text",
     "placeholders": {}
   },
-  "settings_playback_divider_label": "PLAYBACK",
+  "settings_playback_divider_label": "TOISTA",
   "@settings_playback_divider_label": {
-    "description": "Settings divider label for playback",
+    "description": "Toiston erottamisen asetus",
     "type": "text",
     "placeholders": {}
   },
   "settings_data_divider_label": "DATA",
   "@settings_data_divider_label": {
-    "description": "Settings divider label for data",
+    "description": "DATAn erottamisen asetus",
     "type": "text",
     "placeholders": {}
   },
-  "audio_effect_trim_silence_label": "Trim Silence",
+  "audio_effect_trim_silence_label": "Poista hiljaisuus",
   "@audio_effect_trim_silence_label": {
-    "description": "Label for trim silence toggle",
+    "description": "Poista hiljaisuus -valinnan teksti",
     "type": "text",
     "placeholders": {}
   },
-  "audio_effect_volume_boost_label": "Volume Boost",
+  "audio_effect_volume_boost_label": "Äänen voimakkuuden tehostus",
   "@audio_effect_volume_boost_label": {
-    "description": "Label for volume boost toggle",
+    "description": "Äänen voimakkuuden tehostus -valinnan teksti",
     "type": "text",
     "placeholders": {}
   },
-  "audio_settings_playback_speed_label": "Playback Speed",
+  "audio_settings_playback_speed_label": "Toistonopeus",
   "@audio_settings_playback_speed_label": {
-    "description": "Label for playback settings widget",
+    "description": "Toistonopeuden asetusvalintojen teksti",
     "type": "text",
     "placeholders": {}
   },
-  "empty_queue_message": "Your queue is empty",
+  "empty_queue_message": "Jono on tyhjä",
   "@empty_queue_message": {
-    "description": "Displayed when there are no items left in the queue",
+    "description": "Näytetään kun jonossa ei ole mitään jäljellä",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "clear_queue_button_label": "CLEAR QUEUE",
+  "clear_queue_button_label": "TYHJENNÄ JONO",
   "@clear_queue_button_label": {
-    "description": "Clear queue button label",
+    "description": "Tyhjennä jono -napin teksti",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "now_playing_queue_label": "Now Playing",
+  "now_playing_queue_label": "Toistetaan",
   "@now_playing_queue_label": {
-    "description": "Now playing label on queue",
+    "description": "Jonossa näytettävä Toistetaan parhaillaan -teksti",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "up_next_queue_label": "Up Next",
+  "up_next_queue_label": "Seuraavana",
   "@up_next_queue_label": {
-    "description": "Up next label on queue",
+    "description": "Seuraavana jonossa -teksti",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "more_label": "More",
+  "more_label": "Enemmän",
   "@more_label": {
-    "description": "More label",
+    "description": "Enemmän-teksti",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "queue_add_label": "Add",
+  "queue_add_label": "Lisää",
   "@queue_add_label": {
-    "description": "Queue add label",
+    "description": "Lisää jonoon -teksti",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "queue_remove_label": "Remove",
+  "queue_remove_label": "Poista",
   "@queue_remove_label": {
-    "description": "Queue remove label",
+    "description": "Poista jonosta -teksti",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "opml_import_button_label": "Import",
+  "opml_import_button_label": "Tuo",
   "@opml_import_button_label": {
-    "description": "OPML Import button label",
+    "description": "OPML Tuo -napin teksti",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "opml_export_button_label": "Export",
+  "opml_export_button_label": "Vie",
   "@opml_export_button_label": {
-    "description": "OPML Export button label",
+    "description": "OPML Vie -napin teksti",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "opml_import_export_label": "OPML Import/Export",
+  "opml_import_export_label": "OPML Tuo/Vie",
   "@opml_import_export_label": {
-    "description": "OPML Import/Export label",
+    "description": "OPML Tuo/Vie -teksti",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "queue_clear_label": "Are you sure you wish to clear the queue?",
+  "queue_clear_label": "Haluatko varmasti tyhjentää jonon?",
   "@queue_clear_label": {
-    "description": "Shown on dialog box when clearing queue",
+    "description": "Tämä näytetään kyselyikkunassa, kun ollaan tyhjentämässä jonoa",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "queue_clear_button_label": "Clear",
+  "queue_clear_button_label": "Tyhjennä",
   "@queue_clear_button_label": {
-    "description": "Shown on dialog box when clearing queue",
+    "description": "Tämä näytetään kyselyikkunassa, kun ollaan tyhjentämässä jonoa",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "queue_clear_label_title": "Clear Queue",
+  "queue_clear_label_title": "Tyhjennä jono",
   "@queue_clear_label_title": {
-    "description": "Shown on dialog box when clearing queue",
+    "description": "Tämä näytetään kyselyikkunassa, kun ollaan tyhjentämässä jonoa",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "layout_label": "Layout",
+  "layout_label": "Näkymä",
   "@layout_label": {
-    "description": "Layout menu label",
+    "description": "Näkymä-valikkoteksti",
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "sleep_episode_function_header": "Sleep after",
-  "sleep_episode_function_turn_off": "Turn off timer",
-  "sleep_episode_function_toggled_on": "Your sleep timer is on.",
-  "sleep_episode_function_toggled_off": "Your sleep timer is off.",
+  "sleep_episode_function_header": "Sammuta kun on kulunut",
+  "sleep_episode_function_turn_off": "Kytke ajastin pois päältä",
+  "sleep_episode_function_toggled_on": "Sammutuksen ajastin on päällä.",
+  "sleep_episode_function_toggled_off": "Sammutuksen ajastin ei ole päällä.",
   "sleep_episode_function_end_of_episode": "End of Episode",
-  "sleep_episode_function_5_minutes": "5 minutes",
-  "sleep_episode_function_15_minutes": "15 minutes",
-  "sleep_episode_function_30_minutes": "30 minutes",
-  "sleep_episode_function_45_minutes": "45 minutes",
-  "sleep_episode_function_60_minutes": "1 hour",
-  "proceed_button_label": "Proceed anyway",
-  "non_secure_connection_dialog_header": "Your connection is not private",
-  "non_secure_connection_message": "The site isn't using a private connection. Someone might be able to see or change the information you send or get through this site. Contact the site owner to ask that they secure the site and your data with HTTPS.",
-  "new_podcasts": "New"
+  "sleep_episode_function_5_minutes": "5 minuuttia",
+  "sleep_episode_function_15_minutes": "15 minuuttia",
+  "sleep_episode_function_30_minutes": "30 minuuttia",
+  "sleep_episode_function_45_minutes": "45 minuuttia",
+  "sleep_episode_function_60_minutes": "1 tunti",
+  "proceed_button_label": "Jatka kuitenkin",
+  "non_secure_connection_dialog_header": "Verkkoyhteytesi ei ole salattu.",
+  "non_secure_connection_message": "Sivusto ei käytä salattua yhteyttä. Tälle sivustolle lähettämiesi tietojen muuttaminen ja sieltä tulevien tietojen näkeminen on haitan tekijöille mahdollista. Ota yhteyttä sivuston omistajaan ja pyydä heitä salaamaan sivustonsa, ja samalla turvaamaan sinun tietoliikenne, käyttämällä HTTPS-protokollaa.",
+  "new_podcasts": "Uusi"
 }
