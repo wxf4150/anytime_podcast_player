@@ -224,7 +224,7 @@ class Episode {
       publicationDate: episode['publicationDate'] == null || episode['publicationDate'] == 'null'
           ? DateTime.now()
           : DateTime.fromMillisecondsSinceEpoch(int.parse(episode['publicationDate'] as String)),
-      contentUrl: episode['contentUrl'] as String,
+      contentUrl: (episode['contentUrl'] as String)?.trim(),
       author: episode['author'] as String,
       season: int.parse(episode['season'] as String ?? '0'),
       episode: int.parse(episode['episode'] as String ?? '0'),
