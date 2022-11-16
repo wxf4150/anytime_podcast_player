@@ -66,7 +66,7 @@ class _SearchState extends State<Search> {
               tooltip: L.of(context).search_back_button_label,
               icon: Platform.isAndroid
                   ? Icon(Icons.arrow_back, color: Theme.of(context).appBarTheme.foregroundColor)
-                  : Icon(Icons.arrow_back_ios),
+                  : Icon(Icons.arrow_back_ios, color: Theme.of(context).appBarTheme.foregroundColor),
               onPressed: () => Navigator.pop(context),
             ),
             title: TextField(
