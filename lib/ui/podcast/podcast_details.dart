@@ -452,6 +452,7 @@ class SubscriptionButton extends StatelessWidget {
                       ),
                       icon: Icon(
                         Icons.delete_outline,
+                        color: Theme.of(context).primaryIconTheme.color,
                       ),
                       label: Text(L.of(context).unsubscribe_label),
                       onPressed: () {
@@ -495,6 +496,7 @@ class SubscriptionButton extends StatelessWidget {
                       ),
                       icon: Icon(
                         Icons.add,
+                        color: Theme.of(context).primaryIconTheme.color,
                       ),
                       label: Text(L.of(context).subscribe_label),
                       onPressed: () {
