@@ -45,7 +45,7 @@ class ShowNotes extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                      child: Text(episode.title ?? '', style: textTheme.headline6),
+                      child: Text(episode.title ?? '', style: textTheme.titleLarge),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),

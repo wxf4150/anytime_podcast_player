@@ -18,7 +18,7 @@ class SliderHandle extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final ColorTween handleColor = ColorTween(
-      begin: theme.bottomAppBarColor,
+      begin: theme.bottomAppBarTheme.color,
       end: theme.scaffoldBackgroundColor,
     );
 

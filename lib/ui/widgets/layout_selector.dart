@@ -62,7 +62,7 @@ class _LayoutSelectorWidgetState extends State<LayoutSelectorWidget> {
                           ),
                           Text(
                             L.of(context).layout_label,
-                            style: theme.textTheme.subtitle1,
+                            style: theme.textTheme.titleMedium,
                           ),
                         ],
                       )),
@@ -76,7 +76,7 @@ class _LayoutSelectorWidgetState extends State<LayoutSelectorWidget> {
                             settingsBloc.layoutMode(0);
                           },
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: mode == 0 ? theme.bottomAppBarColor : null,
+                            backgroundColor: mode == 0 ? theme.bottomAppBarTheme.color : null,
                           ),
                           child: Icon(
                             Icons.list,
@@ -93,7 +93,7 @@ class _LayoutSelectorWidgetState extends State<LayoutSelectorWidget> {
                             settingsBloc.layoutMode(1);
                           },
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: mode == 1 ? theme.bottomAppBarColor : null,
+                            backgroundColor: mode == 1 ? theme.bottomAppBarTheme.color : null,
                           ),
                           child: Icon(
                             Icons.grid_on,
@@ -110,7 +110,7 @@ class _LayoutSelectorWidgetState extends State<LayoutSelectorWidget> {
                             settingsBloc.layoutMode(2);
                           },
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: mode == 2 ? theme.bottomAppBarColor : null,
+                            backgroundColor: mode == 2 ? theme.bottomAppBarTheme.color : null,
                           ),
                           child: Icon(
                             Icons.grid_view,

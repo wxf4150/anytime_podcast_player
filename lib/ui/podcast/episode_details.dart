@@ -68,7 +68,7 @@ class _EpisodeDetailsState extends State<EpisodeDetails> {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       softWrap: false,
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     )),
                 Divider(),
                 Padding(

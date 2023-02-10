@@ -103,14 +103,13 @@ class MobileOPMLService extends OPMLService {
     final export = builder.buildDocument();
 
     var output = Platform.isAndroid ? await getExternalStorageDirectory() : await getApplicationDocumentsDirectory();
-    var outputFile = '${output.path}/anytime_export.opml';
-    var file = File(outputFile);
+    var outputFilePath = '${output.path}/anytime_export.opml';
+    var file = File(outputFilePath);
 
     file.writeAsStringSync(export.toXmlString(pretty: true));
-
-    await Share.shareFiles(
+    final outputFile = XFile(file.path);
+    await Share.shareXFiles(
       [outputFile],
-      mimeTypes: ['text/xml', 'application/xml'],
       subject: 'Anytime OPML',
     );
 

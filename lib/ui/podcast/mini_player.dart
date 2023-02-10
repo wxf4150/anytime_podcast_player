@@ -76,7 +76,7 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
       },
       direction: DismissDirection.startToEnd,
       background: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).colorScheme.background,
         height: 64.0,
       ),
       child: GestureDetector(
@@ -98,7 +98,7 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
         child: Container(
           height: 60,
           decoration: BoxDecoration(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               border: Border(
                 top: Divider.createBorderSide(context, width: 0.5, color: Theme.of(context).dividerColor),
                 bottom: Divider.createBorderSide(context, width: 0.5, color: Theme.of(context).dividerColor),
@@ -144,7 +144,7 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
                                 Text(
                                   snapshot.data?.title ?? '',
                                   overflow: TextOverflow.ellipsis,
-                                  style: textTheme.bodyText1.copyWith(
+                                  style: textTheme.bodyLarge.copyWith(
                                     height: 1.22,
                                     fontSize: 14,
                                     color: Theme.of(context).colorScheme.onSecondary,
@@ -155,7 +155,7 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
                                   child: Text(
                                     snapshot.data?.author ?? '',
                                     overflow: TextOverflow.ellipsis,
-                                    style: textTheme.subtitle1.copyWith(
+                                    style: textTheme.titleMedium.copyWith(
                                       letterSpacing: 0.25,
                                       height: 1.22,
                                       fontSize: 12.3,
@@ -179,7 +179,7 @@ class _MiniPlayerBuilderState extends State<_MiniPlayerBuilder> with SingleTicke
                                     padding: const EdgeInsets.symmetric(horizontal: 0.0),
                                     backgroundColor: Theme.of(context).brightness == Brightness.light
                                         ? Theme.of(context).buttonTheme.colorScheme.onPrimary
-                                        : Theme.of(context).bottomAppBarColor,
+                                        : Theme.of(context).bottomAppBarTheme.color,
                                     shape: CircleBorder(),
                                   ),
                                   onPressed: () {

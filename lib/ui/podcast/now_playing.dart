@@ -21,7 +21,6 @@ import 'package:anytime/ui/widgets/placeholder_builder.dart';
 import 'package:anytime/ui/widgets/podcast_html.dart';
 import 'package:anytime/ui/widgets/podcast_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -122,7 +121,7 @@ class _NowPlayingState extends State<NowPlaying> with WidgetsBindingObserver {
                       appBar: AppBar(
                         systemOverlayStyle: SystemUiOverlayStyle(
                           statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
-                          systemNavigationBarColor: Theme.of(context).bottomAppBarColor,
+                          systemNavigationBarColor: Theme.of(context).bottomAppBarTheme.color,
                           statusBarColor: Colors.transparent,
                         ),
                         backgroundColor: Theme.of(context).scaffoldBackgroundColor,

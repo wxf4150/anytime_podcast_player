@@ -12,18 +12,15 @@ ThemeData _buildLightTheme() {
   final base = ThemeData.light();
 
   return base.copyWith(
-    colorScheme: ColorScheme.light(
-      primary: Color(0xffff9800),
-      background: Color(0xffffe0b2),
-      onSecondary: Colors.black,
-    ),
     buttonTheme: base.buttonTheme.copyWith(
-        colorScheme: base.buttonTheme.colorScheme
-            .copyWith(onPrimary: Colors.orange, onSecondary: Color(0xffffe0b2), onSurface: Colors.grey[800].withOpacity(0.5))),
+        colorScheme: base.buttonTheme.colorScheme.copyWith(
+            onPrimary: Colors.orange,
+            onSecondary: Color(0xffffe0b2),
+            onSurface: Colors.grey[800].withOpacity(0.5))),
     textButtonTheme: base.textButtonTheme,
     elevatedButtonTheme: base.elevatedButtonTheme,
     outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(primary: Colors.grey[800]),
+      style: OutlinedButton.styleFrom(foregroundColor: Colors.grey[800]),
     ),
     brightness: Brightness.light,
     primaryColor: Color(0xffff9800),
@@ -31,24 +28,22 @@ ThemeData _buildLightTheme() {
     primaryColorDark: Color(0xfff57c00),
     canvasColor: Color(0xffffffff),
     scaffoldBackgroundColor: Color(0xffffffff),
-    bottomAppBarColor: Color(0xffffffff),
     cardColor: Color(0xffffffff),
     dividerColor: Color(0x1f000000),
     highlightColor: Color(0x66bcbcbc),
     splashColor: Color(0x66c8c8c8),
-    selectedRowColor: Color(0xffff9800),
     unselectedWidgetColor: Color(0x8a000000),
     disabledColor: Color(0x61000000),
-    toggleableActiveColor: Color(0xfffb8c00),
     secondaryHeaderColor: Color(0xfffff3e0),
     textSelectionTheme: TextSelectionThemeData(
-        selectionColor: Color(0xffffcc80), cursorColor: Colors.blue, selectionHandleColor: Color(0xffffb74d)),
-    backgroundColor: Color(0xfffafafa),
+        selectionColor: Color(0xffffcc80),
+        cursorColor: Colors.blue,
+        selectionHandleColor: Color(0xffffb74d)),
     dialogBackgroundColor: Color(0xffffffff),
     indicatorColor: Colors.orange,
     hintColor: Color(0x8a000000),
-    errorColor: Color(0xffd32f2f),
-    primaryTextTheme: Typography.material2018(platform: TargetPlatform.android).black,
+    primaryTextTheme:
+        Typography.material2018(platform: TargetPlatform.android).black,
     textTheme: Typography.material2018(platform: TargetPlatform.android).black,
     primaryIconTheme: IconThemeData(color: Colors.grey[800]),
     iconTheme: base.iconTheme.copyWith(
@@ -73,6 +68,19 @@ ThemeData _buildLightTheme() {
     snackBarTheme: base.snackBarTheme.copyWith(
       actionTextColor: Colors.orange,
     ),
+    bottomAppBarTheme: BottomAppBarTheme(color: Color(0xffffffff)),
+    checkboxTheme: CheckboxThemeData(
+      fillColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Color(0xfffb8c00);
+        }
+        return null;
+      }),
+    ),
     radioTheme: base.radioTheme.copyWith(
       fillColor: MaterialStateProperty.resolveWith(
         (states) {
@@ -83,6 +91,45 @@ ThemeData _buildLightTheme() {
           }
         },
       ),
+    ).copyWith(
+      fillColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Color(0xfffb8c00);
+        }
+        return null;
+      }),
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Color(0xfffb8c00);
+        }
+        return null;
+      }),
+      trackColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Color(0xfffb8c00);
+        }
+        return null;
+      }),
+    ),
+    colorScheme: ColorScheme.light(
+      primary: Color(0xffff9800),
+      background: Color(0xfffafafa),
+      onSecondary: Colors.black,
+      error: Color(0xffd32f2f),
     ),
   );
 }
@@ -91,35 +138,28 @@ ThemeData _buildDarktheme() {
   final base = ThemeData.dark();
 
   return base.copyWith(
-    colorScheme: ColorScheme.dark(
-      primary: Color(0xffffffff),
-      background: Color(0x80ffffff),
-      onSecondary: Colors.white,
-    ),
     brightness: Brightness.dark,
     primaryColor: Color(0xffffffff),
     primaryColorLight: Color(0xffffe0b2),
     primaryColorDark: Color(0xfff57c00),
     canvasColor: Color(0xff000000),
     scaffoldBackgroundColor: Color(0xff000000),
-    bottomAppBarColor: Color(0xff222222),
     cardColor: Colors.black,
     dividerColor: Color(0xff444444),
     highlightColor: Color(0xff222222),
     splashColor: Color(0x66c8c8c8),
-    selectedRowColor: Color(0x77ffffff),
     unselectedWidgetColor: Colors.white,
     disabledColor: Color(0x77ffffff),
-    toggleableActiveColor: Color(0xfffb8c00),
     secondaryHeaderColor: Color(0xfffff3e0),
     textSelectionTheme: TextSelectionThemeData(
-        selectionColor: Color(0xffffcc80), cursorColor: Colors.orange, selectionHandleColor: Color(0xffffb74d)),
-    backgroundColor: Color(0xff333333),
+        selectionColor: Color(0xffffcc80),
+        cursorColor: Colors.orange,
+        selectionHandleColor: Color(0xffffb74d)),
     dialogBackgroundColor: Color(0xff222222),
     indicatorColor: Colors.orange,
     hintColor: Color(0x80ffffff),
-    errorColor: Color(0xffd32f2f),
-    primaryTextTheme: Typography.material2018(platform: TargetPlatform.android).white,
+    primaryTextTheme:
+        Typography.material2018(platform: TargetPlatform.android).white,
     textTheme: Typography.material2018(platform: TargetPlatform.android).white,
     primaryIconTheme: IconThemeData(color: Colors.white),
     iconTheme: base.iconTheme.copyWith(
@@ -156,12 +196,24 @@ ThemeData _buildDarktheme() {
     elevatedButtonTheme: base.elevatedButtonTheme,
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        primary: Color(0xffffffff),
+        foregroundColor: Color(0xffffffff),
         side: BorderSide(
           color: Color(0xffffffff),
           style: BorderStyle.solid,
         ),
       ),
+    ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Color(0xfffb8c00);
+        }
+        return null;
+      }),
     ),
     radioTheme: base.radioTheme.copyWith(
       fillColor: MaterialStateProperty.resolveWith(
@@ -169,6 +221,48 @@ ThemeData _buildDarktheme() {
           return Colors.white;
         },
       ),
+    ).copyWith(
+      fillColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Color(0xfffb8c00);
+        }
+        return null;
+      }),
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Color(0xfffb8c00);
+        }
+        return null;
+      }),
+      trackColor:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Color(0xfffb8c00);
+        }
+        return null;
+      }),
+    ),
+    colorScheme: ColorScheme.dark(
+      primary: Color(0xffffffff),
+      background: Color(0xff333333),
+      onSecondary: Colors.white,
+      error: Color(0xffd32f2f),
+    ),
+    bottomAppBarTheme: BottomAppBarTheme(
+      color: Color(0xff222222),
     ),
   );
 }

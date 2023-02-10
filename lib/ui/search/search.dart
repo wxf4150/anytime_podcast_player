@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:io';
-
 import 'package:anytime/bloc/search/search_bloc.dart';
 import 'package:anytime/bloc/search/search_state_event.dart';
 import 'package:anytime/l10n/L.dart';
@@ -59,12 +57,16 @@ class _SearchState extends State<Search> {
         slivers: <Widget>[
           SliverAppBar(
             systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
+              statusBarIconBrightness:
+                  Theme.of(context).brightness == Brightness.light
+                      ? Brightness.dark
+                      : Brightness.light,
               statusBarColor: Colors.transparent,
             ),
             leading: IconButton(
               tooltip: L.of(context).search_back_button_label,
-              icon: Icon(Icons.arrow_back, color: Theme.of(context).appBarTheme.foregroundColor),
+              icon: Icon(Icons.arrow_back,
+                  color: Theme.of(context).appBarTheme.foregroundColor),
               onPressed: () => Navigator.pop(context),
             ),
             title: TextField(

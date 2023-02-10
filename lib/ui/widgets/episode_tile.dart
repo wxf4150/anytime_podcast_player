@@ -86,7 +86,7 @@ class EpisodeTile extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
           softWrap: false,
-          style: textTheme.bodyText2,
+          style: textTheme.bodyMedium,
         ),
       ),
       children: <Widget>[
@@ -102,7 +102,7 @@ class EpisodeTile extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               softWrap: false,
               maxLines: 5,
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.normal,
                   ),
@@ -254,7 +254,7 @@ class EpisodeTile extends StatelessWidget {
                   onPressed: () {
                     showModalBottomSheet<void>(
                         context: context,
-                        backgroundColor: theme.backgroundColor,
+                        backgroundColor: theme.colorScheme.background,
                         isScrollControlled: true,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
@@ -385,7 +385,7 @@ class EpisodeSubtitle extends StatelessWidget {
         title,
         overflow: TextOverflow.ellipsis,
         softWrap: false,
-        style: textColor != null ? textTheme.caption.copyWith(color: textColor) : textTheme.caption,
+        style: textColor != null ? textTheme.bodySmall.copyWith(color: textColor) : textTheme.bodySmall,
       ),
     );
   }

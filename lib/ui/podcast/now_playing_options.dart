@@ -40,7 +40,7 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
     final maxSize = (windowHeight - topMargin - (floatingPlayerHeight - widget.baseSize)) / windowHeight;
     final l10n = L.of(context);
 
-    final ColorTween sheetColor = ColorTween(begin: theme.scaffoldBackgroundColor, end: theme.bottomAppBarColor);
+    final ColorTween sheetColor = ColorTween(begin: theme.scaffoldBackgroundColor, end: theme.bottomAppBarTheme.color);
 
     final ColorTween labelColor = ColorTween(
       begin: theme.primaryIconTheme.color,
@@ -63,7 +63,7 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
               decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
-                    color: widget.isEmbedded ? theme.backgroundColor : theme.highlightColor,
+                    color: widget.isEmbedded ? theme.colorScheme.background : theme.highlightColor,
                     width: widget.isEmbedded ? 1.5 : 1.0,
                   ),
                   borderRadius: BorderRadius.only(
@@ -94,9 +94,9 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                           padding: widget.isEmbedded ? EdgeInsets.zero : EdgeInsets.only(bottom: 8.0),
                           child: Text(
                             l10n.up_next_queue_label.toUpperCase(),
-                            style: textTheme.button.copyWith(
+                            style: textTheme.labelLarge.copyWith(
                               color: labelColor.animate(AlwaysStoppedAnimation(widget.scrollPos)).value,
-                              fontSize: widget.isEmbedded ? 9 : textTheme.button.fontSize,
+                              fontSize: widget.isEmbedded ? 9 : textTheme.labelLarge.fontSize,
                             ),
                           ),
                         ),
@@ -110,7 +110,7 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                         padding: const EdgeInsets.fromLTRB(16.0, 8.0, 24.0, 8.0),
                         child: Text(
                           l10n.now_playing_queue_label,
-                          style: textTheme.headline6.copyWith(color: theme.iconTheme.color),
+                          style: textTheme.titleLarge.copyWith(color: theme.iconTheme.color),
                         ),
                       ),
                     ],
@@ -137,7 +137,7 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                         padding: const EdgeInsets.fromLTRB(16.0, 0.0, 24.0, 8.0),
                         child: Text(
                           l10n.up_next_queue_label,
-                          style: textTheme.headline6.copyWith(color: theme.iconTheme.color),
+                          style: textTheme.titleLarge.copyWith(color: theme.iconTheme.color),
                         ),
                       ),
                       Spacer(),
@@ -181,7 +181,7 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                           },
                           child: Text(
                             l10n.clear_queue_button_label,
-                            style: textTheme.subtitle2.copyWith(fontSize: 12.0, color: theme.iconTheme.color),
+                            style: textTheme.titleSmall.copyWith(fontSize: 12.0, color: theme.iconTheme.color),
                           ),
                         ),
                       ),
@@ -205,7 +205,7 @@ class _NowPlayingOptionsSelectorState extends State<NowPlayingOptionsSelector> {
                                     padding: const EdgeInsets.all(24.0),
                                     child: Text(
                                       l10n.empty_queue_message,
-                                      style: textTheme.subtitle1.copyWith(color: theme.iconTheme.color),
+                                      style: textTheme.titleMedium.copyWith(color: theme.iconTheme.color),
                                     ),
                                   ),
                                 ),

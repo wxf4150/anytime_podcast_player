@@ -105,7 +105,8 @@ class AnytimePodcastApp extends StatefulWidget {
   AnytimePodcastAppState createState() => AnytimePodcastAppState();
 }
 
-class AnytimePodcastAppState extends State<AnytimePodcastApp> with WidgetsBindingObserver {
+class AnytimePodcastAppState extends State<AnytimePodcastApp>
+    with WidgetsBindingObserver {
   ThemeData theme;
   AudioBloc audioBloc;
 
@@ -121,7 +122,9 @@ class AnytimePodcastAppState extends State<AnytimePodcastApp> with WidgetsBindin
 
     widget.settingsBloc.settings.listen((event) {
       setState(() {
-        var newTheme = event.theme == 'dark' ? Themes.darkTheme().themeData : Themes.lightTheme().themeData;
+        var newTheme = event.theme == 'dark'
+            ? Themes.darkTheme().themeData
+            : Themes.lightTheme().themeData;
 
         /// Only update the theme if it has changed.
         if (newTheme != theme) {
@@ -214,7 +217,8 @@ class AnytimePodcastAppState extends State<AnytimePodcastApp> with WidgetsBindin
           dispose: (_, value) => value.dispose(),
         ),
         Provider<AudioBloc>(
-          create: (_) => AudioBloc(audioPlayerService: widget.audioPlayerService),
+          create: (_) =>
+              AudioBloc(audioPlayerService: widget.audioPlayerService),
           dispose: (_, value) => value.dispose(),
         ),
         Provider<SettingsBloc>(
@@ -257,13 +261,18 @@ class AnytimeHomePage extends StatefulWidget {
   final bool topBarVisible;
   final bool inlineSearch;
 
-  AnytimeHomePage({this.title, this.noSubscriptionsMessage, this.topBarVisible = true, this.inlineSearch = false});
+  AnytimeHomePage(
+      {this.title,
+      this.noSubscriptionsMessage,
+      this.topBarVisible = true,
+      this.inlineSearch = false});
 
   @override
   State<AnytimeHomePage> createState() => _AnytimeHomePageState();
 }
 
-class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingObserver {
+class _AnytimeHomePageState extends State<AnytimeHomePage>
+    with WidgetsBindingObserver {
   StreamSubscription deepLinkSubscription;
   final log = Logger('_AnytimeHomePageState');
   bool handledInitialLink = false;
@@ -326,7 +335,9 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
         Navigator.of(context).popUntil((route) {
           var currentRouteName = NavigationRouteObserver().top.settings.name;
 
-          return currentRouteName == null || currentRouteName == '' || currentRouteName == '/';
+          return currentRouteName == null ||
+              currentRouteName == '' ||
+              currentRouteName == '/';
         });
 
         /// Once we have reached the root route, push podcast details.
@@ -335,7 +346,8 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
           MaterialPageRoute<void>(
               fullscreenDialog: true,
               settings: RouteSettings(name: 'podcastdetails'),
-              builder: (context) => PodcastDetails(Podcast.fromUrl(url: path), loadPodcastBloc)),
+              builder: (context) =>
+                  PodcastDetails(Podcast.fromUrl(url: path), loadPodcastBloc)),
         );
       }
     }
@@ -378,7 +390,7 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
-        systemNavigationBarColor: Theme.of(context).bottomAppBarColor,
+        systemNavigationBarColor: Theme.of(context).bottomAppBarTheme.color,
         statusBarColor: Colors.transparent,
       ),
       child: Scaffold(
@@ -419,13 +431,15 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
                           itemBuilder: (BuildContext context) {
                             return <PopupMenuEntry<String>>[
                               PopupMenuItem<String>(
-                                textStyle: Theme.of(context).textTheme.subtitle1,
+                                textStyle:
+                                    Theme.of(context).textTheme.titleMedium,
                                 value: 'layout',
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 8.0),
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
                                       child: Icon(Icons.dashboard, size: 18.0),
                                     ),
                                     Text(L.of(context).layout_label),
@@ -433,13 +447,15 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
                                 ),
                               ),
                               PopupMenuItem<String>(
-                                textStyle: Theme.of(context).textTheme.subtitle1,
+                                textStyle:
+                                    Theme.of(context).textTheme.titleMedium,
                                 value: 'rss',
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 8.0),
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
                                       child: Icon(Icons.rss_feed, size: 18.0),
                                     ),
                                     Text(L.of(context).add_rss_feed_option),
@@ -447,12 +463,14 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
                                 ),
                               ),
                               PopupMenuItem<String>(
-                                textStyle: Theme.of(context).textTheme.subtitle1,
+                                textStyle:
+                                    Theme.of(context).textTheme.titleMedium,
                                 value: 'settings',
                                 child: Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 8.0),
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
                                       child: Icon(Icons.settings, size: 18.0),
                                     ),
                                     Text(L.of(context).settings_label),
@@ -460,13 +478,16 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
                                 ),
                               ),
                               PopupMenuItem<String>(
-                                textStyle: Theme.of(context).textTheme.subtitle1,
+                                textStyle:
+                                    Theme.of(context).textTheme.titleMedium,
                                 value: 'about',
                                 child: Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 8.0),
-                                      child: Icon(Icons.info_outline, size: 18.0),
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child:
+                                          Icon(Icons.info_outline, size: 18.0),
                                     ),
                                     Text(L.of(context).about_label),
                                   ],
@@ -480,8 +501,10 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
                   ),
                   StreamBuilder<int>(
                       stream: pager.currentPage,
-                      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                        return _fragment(snapshot.data, settings.searchProvider);
+                      builder:
+                          (BuildContext context, AsyncSnapshot<int> snapshot) {
+                        return _fragment(
+                            snapshot.data, settings.searchProvider);
                       }),
                 ],
               ),
@@ -495,19 +518,25 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
               stream: pager.currentPage,
               initialData: 0,
               builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-
                 var selectedItemColor = Theme.of(context).iconTheme.color;
-                var unselectedItemColor = HSLColor.fromColor(Theme.of(context).bottomAppBarColor).withLightness(0.85).toColor();
+                var unselectedItemColor = HSLColor.fromColor(
+                        Theme.of(context).bottomAppBarTheme.color)
+                    .withLightness(0.85)
+                    .toColor();
                 return BottomNavigationBar(
                   elevation: Theme.of(context).bottomAppBarTheme.elevation,
                   type: BottomNavigationBarType.fixed,
-                  backgroundColor: Theme.of(context).bottomAppBarColor,
+                  backgroundColor: Theme.of(context).bottomAppBarTheme.color,
                   selectedIconTheme: Theme.of(context).iconTheme,
                   selectedItemColor: Theme.of(context).iconTheme.color,
-                  unselectedItemColor: HSLColor.fromColor(Theme.of(context).bottomAppBarColor).withLightness(0.85).toColor(),
+                  unselectedItemColor: HSLColor.fromColor(
+                          Theme.of(context).bottomAppBarTheme.color)
+                      .withLightness(0.85)
+                      .toColor(),
                   currentIndex: snapshot.data,
                   onTap: pager.changePage,
-                  items: _buildNavBarItems(unselectedItemColor, selectedItemColor, context, settings),
+                  items: _buildNavBarItems(unselectedItemColor,
+                      selectedItemColor, context, settings),
                 );
               }),
         ),
@@ -527,22 +556,52 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
     }
   }
 
-  List<BottomNavigationBarItem> _buildNavBarItems(
-      Color unselectedItemColor, Color selectedItemColor, BuildContext context, AppSettings settings) {
+  List<BottomNavigationBarItem> _buildNavBarItems(Color unselectedItemColor,
+      Color selectedItemColor, BuildContext context, AppSettings settings) {
     var navBarItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
-        icon: SvgPicture.asset('assets/icons/library.svg', color: unselectedItemColor, height: 24, width: 24),
-        activeIcon: SvgPicture.asset('assets/icons/library.svg', color: selectedItemColor, height: 32, width: 32),
+        icon: SvgPicture.asset(
+          'assets/icons/library.svg',
+          colorFilter: ColorFilter.mode(unselectedItemColor, BlendMode.srcATop),
+          height: 24,
+          width: 24,
+        ),
+        activeIcon: SvgPicture.asset(
+          'assets/icons/library.svg',
+          colorFilter: ColorFilter.mode(selectedItemColor, BlendMode.srcATop),
+          height: 32,
+          width: 32,
+        ),
         label: L.of(context).library,
       ),
       BottomNavigationBarItem(
-        icon: SvgPicture.asset('assets/icons/discovery.svg', color: unselectedItemColor, height: 24, width: 24),
-        activeIcon: SvgPicture.asset('assets/icons/discovery.svg', color: selectedItemColor, height: 32, width: 32),
+        icon: SvgPicture.asset(
+          'assets/icons/discovery.svg',
+          colorFilter: ColorFilter.mode(unselectedItemColor, BlendMode.srcATop),
+          height: 24,
+          width: 24,
+        ),
+        activeIcon: SvgPicture.asset(
+          'assets/icons/discovery.svg',
+          colorFilter: ColorFilter.mode(selectedItemColor, BlendMode.srcATop),
+          height: 32,
+          width: 32,
+        ),
         label: L.of(context).discover,
       ),
       BottomNavigationBarItem(
-        icon: SvgPicture.asset('assets/icons/download.svg', color: unselectedItemColor, height: 24, width: 24),
-        activeIcon: SvgPicture.asset('assets/icons/download.svg', color: selectedItemColor, height: 32, width: 32),
+        icon: SvgPicture.asset(
+          'assets/icons/download.svg',
+          colorFilter: ColorFilter.mode(unselectedItemColor, BlendMode.srcATop),
+          height: 24,
+          width: 24,
+        ),
+        activeIcon: SvgPicture.asset(
+          'assets/icons/download.svg',
+          colorFilter: ColorFilter.mode(selectedItemColor, BlendMode.srcATop),
+          height: 32,
+          width: 32,
+        ),
         label: L.of(context).downloads,
       ),
     ];
@@ -550,8 +609,20 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
       navBarItems.insert(
           2,
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/icons/new_podcasts.svg', color: unselectedItemColor, height: 24, width: 24),
-            activeIcon: SvgPicture.asset('assets/icons/new_podcasts.svg', color: selectedItemColor, height: 32, width: 32),
+            icon: SvgPicture.asset(
+              'assets/icons/new_podcasts.svg',
+              colorFilter:
+                  ColorFilter.mode(unselectedItemColor, BlendMode.srcATop),
+              height: 24,
+              width: 24,
+            ),
+            activeIcon: SvgPicture.asset(
+              'assets/icons/new_podcasts.svg',
+              colorFilter:
+                  ColorFilter.mode(selectedItemColor, BlendMode.srcATop),
+              height: 32,
+              width: 32,
+            ),
             label: L.of(context).new_podcasts,
           ));
     }
@@ -646,7 +717,8 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
                     context,
                     MaterialPageRoute<void>(
                         settings: RouteSettings(name: 'podcastdetails'),
-                        builder: (context) => PodcastDetails(Podcast.fromUrl(url: url), podcastBloc)),
+                        builder: (context) => PodcastDetails(
+                            Podcast.fromUrl(url: url), podcastBloc)),
                   ).then((value) => Navigator.pop(context));
                 },
               ),
@@ -669,21 +741,21 @@ class _AnytimeHomePageState extends State<AnytimeHomePage> with WidgetsBindingOb
 }
 
 class TitleWidget extends StatelessWidget {
-  final TextStyle _titleTheme1 = theme.textTheme.bodyText2.copyWith(
+  final TextStyle _titleTheme1 = theme.textTheme.bodyMedium.copyWith(
     color: Colors.red,
     fontWeight: FontWeight.bold,
     fontFamily: 'MontserratRegular',
     fontSize: 18,
   );
 
-  final TextStyle _titleTheme2Light = theme.textTheme.bodyText2.copyWith(
+  final TextStyle _titleTheme2Light = theme.textTheme.bodyMedium.copyWith(
     color: Colors.black,
     fontWeight: FontWeight.bold,
     fontFamily: 'MontserratRegular',
     fontSize: 18,
   );
 
-  final TextStyle _titleTheme2Dark = theme.textTheme.bodyText2.copyWith(
+  final TextStyle _titleTheme2Dark = theme.textTheme.bodyMedium.copyWith(
     color: Colors.white,
     fontWeight: FontWeight.bold,
     fontFamily: 'MontserratRegular',
@@ -702,7 +774,9 @@ class TitleWidget extends StatelessWidget {
           ),
           Text(
             'Player',
-            style: Theme.of(context).brightness == Brightness.light ? _titleTheme2Light : _titleTheme2Dark,
+            style: Theme.of(context).brightness == Brightness.light
+                ? _titleTheme2Light
+                : _titleTheme2Dark,
           ),
         ],
       ),

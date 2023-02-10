@@ -87,7 +87,7 @@ class _ChapterSelectorState extends State<ChapterSelector> {
                     final index = i < 0 ? 0 : i;
                     final chapter = snapshot.data.chapters[index];
                     final chapterSelected = chapter == snapshot.data.currentChapter;
-                    final textStyle = Theme.of(context).textTheme.bodyText1.copyWith(
+                    final textStyle = Theme.of(context).textTheme.bodyLarge.copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                           color: Theme.of(context).colorScheme.onSecondary,
@@ -98,7 +98,7 @@ class _ChapterSelectorState extends State<ChapterSelector> {
                     /// still visible behind the transport control. This is a little hack, but fixes
                     /// the issue until I can get ListTile to work correctly.
                     return Container(
-                      color: chapterSelected ? Theme.of(context).selectedRowColor : Colors.transparent,
+                      color: chapterSelected ? Theme.of(context).colorScheme.primary : Colors.transparent,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
                         child: ListTile(

@@ -84,7 +84,9 @@ class _PodcastDetailsState extends State<PodcastDetails> {
       }
     });
 
-    widget._podcastBloc.backgroundLoading.where((event) => event is BlocPopulatedState<void>).listen((event) {
+    widget._podcastBloc.backgroundLoading
+        .where((event) => event is BlocPopulatedState<void>)
+        .listen((event) {
       if (mounted) {
         /// If we have not scrolled (save a few pixels) just refresh the episode list;
         /// otherwise prompt the user to prevent unexpected list jumping
@@ -97,7 +99,9 @@ class _PodcastDetailsState extends State<PodcastDetails> {
             action: SnackBarAction(
               label: L.of(context).new_episodes_view_now_label,
               onPressed: () {
-                _sliverScrollController.animateTo(100, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+                _sliverScrollController.animateTo(100,
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeInOut);
                 widget._podcastBloc.podcastEvent(PodcastEvent.refresh);
               },
             ),
@@ -111,8 +115,13 @@ class _PodcastDetailsState extends State<PodcastDetails> {
   @override
   void didChangeDependencies() {
     _systemOverlayStyle = SystemUiOverlayStyle(
-      statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
-      statusBarColor: Theme.of(context).appBarTheme.backgroundColor.withOpacity(toolbarCollapsed ? 1.0 : 0.5),
+      statusBarIconBrightness: Theme.of(context).brightness == Brightness.light
+          ? Brightness.dark
+          : Brightness.light,
+      statusBarColor: Theme.of(context)
+          .appBarTheme
+          .backgroundColor
+          .withOpacity(toolbarCollapsed ? 1.0 : 0.5),
     );
     super.didChangeDependencies();
   }
@@ -138,7 +147,7 @@ class _PodcastDetailsState extends State<PodcastDetails> {
             Theme.of(context).brightness == Brightness.light
                 ? Brightness.dark
                 : Brightness.light,
-        systemNavigationBarColor: Theme.of(context).bottomAppBarColor,
+        systemNavigationBarColor: Theme.of(context).bottomAppBarTheme.color,
         statusBarColor: Colors.transparent,
       );
     });
@@ -147,8 +156,14 @@ class _PodcastDetailsState extends State<PodcastDetails> {
   void _updateSystemOverlayStyle() {
     setState(() {
       _systemOverlayStyle = SystemUiOverlayStyle(
-        statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
-        statusBarColor: Theme.of(context).appBarTheme.backgroundColor.withOpacity(toolbarCollapsed ? 1.0 : 0.5),
+        statusBarIconBrightness:
+            Theme.of(context).brightness == Brightness.light
+                ? Brightness.dark
+                : Brightness.light,
+        statusBarColor: Theme.of(context)
+            .appBarTheme
+            .backgroundColor
+            .withOpacity(toolbarCollapsed ? 1.0 : 0.5),
       );
     });
   }
@@ -181,11 +196,16 @@ class _PodcastDetailsState extends State<PodcastDetails> {
                         duration: Duration(milliseconds: 500),
                         child: Text(widget.podcast.title)),
                     leading: DecoratedIconButton(
-                      icon: Platform.isAndroid ? Icons.close : Icons.arrow_back_ios,
-                      iconColour: toolbarCollapsed && Theme.of(context).brightness == Brightness.light
+                      icon: Platform.isAndroid
+                          ? Icons.close
+                          : Icons.arrow_back_ios,
+                      iconColour: toolbarCollapsed &&
+                              Theme.of(context).brightness == Brightness.light
                           ? Theme.of(context).appBarTheme.foregroundColor
                           : Colors.white,
-                      decorationColour: toolbarCollapsed ? Color(0x00000000) : Color(0x22000000),
+                      decorationColour: toolbarCollapsed
+                          ? Color(0x00000000)
+                          : Color(0x22000000),
                       onPressed: () {
                         _resetSystemOverlayStyle();
                         Navigator.pop(context);
@@ -197,8 +217,10 @@ class _PodcastDetailsState extends State<PodcastDetails> {
                     snap: false,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Hero(
-                        key: Key('detailhero${widget.podcast.imageUrl}:${widget.podcast.link}'),
-                        tag: '${widget.podcast.imageUrl}:${widget.podcast.link}',
+                        key: Key(
+                            'detailhero${widget.podcast.imageUrl}:${widget.podcast.link}'),
+                        tag:
+                            '${widget.podcast.imageUrl}:${widget.podcast.link}',
                         child: ExcludeSemantics(
                           child: StreamBuilder<BlocState<Podcast>>(
                               initialData: BlocEmptyState<Podcast>(),
@@ -257,7 +279,7 @@ class _PodcastDetailsState extends State<PodcastDetails> {
                                 ),
                                 Text(
                                   L.of(context).no_podcast_details_message,
-                                  style: Theme.of(context).textTheme.bodyText2,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -269,6 +291,7 @@ class _PodcastDetailsState extends State<PodcastDetails> {
                       if (state is BlocPopulatedState<Podcast>) {
                         return SliverToBoxAdapter(
                             child: PlaybackErrorListener(
+                          margin: 52.0,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -318,7 +341,9 @@ class PodcastHeaderImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (podcast == null || podcast.imageUrl == null || podcast.imageUrl.isEmpty) {
+    if (podcast == null ||
+        podcast.imageUrl == null ||
+        podcast.imageUrl.isEmpty) {
       return Container(
         height: 560,
         width: 560,
@@ -329,11 +354,13 @@ class PodcastHeaderImage extends StatelessWidget {
       key: Key('details${podcast.imageUrl}'),
       url: podcast.imageUrl,
       fit: BoxFit.cover,
-      placeholder:
-          placeholderBuilder != null ? placeholderBuilder?.builder()(context) : DelayedCircularProgressIndicator(),
+      placeholder: placeholderBuilder != null
+          ? placeholderBuilder?.builder()(context)
+          : DelayedCircularProgressIndicator(),
       errorPlaceholder: placeholderBuilder != null
           ? placeholderBuilder?.errorBuilder()(context)
-          : Image(image: AssetImage('assets/images/anytime-placeholder-logo.png')),
+          : Image(
+              image: AssetImage('assets/images/anytime-placeholder-logo.png')),
     );
   }
 }
@@ -357,11 +384,11 @@ class PodcastTitle extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(podcast.title ?? '', style: textTheme.headline6),
+            child: Text(podcast.title ?? '', style: textTheme.titleLarge),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
-            child: Text(podcast.copyright ?? '', style: textTheme.caption),
+            child: Text(podcast.copyright ?? '', style: textTheme.bodySmall),
           ),
           PodcastHtml(content: podcast.description),
           Padding(
@@ -384,7 +411,8 @@ class PodcastTitle extends StatelessWidget {
                   ),
                 ),
                 sharePodcastButtonBuilder != null
-                    ? sharePodcastButtonBuilder?.builder(podcast.title, podcast.url)(context)
+                    ? sharePodcastButtonBuilder?.builder(
+                        podcast.title, podcast.url)(context)
                     : const SizedBox(
                         width: 0.0,
                         height: 0.0,
@@ -419,7 +447,8 @@ class SubscriptionButton extends StatelessWidget {
               return p.subscribed
                   ? OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
                       ),
                       icon: Icon(
                         Icons.delete_outline,
@@ -461,7 +490,8 @@ class SubscriptionButton extends StatelessWidget {
                     )
                   : OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
                       ),
                       icon: Icon(
                         Icons.add,
@@ -490,7 +520,8 @@ class SharePodcastButtonBuilder extends InheritedWidget {
         super(key: key, child: child);
 
   static SharePodcastButtonBuilder of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<SharePodcastButtonBuilder>();
+    return context
+        .dependOnInheritedWidgetOfExactType<SharePodcastButtonBuilder>();
   }
 
   @override
