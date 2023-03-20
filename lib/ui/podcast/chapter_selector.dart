@@ -90,7 +90,9 @@ class _ChapterSelectorState extends State<ChapterSelector> {
                     final textStyle = Theme.of(context).textTheme.bodyLarge.copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
-                          color: Theme.of(context).colorScheme.onSecondary,
+                          color: chapterSelected
+                              ? Theme.of(context).colorScheme.background
+                              : Theme.of(context).colorScheme.onSecondary,
                         );
 
                     /// We should be able to use the selectedTileColor property but, if we do, when
