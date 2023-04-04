@@ -1,5 +1,6 @@
 import 'package:anytime/ui/search/search_bar.dart';
 import 'package:anytime/ui/widgets/podcast_list.dart';
+import 'package:anytime/ui/widgets/podcast_list_empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:podcast_search/podcast_search.dart' as search;
@@ -11,14 +12,29 @@ class PodcastListWithSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: ShrinkWrappingViewport(
-        offset: ViewportOffset.zero(),
-        slivers: [
-          SliverToBoxAdapter(child: SearchBar()),
-          PodcastList(results: results),
-        ],
-      ),
-    );
+    return results.items.isEmpty
+        ? SliverFillRemaining(
+            child: Column(
+              children: [
+                SearchBar(),
+                Expanded(
+                  child: const PodcastListEmpty(),
+                ),
+                // Search bar has 56 dp of height so adding this extra padding we get a perfect alignment
+                SizedBox(height: 56),
+              ],
+            ),
+          )
+        : SliverToBoxAdapter(
+            child: ShrinkWrappingViewport(
+              offset: ViewportOffset.zero(),
+              slivers: [
+                SliverToBoxAdapter(child: SearchBar()),
+                PodcastList(
+                  results: results,
+                ),
+              ],
+            ),
+          );
   }
 }

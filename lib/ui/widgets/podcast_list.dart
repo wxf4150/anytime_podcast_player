@@ -5,8 +5,8 @@
 import 'package:anytime/bloc/settings/settings_bloc.dart';
 import 'package:anytime/entities/app_settings.dart';
 import 'package:anytime/entities/podcast.dart';
-import 'package:anytime/l10n/L.dart';
 import 'package:anytime/ui/widgets/podcast_grid_tile.dart';
+import 'package:anytime/ui/widgets/podcast_list_empty.dart';
 import 'package:anytime/ui/widgets/podcast_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:podcast_search/podcast_search.dart' as search;
@@ -73,25 +73,7 @@ class PodcastList extends StatelessWidget {
     } else {
       return SliverFillRemaining(
         hasScrollBody: false,
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                Icons.search,
-                size: 75,
-                color: Theme.of(context).primaryColor,
-              ),
-              Text(
-                L.of(context).no_search_results_message,
-                style: Theme.of(context).textTheme.titleLarge,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
+        child: const PodcastListEmpty(),
       );
     }
   }
