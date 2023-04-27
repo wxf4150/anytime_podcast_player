@@ -28,20 +28,28 @@ class SleepSelector extends StatelessWidget {
       stream: audioBloc.sleepPolicy,
       builder: (context, snapshot) {
         final sleepPolicy = snapshot.data ?? sleepPolicyOff(true);
-        return IconButton(
-          tooltip: texts.sleep_episode_function_header,
-          constraints: constraints,
-          padding: padding,
-          icon: _icon(theme, sleepPolicy),
-          onPressed: () {
-            presentSleepPolicyOptions(
-              context,
-              theme,
-              texts,
-              audioBloc,
-              sleepPolicy,
-            );
-          },
+        return Tooltip(
+          message: texts.sleep_episode_function_header,
+          child: ElevatedButton(
+            onPressed: () {
+              presentSleepPolicyOptions(
+                context,
+                theme,
+                texts,
+                audioBloc,
+                sleepPolicy,
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              padding: padding,
+              foregroundColor: theme.primaryColor,
+              backgroundColor: theme.canvasColor,
+              fixedSize: const Size(48.0, 48.0),
+              shape: const CircleBorder(),
+            ),
+            child: _icon(theme, sleepPolicy),
+          ),
         );
       },
     );
